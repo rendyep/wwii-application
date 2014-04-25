@@ -1,6 +1,6 @@
 <?php
 
-return array_merge(array(
+$config = array(
     "module" => array(
         "Index" => array(
             "namespace" => "\\WWII\\Application\\Index",
@@ -47,4 +47,11 @@ return array_merge(array(
             ),
         ),
     ),
-), include('config.sensitive.php'));
+);
+
+
+if (file_exists(__DIR__ . '/config.sensitive.php')) {
+    $config = array_merge($config, include(__DIR__ . '/config.sensitive.php'));
+}
+
+return $config;
