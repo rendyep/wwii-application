@@ -33,7 +33,7 @@ class ReportKaryawanAction
         $this->sessionContainer = $serviceManager->get('SessionContainer');
         $this->flashMessenger = $serviceManager->get('FlashMessenger');
         $this->entityManager = $entityManager;
-        $this->departmentHelper = new \WWII\Common\Helper\Collection\MsSQL\Department($this->serviceManager, $this->entityManager);
+        $this->departmentHelper = new \WWII\Common\Helper\Collection\MsSQL\ActiveDepartment($this->serviceManager, $this->entityManager);
     }
 
     public function dispatch($params)
