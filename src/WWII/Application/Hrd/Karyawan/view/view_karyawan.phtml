@@ -1,0 +1,125 @@
+<h3>Data Karyawan</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+
+    $imagePath = './images/'
+        . $this->routeManager->getModule() . '/'
+        . $this->routeManager->getController() . '/';
+?>
+<hr />
+<form action="" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <div class="fieldset-kiri">NIK</div>
+        <div class="fieldset-kanan"><?php echo $params['nik'] ?></div>
+        <div class="fieldset-kiri">Nama Lengkap</div>
+        <div class="fieldset-kanan"><?php echo $params['namaLengkap'] ?></div>
+        <div class="fieldset-kiri">Nama Panggilan</div>
+        <div class="fieldset-kanan"><?php echo $params['namaPanggilan'] ?></div>
+        <div class="fieldset-kiri">Jenis Kelamin</div>
+        <div class="fieldset-kanan"><?php echo $params['jenisKelamin'] ?></div>
+        <div class="fieldset-kiri">Tempat/Tanggal Lahir</div>
+        <div class="fieldset-kanan"><?php echo $params['tempatLahir'] . ', ' . $params['tanggalLahir'] ?></div>
+        <div class="fieldset-kiri">Agama</div>
+        <div class="fieldset-kanan"><?php echo $params['agama'] ?></div>
+        <div class="fieldset-kiri">Status Perkawinan</div>
+        <div class="fieldset-kanan"><?php echo $params['statusPerkawinan'] ?></div>
+        <div class="fieldset-kiri">Pendidikan</div>
+        <div class="fieldset-kanan"><?php echo $params['pendidikan'] ?></div>
+        <div class="fieldset-kiri">Jurusan</div>
+        <div class="fieldset-kanan"><?php echo $params['jurusan'] ?></div>
+        <div class="fieldset-kiri">Alamat</div>
+        <div class="fieldset-kanan"><?php echo $params['alamat'] ?></div>
+        <div class="fieldset-kiri">Kota</div>
+        <div class="fieldset-kanan"><?php echo $params['kota'] ?></div>
+        <div class="fieldset-kiri">Kode Pos</div>
+        <div class="fieldset-kanan"><?php echo $params['kodePos'] ?></div>
+        <div class="fieldset-kiri">Telepon</div>
+        <div class="fieldset-kanan"><?php echo $params['telepon'] ?></div>
+        <div class="fieldset-kiri">Hand Phone 1</div>
+        <div class="fieldset-kanan"><?php echo $params['ponsel'] ?></div>
+        <div class="fieldset-kiri">Hand Phone 2</div>
+        <div class="fieldset-kanan"><?php echo $params['ponselLain'] ?></div>
+        <div class="fieldset-kiri">Email</div>
+        <div class="fieldset-kanan"><?php echo $params['email'] ?></div>
+        <div class="fieldset-kiri">NPWP</div>
+        <div class="fieldset-kanan"><?php echo $params['npwp'] ?></div>
+        <div class="fieldset-kiri">Status</div>
+        <div class="fieldset-kanan"><?php echo $params['status'] ?></div>
+        <div class="fieldset-kiri">Jabatan</div>
+        <div class="fieldset-kanan"><?php echo $params['jabatan'] ?></div>
+        <div class="fieldset-kiri">Departemen</div>
+        <div class="fieldset-kanan"><?php echo $params['departemen'] ?></div>
+        <div class="fieldset-kiri">Tanggal Awal Kontrak Kerja</div>
+        <div class="fieldset-kanan"><?php echo $params['tanggalAwalKontrakKerja'] ?></div>
+        <div class="fieldset-kiri">Tanggal Akhir Kontrak Kerja</div>
+        <div class="fieldset-kanan"><?php echo $params['tanggalAkhirKontrakKerja'] ?></div>
+        <div class="fieldset-kiri">Tanggal Masuk Kerja</div>
+        <div class="fieldset-kanan"><?php echo $params['tanggalMasukKerja'] ?></div>
+        <div class="fieldset-kiri">Tanggal Keluar Kerja</div>
+        <div class="fieldset-kanan"><?php echo $params['tanggalKeluarKerja'] ?></div>
+        <div class="fieldset-kiri">Foto</div>
+        <div class="fieldset-kanan">
+        <?php if ($params['photo'] != null) : ?>
+            <a href="<?php echo $imagePath . $params['photo'] ?>">
+                <img src="<?php echo $imagePath . $params['photo'] ?>" width="100px" />
+            </a>
+        <?php endif; ?>
+        </div>
+        <hr />
+        <div class="fieldset-kiri"></div>
+        <div class="fieldset-button">
+            <input type="submit" name="btx" value="Kembali" />
+            <input type="submit" name="btx" value="Print" />
+        </div>
+    </fieldset>
+</form>
+
+<style type="text/css">
+    .fieldset-kiri {
+        width: 150px;
+        float: left;
+        margin-bottom: 5px;
+        clear: left;
+        vertical-align: top;
+    }
+
+    .fieldset-kanan {
+        margin-left: 150px;
+        margin-bottom: 5px;
+        vertical-align: top;
+    }
+
+    .fieldset-kanan:before {
+        content: ': ';
+        vertical-align: top;
+    }
+
+    .fieldset-empty:before {
+        content: ' ';
+    }
+
+    .fieldset-button {
+        margin-left: 157px;
+        margin-bottom: 5px;
+    }
+
+    .required:after {
+        content: ' *';
+        color: red;
+    }
+
+    .error-head {
+        color: red;
+        font-weight: bold;
+    }
+
+    .error-container {
+        color: red;
+        margin-left: 7px;
+    }
+</style>
+
+<script type="text/javascript">
+</script>

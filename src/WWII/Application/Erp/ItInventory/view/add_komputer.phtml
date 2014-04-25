@@ -1,0 +1,78 @@
+<h3>Report Komputer</h3>
+<?php if (!empty($errorMessages)) : ?>
+<ul>
+    <?php foreach ($errorMessages as $errorMessage) : ?>
+        <li><?php echo $errorMessage ?></li>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+<form action='' method='post'>
+    <table border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>Nomor Seri</td>
+                <td><input type='text' size='30' name='nomorSeri' value='<?php echo $params['nomorSeri'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>Sistem Operasi</td>
+                <td><input type='text' size='30' name='sistemOperasi' value='<?php echo $params['sistemOperasi'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>IP Address</td>
+                <td><input type='text' size='30' name='ip' value='<?php echo $params['ip'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>Mac Address</td>
+                <td><input type='text' size='30' name='mac' value='<?php echo $params['mac'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type='text' size='30' name='email' value='<?php echo $params['email'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>User</td>
+                <td><input type='text' size='30' name='user' value='<?php echo $params['user'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>User Account</td>
+                <td><input type='text' size='30' name='userAccount' value='<?php echo $params['userAccount'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>Lokasi</td>
+                <td><input type='text' size='30' name='lokasi' value='<?php echo $params['lokasi'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>Tahun</td>
+                <td><input type='text' size='30' name='tahun' value='<?php echo $params['tahun'] ?>' /></td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="margin-top: 20px;">Spesifikasi</div>
+    <table border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>CPU</td>
+                <td><input type='text' size='30' name='cpu' value='<?php echo $params['cpu'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>Hard Disk</td>
+                <td><input type='text' size='30' name='hardDisk' value='<?php echo $params['hardDisk'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>RAM</td>
+                <td><input type='text' size='30' name='ram' value='<?php echo $params['ram'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>LCD</td>
+                <td><input type='text' size='30' name='lcd' value='<?php echo $params['lcd'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>Optical Drive</td>
+                <td><input type='text' size='30' name='opticalDrive' value='<?php echo $params['opticalDrive'] ?>' /></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type='reset' value='Reset'>
+    <input type='submit' value='Add' name='btx'>
+</form>

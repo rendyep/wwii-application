@@ -1,0 +1,137 @@
+<h3>Report Finding</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<hr />
+<form action='' method='post' enctype='multipart/form-data'>
+    <fieldset>
+        <div class="fieldset-kiri required">Tanggal Kejadian</div>
+        <div class="fieldset-kanan">
+            <input type='text' id='tanggalKejadian' name='tanggalKejadian' value='<?php echo $params['tanggalKejadian'] ?>' />
+            <div class="error-container">
+                <?php echo isset($errorMessages['tanggalKejadian']) ? $errorMessages['tanggalKejadian'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">Kejadian</div>
+        <div class="fieldset-kanan">
+            <textarea rows='10' cols='40' id='kejadian' name='kejadian'><?php echo $params['kejadian'] ?></textarea>
+            <div class="error-container">
+                <?php echo isset($errorMessages['kejadian']) ? $errorMessages['kejadian'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri">Tindakan</div>
+        <div class="fieldset-kanan">
+            <textarea rows='10' cols='40' id='tindakan' name='tindakan'><?php echo $params['tindakan'] ?></textarea>
+            <div class="error-container">
+                <?php echo isset($errorMessages['tindakan']) ? $errorMessages['tindakan'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri">Foto</div>
+        <div class="fieldset-kanan">
+            <select id="jumlahFoto" name="jumlahFoto">
+                <option value="">[pilih satu]</option>
+                <option value="1" <?php echo $params['jumlahFoto'] == 1 ? 'selected="selected"' : '' ?>>1</option>
+                <option value="2" <?php echo $params['jumlahFoto'] == 2 ? 'selected="selected"' : '' ?>>2</option>
+                <option value="3" <?php echo $params['jumlahFoto'] == 3 ? 'selected="selected"' : '' ?>>3</option>
+                <option value="4" <?php echo $params['jumlahFoto'] == 4 ? 'selected="selected"' : '' ?>>4</option>
+                <option value="5" <?php echo $params['jumlahFoto'] == 5 ? 'selected="selected"' : '' ?>>5</option>
+            </select>
+        </div>
+        <div class="fieldset-kiri fieldset-empty"></div>
+        <div class="fieldset-button">
+            <div id="fotoElementContainer">&nbsp;</div>
+            <div class="error-container">
+                <?php
+                    if (isset($errorMessages['photos'])) {
+                        echo '<ul>';
+                        foreach ($errorMessages['photos'] as $errorMessage) {
+                            echo "<li>{$errorMessage}</li>";
+                        }
+                        echo '</ul>';
+                    }
+                ?>
+            </div>
+        </div>
+        <hr />
+        <input type='submit' value='Batal' name='btx' />
+        <input type='submit' value='Simpan' name='btx' />
+    </fieldset>
+</form>
+
+<style type="text/css">
+    .fieldset-kiri {
+        width: 150px;
+        float: left;
+        margin-bottom: 5px;
+        clear: left;
+        vertical-align: top;
+    }
+
+    .fieldset-kanan {
+        margin-left: 150px;
+        margin-bottom: 5px;
+        vertical-align: top;
+    }
+
+    .fieldset-kanan:before {
+        content: ': ';
+        vertical-align: top;
+    }
+
+    .fieldset-empty:before {
+        content: ' ';
+    }
+
+    .fieldset-button {
+        margin-left: 157px;
+        margin-bottom: 5px;
+    }
+
+    .required:after {
+        content: ' *';
+        color: red;
+    }
+
+    .error-head {
+        color: red;
+        font-weight: bold;
+    }
+
+    .error-container {
+        color: red;
+        margin-left: 7px;
+    }
+</style>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $("#tanggalKejadian").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-55:-0'
+        });
+
+        $("#jumlahFoto").change(function(){
+            updatePhotoElementList();
+        });
+        updatePhotoElementList();
+    });
+
+    function updatePhotoElementList() {
+        $("#fotoElementContainer").html("");
+        for (var $i = 1; $i <= $('#jumlahFoto').val(); $i++) {
+            $("#fotoElementContainer").append("<input type='file' accept='image/*|MIME_type' name='photos[]' />");
+
+            if ($i != $("#jumlahFoto").val()) {
+                $("#fotoElementContainer").append("<br />");
+            }
+        }
+
+        if ($("#jumlahFoto").val() > 0) {
+            $("#uploadFotoContainer").show();
+        } else {
+            $("#uploadFotoContainer").hide();
+        }
+    }
+</script>

@@ -1,0 +1,81 @@
+<h3>Report Komputer</h3>
+<?php if (!empty($errorMessages)) : ?>
+<ul>
+    <?php foreach ($errorMessages as $errorMessage) : ?>
+        <li><?php echo $errorMessage ?></li>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+<form action='' method='post'>
+    <table border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>Nomor Seri</td>
+                <td><input type='text' size='30' name='nomorSeri' value='<?php echo $params['nomorSeri'] ?>'></td>
+            </tr>
+            <tr>
+                <td>Sistem Operasi</td>
+                <td><input type='text' size='30' name='sistemOperasi' value='<?php echo $params['sistemOperasi'] ?>'></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type='text' size='30' name='email' value='<?php echo $params['email'] ?>'></td>
+            </tr>
+            <tr>
+                <td>User</td>
+                <td><input type='text' size='30' name='user' value='<?php echo $params['user'] ?>'></td>
+            </tr>
+            <tr>
+                <td>Lokasi</td>
+                <td><input type='text' size='30' name='lokasi' value='<?php echo $params['lokasi'] ?>'></td>
+            </tr>
+            <tr>
+                <td>Tahun</td>
+                <td><input type='text' size='30' name='tahun' value='<?php echo $params['tahun'] ?>'></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type='reset' value='Reset'>
+    <input type='submit' value='Proses' name='btx'>
+</form>
+
+<?php if ($data !== null) : ?>
+<table>
+    <tbody>
+        <tr>
+            <th>No.</th>
+            <th>Nomor Seri</th>
+            <th>Sistem Operasi</th>
+            <th>Email</th>
+            <th>User</th>
+            <th>Lokasi</th>
+            <th>Tahun</th>
+            <th>Action</th>
+        </tr>
+        <?php if($data->num_rows > 0) :
+            $number = 1;
+            while ($row = $data->fetch_object()) : ?>
+        <tr>
+            <td><?php echo $number++ ?></td>
+            <td><?php echo $row->no_seri ?></td>
+            <td><?php echo $row->os ?></td>
+            <td><?php echo $row->email ?></td>
+            <td><?php echo $row->user ?></td>
+            <td><?php echo $row->lokasi ?></td>
+            <td><?php echo $row->thn ?></td>
+            <td>
+                <a href='<?php echo $this->routeManager->generateRoute('erp', 'it_inventory', 'view_komputer', $row->id) ?>'>detail</a>
+                <a href='<?php echo $this->routeManager->generateRoute('erp', 'it_inventory', 'edit_komputer', $row->id) ?>'>revisi</a>
+                <a href='<?php echo $this->routeManager->generateRoute('erp', 'it_inventory', 'delete_komputer', $row->id) ?>'>hapus</a>
+            </td>
+        </tr>
+        <?php endwhile;
+            else : ?>
+        <tr>
+            <td colspan='0' style='text-align: center;'>Data kosong</td>
+        </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
+<?php endif; ?>

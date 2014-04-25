@@ -1,0 +1,74 @@
+<h3>Report Peripheral</h3>
+<?php if (!empty($errorMessages)) : ?>
+<ul>
+    <?php foreach ($errorMessages as $errorMessage) : ?>
+        <li><?php echo $errorMessage ?></li>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+<form action='' method='post'>
+    <table border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>Nama</td>
+                <td><input type='text' size='30' name='nama' value='<?php echo $params['nama'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>Brand</td>
+                <td><input type='text' size='30' name='brand' value='<?php echo $params['brand'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>Type</td>
+                <td><input type='text' size='30' name='type' value='<?php echo $params['type'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>Lokasi</td>
+                <td><input type='text' size='30' name='lokasi' value='<?php echo $params['lokasi'] ?>' /></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type='reset' value='Reset'>
+    <input type='submit' value='Proses' name='btx'>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Nama</th>
+            <th>Nomor Seri</th>
+            <th>Brand</th>
+            <th>Type</th>
+            <th>Port</th>
+            <th>User Account</th>
+            <th>Lokasi</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if(count($data) > 0) :
+            $number = 1;
+            foreach ($data as $peripheral) : ?>
+        <tr>
+            <td><?php echo $number++ ?></td>
+            <td><?php echo $peripheral->getNama() ?></td>
+            <td><?php echo $peripheral->getNomorSeri() ?></td>
+            <td><?php echo $peripheral->getBrand() ?></td>
+            <td><?php echo $peripheral->getType() ?></td>
+            <td><?php echo $peripheral->getPort() ?></td>
+            <td><?php echo $peripheral->getUSerAccount() ?></td>
+            <td><?php echo $peripheral->getLokasi ?></td>
+            <td>
+                <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'edit_peripheral', 'key' => $peripheral->getId())) ?>'>revisi</a>
+                <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'delete_peripheral', 'key' => $peripheral->getId())) ?>'>hapus</a>
+            </td>
+        </tr>
+        <?php endforeach;
+            else : ?>
+        <tr>
+            <td colspan='0' style='text-align: center;'>Data kosong</td>
+        </tr>
+        <?php endif; ?>
+    </tbody>
+</table>

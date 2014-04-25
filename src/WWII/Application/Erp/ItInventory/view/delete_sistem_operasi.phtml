@@ -1,0 +1,42 @@
+<h3>Report Sistem Operasi</h3>
+<?php if (!empty($errorMessages)) : ?>
+<ul>
+    <?php foreach ($errorMessages as $errorMessage) : ?>
+        <li><?php echo $errorMessage ?></li>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+<form method='post'>
+    <div>
+        Apakah anda yakin akan menghapus data ini?
+    </div>
+    <table class='detail' border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>Nama Sistem Operasi</td>
+                <td><?php echo $data->getNama() ?></td>
+            </tr>
+            <tr>
+                <td>Serial Number</td>
+                <td><?php echo $data->getSerial() ?></td>
+            </tr>
+            <tr>
+                <td>Versi</td>
+                <td><?php echo $data->getVersi() ?></td>
+            </tr>
+            <tr>
+                <td>Lisensi</td>
+                <td><?php echo $data->getLisensi() ?></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type='submit' value='Cancel' name='btx'>
+    <input type='submit' value='Delete' name='btx'>
+</form>
+
+<style type='text/css'>
+    table.detail tbody tr td:first-child {
+        width: 150px;
+    }
+</style>

@@ -1,0 +1,116 @@
+<h3>Master Cuti</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<hr />
+<form action='<?php echo $this->routeManager->generateRoute(array()) ?>' method='post'>
+    <table border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>Jabatan</td>
+                <td>
+                    <select name="departemen">
+                        <option value="">[semua]</option>
+                        <?php foreach ($departmentList as $department) : ?>
+                        <option value="<?php echo $department ?>" <?php echo $params['departemen'] == $department ? 'selected="selected"' : '' ?>>
+                            <?php echo $department ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type='reset' value='Reset' />
+    <input type='submit' name='btx' value='Proses' />
+    <?php
+        if ($data !== null) :
+            echo $data->getControl();
+    ?>
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>NIK</th>
+                <th>Nama Karyawan</th>
+                <th>Departemen</th>
+                <th>Sisa (periode sebelumnya)</th>
+                <th>Tanggal Kadaluarsa (periode sebelumnya)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                if (count($data) > 0) :
+                    $now = new \DateTime();
+                    $page = $this->routeManager->getPage();
+                    $maxItemPerPage = $data->getMaxItemPerPage();
+                    $number = ($page * $maxItemPerPage) - ($maxItemPerPage - 1);
+                    foreach ($data as $row) :
+            ?>
+            <tr>
+                <td style='vertical-align: top;'><?php echo $number++ ?></td>
+                <td style='vertical-align: top;'><?php echo $row->getNik() ?></td>
+                <td style='vertical-align: top;'><?php echo $row->getNamaKaryawan() ?></td>
+                <td style='vertical-align: top;'><?php echo $row->getDepartemen() ?></td>
+                <td style='vertical-align: top; text-align: center;'>
+                    <?php
+                        echo $row->getSisaLimit();
+                        echo ' (';
+                        if ($row->getParent() !== null) {
+                            if ($row->getParent()->isExpired() === false) {
+                                echo $row->getParent()->getSisaLimit();
+                            } else {
+                                echo '0';
+                            }
+                        } else {
+                            echo '0';
+                        }
+                        echo ')';
+                    ?>
+                </td>
+                <td style='vertical-align: top; text-align: center;'>
+                    <?php
+                        if (!$row->isExpired()) {
+                            echo $row->getTanggalKadaluarsa()->format('d/m/Y');
+                        } elseif ($row->getPerpanjanganCuti() !== null) {
+                            echo $row->getPerpanjanganCuti()->getTanggalKadaluarsa()->format('d/m/Y');
+                        } else {
+                            echo '-';
+                        }
+
+                        echo ' (';
+                        if ($row->getParent() !== null) {
+                            if (!$row->getParent()->isExpired()) {
+                                echo $row->getParent()->getTanggalKadaluarsa()->format('d/m/Y');
+                            } elseif ($row->getParent()->getPerpanjanganCuti() !== null) {
+                                echo $row->getParent()->getPerpanjanganCuti()->getTanggalKadaluarsa()->format('d/m/Y');
+                            } else {
+                                echo '-';
+                            }
+                        } else {
+                            echo '-';
+                        }
+                        echo ')';
+                    ?>
+                </td>
+                <td style='vertical-align: top; white-space: nowrap;'>
+                    <a href='<?php echo $this->routeManager->generateRoute(array(
+                        'action' => 'detail_master_cuti',
+                        'key' => $row->getId()
+                    )) ?>'>lihat detail</a>
+                </td>
+            </tr>
+            <?php endforeach;
+                else : ?>
+            <tr>
+                <td colspan='0' style='text-align: center;'>Data kosong</td>
+            </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+    <?php endif; ?>
+</form>

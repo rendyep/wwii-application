@@ -1,0 +1,102 @@
+<h3>Data Pelamar</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<hr />
+<form action='' method='post'>
+    <table border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>Tanggal Interview</td>
+                <td>
+                    <input type="text" id="tanggalAwal" name="tanggalAwal" value="<?php echo $params['tanggalAwal'] ?>" readonly="readonly" /> to
+                    <input type="text" id="tanggalAkhir" name="tanggalAkhir" value="<?php echo $params['tanggalAkhir'] ?>" readonly="readonly" />
+                    <div class="error-container">
+                        <?php echo isset($errorMessages['tanggal']) ? $errorMessages['tanggal'] : '' ?>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Posisi</td>
+                <td>
+                    <select name="posisi">
+                        <option value="">[semua]</option>
+                        <?php foreach ($departmentList as $department) : ?>
+                        <option value="<?php echo $department ?>" <?php echo $params['posisi'] == $department ? 'selected="selected"' : '' ?>>
+                            <?php echo $department ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>
+                    <select name="status" />
+                        <option value="">[semua]</option>
+                        <option value="interview" <?php echo $params['status'] == 'interview' ? 'selected="selected"' : '' ?>>Interview</option>
+                        <option value="diterima" <?php echo $params['status'] == 'diterima' ? 'selected="selected"' : '' ?>>Diterima</option>
+                        <option value="ditolak" <?php echo $params['status'] == 'ditolak' ? 'selected="selected"' : '' ?>>Ditolak</option>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type='reset' value='Reset'>
+    <input type='submit' name='btx' value='Proses'>
+    <?php if ($data !== null) : ?>
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Nama Lengkap</th>
+                <th>Nama Panggilan</th>
+                <th>Posisi</th>
+                <th>Pendidikan</th>
+                <th>Jurusan</th>
+                <th>Tanggal Interview</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (count($data) > 0) :
+                $number = 1;
+                foreach ($data as $row) : ?>
+            <tr>
+                <td style='vertical-align: top;'><?php echo $number++ ?></td>
+                <td style='vertical-align: top;'><?php echo $row->getNamaLengkap() ?></td>
+                <td style='vertical-align: top;'><?php echo $row->getNamaPanggilan() ?></td>
+                <td style='vertical-align: top;'><?php echo $row->getDetailPelamar()->getPosisi() ?></td>
+                <td style='vertical-align: top;'><?php echo $row->getPendidikan() ?></td>
+                <td style='vertical-align: top;'><?php echo $row->getJurusan() ?></td>
+                <td style='vertical-align: top; text-align: center;'><?php echo $row->getDetailPelamar()->getTanggalInterview()->format('d/m/Y') ?></td>
+                <td style='vertical-align: top;'><?php echo $row->getDetailPelamar()->getStatus() ?></td>
+                <td style='vertical-align: top; white-space: nowrap;'>
+                    <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'view_pelamar', 'key' => $row->getId())) ?>'>lihat detail</a> |
+                    <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'edit_pelamar', 'key' => $row->getId())) ?>'>revisi</a> |
+                    <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'delete_pelamar', 'key' => $row->getId())) ?>'>hapus</a>
+                </td>
+            </tr>
+            <?php endforeach;
+                else : ?>
+            <tr>
+                <td colspan='0' style='text-align: center;'>Data kosong</td>
+            </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+    <?php endif; ?>
+</form>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $("#tanggalAwal, #tanggalAkhir").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-55:-0'
+        });
+    });
+</script>

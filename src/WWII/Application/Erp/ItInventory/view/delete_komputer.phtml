@@ -1,0 +1,62 @@
+<h3>Report Komputer</h3>
+<?php if (!empty($errorMessages)) : ?>
+<ul>
+    <?php foreach ($errorMessages as $errorMessage) : ?>
+        <li><?php echo $errorMessage ?></li>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+<form method='post'>
+    <div>
+        Apakah anda yakin akan menghapus data ini?
+    </div>
+    <table class='detail' border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>Nomor Seri</td>
+                <td><?php echo $data->getNomorSeri() ?></td>
+            </tr>
+            <tr>
+                <td>IP Address</td>
+                <td><?php echo $data->getIp() ?></td>
+            </tr>
+            <tr>
+                <td>Mac Address</td>
+                <td><?php echo $data->getMac() ?></td>
+            </tr>
+            <tr>
+                <td>Sistem Operasi</td>
+                <td><?php echo $data->getOs() ?></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><?php echo $data->getEmail() ?></td>
+            </tr>
+            <tr>
+                <td>User</td>
+                <td><?php echo $data->getUSer() ?></td>
+            </tr>
+            <tr>
+                <td>User Account</td>
+                <td><?php echo $data->getUserAccount() ?></td>
+            </tr>
+            <tr>
+                <td>Lokasi</td>
+                <td><?php echo $data->getLokasi() ?></td>
+            </tr>
+            <tr>
+                <td>Tahun</td>
+                <td><?php echo $data->getTahun() ?></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type='submit' value='Cancel' name='btx'>
+    <input type='submit' value='Delete' name='btx'>
+</form>
+
+<style type='text/css'>
+    table.detail tbody tr td:first-child {
+        width: 150px;
+    }
+</style>

@@ -1,0 +1,38 @@
+<h3>Data Karyawan</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<form method='post'>
+    <div>
+        Apakah anda yakin akan menghapus data ini?
+    </div>
+    <table class='detail' border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>Nama Karyawan</td>
+                <td><?php echo $data->getNamaLengkap() ?></td>
+            </tr>
+            <tr>
+                <td>Jabatan</td>
+                <td>
+                    <?php echo $data->getDetailKaryawan()->getJabatan() ?>
+                </td>
+            </tr>
+            <tr>
+                <td>Departemen</td>
+                <td><?php echo $data->getDetailKaryawan()->getDepartemen() ?></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type='submit' name='btx' value='Batal' />
+    <input type='submit' name='btx' value='Hapus' />
+</form>
+
+<style type='text/css'>
+    table.detail tbody tr td:first-child {
+        width: 150px;
+    }
+</style>

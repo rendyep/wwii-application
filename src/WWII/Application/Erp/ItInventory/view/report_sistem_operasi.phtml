@@ -1,0 +1,70 @@
+<h3>Report Sistem Operasi</h3>
+<?php if (!empty($errorMessages)) : ?>
+<ul>
+    <?php foreach ($errorMessages as $errorMessage) : ?>
+        <li><?php echo $errorMessage ?></li>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+<form action='' method='post'>
+    <table border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>Nama Sistem Operasi</td>
+                <td><input type='text' size='30' name='nama' value='<?php echo $params['nama'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>Serial Number</td>
+                <td><input type='text' size='30' name='serial' value='<?php echo $params['serial'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>Versi</td>
+                <td><input type='text' size='30' name='versi' value='<?php echo $params['versi'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>Lisensi</td>
+                <td><input type='text' size='30' name='lisensi' value='<?php echo $params['lisensi'] ?>' /></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type='reset' value='Reset'>
+    <input type='submit' value='Proses' name='btx'>
+</form>
+
+<?php if ($data !== null) : ?>
+<table>
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Nama</th>
+            <th>Serial Number</th>
+            <th>Versi</th>
+            <th>Lisensi</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if(count($data) > 0) :
+            $number = 1;
+            foreach ($data as $row) : ?>
+        <tr>
+            <td><?php echo $number++ ?></td>
+            <td><?php echo $row->getNama() ?></td>
+            <td><?php echo $row->getSerial() ?></td>
+            <td><?php echo $row->getVersi() ?></td>
+            <td><?php echo $row->getLisensi() ?></td>
+            <td>
+                <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'edit_sistem_operasi', 'key' => $row->getId())) ?>'>revisi</a>
+                <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'delete_sistem_operasi', 'key' => $row->getId())) ?>'>hapus</a>
+            </td>
+        </tr>
+        <?php endforeach;
+            else : ?>
+        <tr>
+            <td colspan='0' style='text-align: center;'>Data kosong</td>
+        </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
+<?php endif; ?>

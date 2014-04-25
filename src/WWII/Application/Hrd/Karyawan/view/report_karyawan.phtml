@@ -1,0 +1,97 @@
+<h3>Data Karyawan</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<hr />
+<form action='' method='post'>
+    <table border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>NIK</td>
+                <td>
+                    <input type="text" class="medium" name="nik" value="<?php echo $params['nik'] ?>" />
+                </td>
+            </tr>
+            <tr>
+                <td>Departemen</td>
+                <td>
+                    <select name="departemen">
+                        <option value="">[semua]</option>
+                        <?php foreach ($departmentList as $department) : ?>
+                        <option value="<?php echo $department ?>" <?php echo $params['departemen'] == $department ? 'selected="selected"' : '' ?>>
+                            <?php echo $department ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>
+                    <select name="status" />
+                        <option value="">[semua]</option>
+                        <option value="kontrak" <?php echo $params['status'] == 'kontrak' ? 'selected="selected"' : '' ?>>Kontrak</option>
+                        <option value="tetap" <?php echo $params['status'] == 'tetap' ? 'selected="selected"' : '' ?>>Tetap</option>
+                        <option value="keluar" <?php echo $params['status'] == 'keluar' ? 'selected="selected"' : '' ?>>Keluar</option>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type='reset' value='Reset'>
+    <input type='submit' name='btx' value='Proses'>
+    <?php if ($data !== null) : ?>
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>NIK</th>
+                <th>Nama Lengkap</th>
+                <th>Nama Panggilan</th>
+                <th>Jabatan</th>
+                <th>Departemen</th>
+                <th>Status Kerja</th>
+                <th>Tanggal Masuk Kerja</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (count($data) > 0) :
+                $number = 1;
+                foreach ($data as $row) : ?>
+            <tr>
+                <td style='vertical-align: top;'><?php echo $number++ ?></td>
+                <td style='vertical-align: top;'><?php echo $row->getDetailKaryawan()->getNik() ?></td>
+                <td style='vertical-align: top;'><?php echo $row->getNamaLengkap() ?></td>
+                <td style='vertical-align: top;'><?php echo $row->getNamaPanggilan() ?></td>
+                <td style='vertical-align: top;'><?php echo $row->getDetailKaryawan()->getJabatan() ?></td>
+                <td style='vertical-align: top;'><?php echo $row->getDetailKaryawan()->getDepartemen() ?></td>
+                <td style='vertical-align: top;'><?php echo $row->getDetailKaryawan()->getStatus() ?></td>
+                <td style='vertical-align: top; text-align: center;'><?php echo $row->getDetailKaryawan()->getTanggalMasukKerja()->format('d/m/Y') ?></td>
+                <td style='vertical-align: top; white-space: nowrap;'>
+                    <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'view_karyawan', 'key' => $row->getId())) ?>'>lihat detail</a> |
+                    <a href='<?php echo $this->routeManager->generateRoute(array('action' =>  'edit_karyawan', 'key' => $row->getId())) ?>'>revisi</a> |
+                    <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'delete_karyawan', 'key' => $row->getId())) ?>'>hapus</a>
+                </td>
+            </tr>
+            <?php endforeach;
+                else : ?>
+            <tr>
+                <td colspan='0' style='text-align: center;'>Data kosong</td>
+            </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+    <?php endif; ?>
+</form>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $("#tanggalAwal, #tanggalAkhir").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-55:-0'
+        });
+    });
+</script>

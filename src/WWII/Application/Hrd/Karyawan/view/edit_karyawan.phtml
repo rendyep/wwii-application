@@ -1,0 +1,181 @@
+<h3>Data Karyawan</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<hr />
+<form action="" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <div class="fieldset-kiri required">NIK</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="nik" value="<?php echo $params['nik'] ?>" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['nik']) ? $errorMessages['nik'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">Nama Lengkap</div>
+        <div class="fieldset-kanan">
+            <input type="text" id="namaLengkap" class="medium" name="namaLengkap" value="<?php echo $params['namaLengkap'] ?>" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['namaLengkap']) ? $errorMessages['namaLengkap'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri">Nama Panggilan</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="namaPanggilan" value="<?php echo $params['namaPanggilan'] ?>" />
+        </div>
+        <div class="fieldset-kiri required">Jenis Kelamin</div>
+        <div class="fieldset-kanan">
+            <input type="radio" name="jenisKelamin" value="M" <?php echo empty($params['jenisKelamin']) || $params['jenisKelamin'] == 'M' ? 'checked="checked"' : '' ?> />Laki-laki&nbsp;
+            <input type="radio" name="jenisKelamin" value="F" <?php echo $params['jenisKelamin'] == 'F' ? 'checked="checked"' : '' ?> />Perempuan
+            <div class="error-container">
+                <?php echo isset($errorMessages['jenisKelamin']) ? $errorMessages['jenisKelamin'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">Tanggal Lahir</div>
+        <div class="fieldset-kanan">
+            <input type="text" id="tanggalLahir" class="medium" name="tanggalLahir" readonly="readonly" value="<?php echo $params['tanggalLahir'] ?>" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['tanggalLahir']) ? $errorMessages['tanggalLahir'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">Agama</div>
+        <div class="fieldset-kanan">
+            <input type="radio" name="agama" value="Islam" <?php echo empty($params['agama']) || $params['agama'] == 'Islam' ? 'checked="checked"' : '' ?> />Islam&nbsp;
+            <input type="radio" name="agama" value="Kristen" <?php echo $params['agama'] == 'Kristen' ? 'checked="checked"' : '' ?> />Kristen&nbsp;
+            <input type="radio" name="agama" value="Hindu" <?php echo $params['agama'] == 'Hindu' ? 'checked="checked"' : '' ?> />Hindu&nbsp;
+            <input type="radio" name="agama" value="Budha" <?php echo $params['agama'] == 'Budha' ? 'checked="checked"' : '' ?> />Budha
+        </div>
+        <div class="fieldset-kiri required">Status Perkawinan</div>
+        <div class="fieldset-kanan">
+            <input type="radio" name="statusPerkawinan" value="Lajang" <?php echo empty($params['statusPerkawinan']) || $params['statusPerkawinan'] == 'Lajang' ? 'checked="checked"' : '' ?> />Lajang&nbsp;
+            <input type="radio" name="statusPerkawinan" value="Menikah" <?php echo $params['statusPerkawinan'] == 'Menikah' ? 'checked="checked"' : '' ?> />Menikah&nbsp;
+            <input type="radio" name="statusPerkawinan" value="Cerai" <?php echo $params['statusPerkawinan'] == 'Cerai' ? 'checked="checked"' : '' ?> />Cerai&nbsp;
+            <input type="radio" name="statusPerkawinan" value="Janda" <?php echo $params['statusPerkawinan'] == 'Janda' ? 'checked="checked"' : '' ?> />Janda
+            <div class="error-container">
+                <?php echo isset($errorMessages['statusPerkawinan']) ? $errorMessages['statusPerkawinan'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">Pendidikan</div>
+        <div class="fieldset-kanan">
+            <select class="medium" name="pendidikan" />
+                <option value="">[pilih satu]</option>
+                <option value="SMA" <?php echo $params['pendidikan'] == 'SMA' ? 'selected="selected"' : '' ?>>SMA</option>
+                <option value="D1" <?php echo $params['pendidikan'] == 'D1' ? 'selected="selected"' : '' ?>>D1</option>
+                <option value="D2" <?php echo $params['pendidikan'] == 'D2' ? 'selected="selected"' : '' ?>>D2</option>
+                <option value="D3" <?php echo $params['pendidikan'] == 'D3' ? 'selected="selected"' : '' ?>>D3</option>
+                <option value="D4" <?php echo $params['pendidikan'] == 'D4' ? 'selected="selected"' : '' ?>>D4</option>
+                <option value="S1" <?php echo $params['pendidikan'] == 'S1' ? 'selected="selected"' : '' ?>>S1</option>
+                <option value="S2" <?php echo $params['pendidikan'] == 'S2' ? 'selected="selected"' : '' ?>>S2</option>
+                <option value="S3" <?php echo $params['pendidikan'] == 'S3' ? 'selected="selected"' : '' ?>>S3</option>
+            </select>
+            <div class="error-container">
+                <?php echo isset($errorMessages['pendidikan']) ? $errorMessages['pendidikan'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri">Jurusan</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="jurusan" value="<?php echo $params['jurusan'] ?>" />
+        </div>
+        <div class="fieldset-kiri required">Alamat</div>
+        <div class="fieldset-kanan">
+            <textarea class="medium" name="alamat" rows="5"><?php echo $params['alamat']; ?></textarea>
+            <div class="error-container">
+                <?php echo isset($errorMessages['alamat']) ? $errorMessages['alamat'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">Kota</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="kota" value="<?php echo $params['kota'] ?>" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['kota']) ? $errorMessages['kota'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri">Kode Pos</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="kodePos" value="<?php echo $params['kodePos'] ?>" />
+        </div>
+        <div class="fieldset-kiri">Telepon</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="telepon" value="<?php echo $params['telepon'] ?>" />
+        </div>
+        <div class="fieldset-kiri">Hand Phone 1</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="ponsel" value="<?php echo $params['ponsel'] ?>" />
+        </div>
+        <div class="fieldset-kiri">Hand Phone 2</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="ponselLain" value="<?php echo $params['ponselLain'] ?>" />
+        </div>
+        <div class="fieldset-kiri">Email</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="email" value="<?php echo $params['email'] ?>" />
+        </div>
+        <div class="fieldset-kiri">NPWP</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="npwp" value="<?php echo $params['npwp'] ?>" />
+        </div>
+        <hr />
+        <div class="fieldset-kiri"></div>
+        <div class="fieldset-button">
+            <input type="reset" value="Reset" />&nbsp;
+            <input type="submit" name="btx" value="Batal" />
+            <input type="submit" name="btx" value="Simpan" />
+        </div>
+    </fieldset>
+</form>
+
+<style type="text/css">
+    .fieldset-kiri {
+        width: 150px;
+        float: left;
+        margin-bottom: 5px;
+        clear: left;
+        vertical-align: top;
+    }
+
+    .fieldset-kanan {
+        margin-left: 150px;
+        margin-bottom: 5px;
+        vertical-align: top;
+    }
+
+    .fieldset-kanan:before {
+        content: ': ';
+        vertical-align: top;
+    }
+
+    .fieldset-empty:before {
+        content: ' ';
+    }
+
+    .fieldset-button {
+        margin-left: 157px;
+        margin-bottom: 5px;
+    }
+
+    .required:after {
+        content: ' *';
+        color: red;
+    }
+
+    .error-head {
+        color: red;
+        font-weight: bold;
+    }
+
+    .error-container {
+        color: red;
+        margin-left: 7px;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#tanggalLahir").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-55:-0'
+        });
+    });
+</script>

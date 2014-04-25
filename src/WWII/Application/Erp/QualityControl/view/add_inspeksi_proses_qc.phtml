@@ -1,0 +1,197 @@
+<h3>Report Inspeksi Proses Quality Control</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<hr />
+<form action="" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <div class="fieldset-kiri required">Tanggal</div>
+        <div class="fieldset-kanan">
+            <input type="text" id="tanggal" class="medium" name="tanggal" value="<?php echo $params['tanggal'] ?>" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['tanggal']) ? $errorMessages['tanggal'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">Group</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="group" value="<?php echo $params['group'] ?>" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['group']) ? $errorMessages['group'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">Departemen</div>
+        <div class="fieldset-kanan">
+            <select class="medium" name="departemen">
+                <option value="">[pilih satu]</option>
+                <?php foreach ($departmentList as $department) : ?>
+                <option value="<?php echo $department ?>" <?php echo $params['departemen'] == $department ? 'selected="selected"' : '' ?>>
+                    <?php echo $department ?>
+                </option>
+                <?php endforeach; ?>
+            </select>
+            <div class="error-container">
+                <?php echo isset($errorMessages['departemen']) ? $errorMessages['departemen'] : '' ?>
+            </div>
+        </div>
+        <fieldset class="fieldset-border">
+            <legend>Produk Item</legend>
+            <div class="fieldset-kiri required">Kode Produk</div>
+                <div class="fieldset-kanan">
+                    <input type="text" class="medium" name="kodeProduk" value="<?php echo $params['kodeProduk'] ?>" />
+                    <div class="error-container">
+                        <?php echo isset($errorMessages['kodeProduk']) ? $errorMessages['kodeProduk'] : '' ?>
+                    </div>
+                </div>
+        </fieldset>
+        <div class="fieldset-kiri"></div>
+        <div class="fieldset-button">
+            <input type="submit" name="btx" value="Add" />
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th rowspan="2"><div>Waktu</div></div></th>
+                    <th rowspan="2"><div>Kode Produk</div></div></th>
+                    <th rowspan="2"><div>Nama Produk</div></div></th>
+                    <th rowspan="2"><div>Jumlah Inspeksi</div></div></th>
+                    <th colspan="16">Konten Kondisi Buruk</th>
+                    <th rowspan="2"><div class="vertical-text"><div class="vertical-text-inner">Jumlah Kualitas Buruk</div></div></th>
+                </tr>
+                <tr>
+                    <th><div class="vertical-text"><div class="vertical-text-inner">Tergores</div></div></th>
+                    <th><div class="vertical-text"><div class="vertical-text-inner">Terpolusi</div></div></th>
+                    <th><div class="vertical-text"><div class="vertical-text-inner">Salah Ukuran</div></div></th>
+                    <th><div class="vertical-text"><div class="vertical-text-inner">Kelebihan Lem</div></div></th>
+                    <th><div class="vertical-text"><div class="vertical-text-inner">Kelebihan Cat</div></div></th>
+                    <th><div class="vertical-text"><div class="vertical-text-inner">Warna</div></div></th>
+                    <th><div class="vertical-text"><div class="vertical-text-inner">Bergelembung</div></div></th>
+                    <th><div class="vertical-text"><div class="vertical-text-inner">Struktur Longgar</div></div></th>
+                    <th><div class="vertical-text"><div class="vertical-text-inner">Cover Terpotong</div></div></th>
+                    <th><div class="vertical-text"><div class="vertical-text-inner">Arah Horizontal</div></div></th>
+                    <th><div class="vertical-text"><div class="vertical-text-inner">Sanding Buruk</div></div></th>
+                    <th><div class="vertical-text"><div class="vertical-text-inner">Paku Keluar</div></div></th>
+                    <th><div class="vertical-text"><div class="vertical-text-inner">Lem Degumming</div></div></th>
+                    <th><div class="vertical-text"><div class="vertical-text-inner">Gap</div></div></th>
+                    <th><div class="vertical-text"><div class="vertical-text-inner">Lainnya</div></div></th>
+                    <th><div class="vertical-text"><div class="vertical-text-inner">Jumlah Kekurangan</div></div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>10:00</td>
+                    <td>kode-produk</td>
+                    <td>Nama Produk</td>
+                    <td><?php echo number_format(1600, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                    <td><?php echo number_format(100, 0, '.', ',') ?></td>
+                </tr>
+            </tbody>
+        </table>
+        <hr />
+        <div class="fieldset-kiri"></div>
+        <div class="fieldset-button">
+            <input type="reset" value="Reset" />&nbsp;
+            <input type="submit" name="btx" value="Simpan" />
+        </div>
+    </fieldset>
+</form>
+
+<style type="text/css">
+    .fieldset-kiri {
+        width: 150px;
+        float: left;
+        margin-bottom: 5px;
+        clear: left;
+        vertical-align: top;
+    }
+
+    .fieldset-kanan {
+        margin-left: 150px;
+        margin-bottom: 5px;
+        vertical-align: top;
+    }
+
+    .fieldset-kanan:before {
+        content: ': ';
+        vertical-align: top;
+    }
+
+    .fieldset-empty:before {
+        content: ' ';
+    }
+
+    .fieldset-button {
+        margin-left: 157px;
+        margin-bottom: 5px;
+    }
+
+    .required:after {
+        content: ' *';
+        color: red;
+    }
+
+    .error-head {
+        color: red;
+        font-weight: bold;
+    }
+
+    .error-container {
+        color: red;
+        margin-left: 7px;
+    }
+
+    fieldset {
+        margin: 10px 0 10px 0;
+    }
+
+    .fieldset-border {
+        border: 1px solid black;
+    }
+
+    .vertical-text {
+        display: inline-block;
+        overflow: hidden;
+        width: 20px;
+    }
+
+    .vertical-text-inner {
+        display: inline-block;
+        white-space: nowrap;
+        line-height: 1.5;
+        transform: translate(0, 100%) rotate(-90deg);
+        transform-origin: 0 0;
+        height: 120px;
+        bottom: 10px;
+    }
+
+    .vertical-text-inner:after {
+        display: block;
+        margin: 1.5em 0 100%;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#tanggal").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-55:-0'
+        });
+    });
+</script>

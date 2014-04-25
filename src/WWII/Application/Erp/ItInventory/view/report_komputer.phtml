@@ -1,0 +1,75 @@
+<h3>Report Komputer</h3>
+<?php if (!empty($errorMessages)) : ?>
+<ul>
+    <?php foreach ($errorMessages as $errorMessage) : ?>
+        <li><?php echo $errorMessage ?></li>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+<form action='' method='post'>
+    <table border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>Nomor Seri</td>
+                <td><input type='text' size='30' name='nomorSeri' value='<?php echo $params['nomorSeri'] ?>'></td>
+            </tr>
+            <tr>
+                <td>Sistem Operasi</td>
+                <td><input type='text' size='30' name='sistemOperasi' value='<?php echo $params['sistemOperasi'] ?>'></td>
+            </tr>
+            <tr>
+                <td>Lokasi</td>
+                <td><input type='text' size='30' name='lokasi' value='<?php echo $params['lokasi'] ?>'></td>
+            </tr>
+            <tr>
+                <td>Tahun</td>
+                <td><input type='text' size='30' name='tahun' value='<?php echo $params['tahun'] ?>'></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type='reset' value='Reset'>
+    <input type='submit' value='Proses' name='btx'>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Nomor Seri</th>
+            <th>IP Address</th>
+            <th>Sistem Operasi</th>
+            <th>Email</th>
+            <th>User Account</th>
+            <th>Lokasi</th>
+            <th>Tahun</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (count($data) > 0) :
+            $number = 1;
+            foreach ($data as $row) : ?>
+        <tr>
+            <td><?php echo $number++ ?></td>
+            <td><?php echo $row->getNomorSeri() ?></td>
+            <td><?php echo $row->getIp() ?></td>
+            <td><?php echo $row->getOs() ?></td>
+            <td><?php echo $row->getEmail() ?></td>
+            <td><?php echo $row->getUserAccount() ?></td>
+            <td><?php echo $row->getLokasi() ?></td>
+            <td><?php echo $row->getTahun() ?></td>
+            <td>
+                <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'view_komputer', 'key' => $row->getId())) ?>'>detail</a>
+                <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'edit_komputer', 'key' => $row->getId())) ?>'>revisi</a>
+                <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'delete_komputer', 'key' => $row->getId())) ?>'>hapus</a>
+            </td>
+        </tr>
+        <?php endforeach;
+            else : ?>
+        <tr>
+            <td colspan='0' style='text-align: center;'>Data kosong</td>
+        </tr>
+        <?php endif; ?>
+    </tbody>
+</table>

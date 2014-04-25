@@ -1,0 +1,64 @@
+<h3>Report Finding</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<hr />
+<form action="" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <div class="fieldset-kiri">Tanggal Kejadian</div>
+        <div class="fieldset-kanan"><?php echo $params['tanggalKejadian'] ?></div>
+        <div class="fieldset-kiri">Kejadian</div>
+        <div class="fieldset-kanan"><?php echo $params['kejadian'] ?></div>
+        <div class="fieldset-kiri">Tindakan</div>
+        <div class="fieldset-kanan"><?php echo $params['tindakan'] ?></div>
+    </fieldset>
+    <hr />
+    <input type='submit' name="btx" value='Kembali'>
+</form>
+<?php if (count($params['photos']) > 0) : ?>
+<div>&nbsp;</div>
+<div id='photosContainer'>
+    <?php foreach ($params['photos'] as $photo) : ?>
+    <a href='./images/<?php
+        echo $this->routeManager->getModule()
+            . '/' . $this->routeManager->getController() . '/' . $photo['namaFile']
+    ?>' target='_blank'>
+        <img src='./images/<?php
+            echo $this->routeManager->getModule()
+                . '/' . $this->routeManager->getController() . '/' . $photo['namaFile']
+        ?>' width='200px' />
+    </a>
+    <?php endforeach; ?>
+</div>
+<?php endif; ?>
+
+<style type="text/css">
+    .fieldset-kiri {
+        width: 140px;
+        float: left;
+        margin-bottom: 5px;
+        clear: left;
+        vertical-align: top;
+    }
+
+    .fieldset-kanan {
+        margin-left: 140px;
+        margin-bottom: 5px;
+        vertical-align: top;
+    }
+
+    .fieldset-kanan:before {
+        content: ': ';
+        vertical-align: top;
+    }
+
+    .fieldset-button {
+        margin-left: 140px;
+        margin-bottom: 5px;
+    }
+</style>
+
+<script type="text/javascript">
+</script>

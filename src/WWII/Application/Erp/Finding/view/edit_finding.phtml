@@ -1,0 +1,37 @@
+<h3>Report Finding</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<hr />
+<form action='' method='post'>
+    <table border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>Tanggal Kejadian</td>
+                <td><input type='text' id='tanggalKejadian' name='tanggalKejadian' value='<?php echo $params['tanggalKejadian'] ?>' /></td>
+            </tr>
+            <tr>
+                <td>Kejadian</td>
+                <td><textarea rows='10' cols='40' id='kejadian' name='kejadian'><?php echo $params['kejadian'] ?></textarea></td>
+            </tr>
+            <tr>
+                <td>Tindakan</td>
+                <td><textarea rows='10' cols='40' id='tidakan' name='tindakan'><?php echo $params['tindakan'] ?></textarea></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type='submit' value='Batal' name='btx' />
+    <input type='submit' value='Simpan' name='btx' />
+</form>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $("#tanggalKejadian").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-55:-0'
+        });
+    });
+</script>

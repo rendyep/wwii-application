@@ -1,0 +1,122 @@
+<h3>Data Pelamar</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<hr />
+<form action="" method="post" enctype="multipart/form-data">
+    <fieldset>
+    <?php if ((strtoupper($params['btx']) == 'PROSES' && empty($errorMessages)) || strtoupper($params['btx']) == 'SIMPAN') : ?>
+        <div class="fieldset-kiri">Nama Lengkap</div>
+        <div class="fieldset-kanan">
+            <?php echo $params['namaLengkap'] ?>
+            <input type="hidden" name="namaLengkap" value="<?php echo $params['namaLengkap'] ?>" readonly="readonly" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['namaLengkap']) ? $errorMessages['namaLengkap'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">Posisi</div>
+        <div class="fieldset-kanan">
+            <select class="medium" name="posisi" />
+                <option value="">[pilih satu]</option>
+                <?php foreach ($departmentList as $department) : ?>
+                <option value="<?php echo $department ?>" <?php echo $params['posisi'] == $department ? 'selected="selected"' : '' ?>>
+                    <?php echo $department ?>
+                </option>
+                <?php endforeach; ?>
+            </select>
+            <div class="error-container">
+                <?php echo isset($errorMessages['posisi']) ? $errorMessages['posisi'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">Status</div>
+        <div class="fieldset-kanan">
+            <select id="status" class="medium" name="status" />
+                <option value="">[pilih satu]</option>
+                <option value="interview" <?php echo $params['status'] == 'interview' ? 'selected="selected"' : '' ?>>Interview</option>
+                <option value="diterima" <?php echo $params['status'] == 'diterima' ? 'selected="selected"' : '' ?>>Diterima</option>
+                <option value="ditolak" <?php echo $params['status'] == 'ditolak' ? 'selected="selected"' : '' ?>>Ditolak</option>
+            </select>
+            <div class="error-container">
+                <?php echo isset($errorMessages['status']) ? $errorMessages['status'] : '' ?>
+            </div>
+        </div>
+        <div id="tanggalInterviewContainer">
+            <div class="fieldset-kiri required">Tanggal Interview</div>
+            <div class="fieldset-kanan">
+                <input id="tanggalInterview" type="text" class="medium" name="tanggalInterview" value="<?php echo $params['tanggalInterview'] ?>" />
+                <div class="error-container">
+                    <?php echo isset($errorMessages['tanggalInterview']) ? $errorMessages['tanggalInterview'] : '' ?>
+                </div>
+            </div>
+        </div>
+        <div id="tanggalRencanaMasukKerjaContainer">
+            <div class="fieldset-kiri required">Tanggal Rencana Masuk Kerja</div>
+            <div class="fieldset-kanan">
+                <input id="tanggalRencanaMasukKerja" type="text" class="medium" name="tanggalRencanaMasukKerja" value="<?php echo $params['tanggalRencanaMasukKerja'] ?>" />
+                <div class="error-container">
+                    <?php echo isset($errorMessages['tanggalRencanaMasukKerja']) ? $errorMessages['tanggalRencanaMasukKerja'] : '' ?>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="fieldset-kiri"></div>
+        <div class="fieldset-button">
+            <input id="reset" type="reset" value="Reset" />&nbsp;
+            <input type="submit" name="btx" value="Simpan" />
+        </div>
+    <?php else : ?>
+        <div class="fieldset-kiri required">Nama Lengkap</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="namaLengkap" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['namaLengkap']) ? $errorMessages['namaLengkap'] : '' ?>
+            </div>
+        </div>
+        <hr />
+        <div class="fieldset-kiri"></div>
+        <div class="fieldset-button">
+            <input type="submit" name="btx" value="Batal" />
+            <input type="submit" name="btx" value="Proses" />
+        </div>
+    <?php endif; ?>
+    </fieldset>
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#tanggalInterview, #tanggalRencanaMasukKerja").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-55:-0'
+        });
+
+        updateDateDetailByStatus();
+
+        $("#status").change(function(){
+            updateDateDetailByStatus();
+        });
+    });
+
+    function updateDateDetailByStatus()
+    {
+        switch ($("#status").val()) {
+            case 'interview':
+                $("#tanggalInterviewContainer").show();
+                $("#tanggalRencanaMasukKerjaContainer").hide();
+                break;
+            case 'diterima':
+                $("#tanggalInterviewContainer").hide();
+                $("#tanggalRencanaMasukKerjaContainer").show();
+                break;
+            case 'ditolak':
+                $("#tanggalInterviewContainer").hide();
+                $("#tanggalRencanaMasukKerjaContainer").hide();
+                break;
+            default:
+                $("#tanggalInterviewContainer").show();
+                $("#tanggalRencanaMasukKerjaContainer").hide();
+            break;
+        }
+    }
+</script>

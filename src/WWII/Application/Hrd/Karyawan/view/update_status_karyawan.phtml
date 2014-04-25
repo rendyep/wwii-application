@@ -1,0 +1,218 @@
+<h3>Data Karyawan</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<hr />
+<form action="" method="post" enctype="multipart/form-data">
+    <fieldset>
+    <?php if ((strtoupper($params['btx']) == 'PROSES' && empty($errorMessages)) || strtoupper($params['btx']) == 'SIMPAN') : ?>
+        <div class="fieldset-kiri">NIK</div>
+        <div class="fieldset-kanan">
+            <?php echo $params['nik'] ?>
+            <input type="hidden" name="nik" value="<?php echo $params['nik'] ?>" readonly="readonly" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['nik']) ? $errorMessages['nik'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri">Nama Lengkap</div>
+        <div class="fieldset-kanan">
+            <?php echo $params['namaLengkap'] ?>
+            <input type="hidden" name="namaLengkap" value="<?php echo $params['namaLengkap'] ?>" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['namaLengkap']) ? $errorMessages['namaLengkap'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">Jabatan</div>
+        <div class="fieldset-kanan">
+            <select class="medium" name="jabatan" />
+                <option value="">[pilih satu]</option>
+                <option value="Staff" <?php echo $params['jabatan'] == 'Staff' ? 'selected="selected"' : '' ?>>Staff</option>
+                <option value="A" <?php echo $params['jabatan'] == 'Operator' ? 'selected="selected"' : '' ?>>Operator</option>
+                <option value="B" <?php echo $params['jabatan'] == 'Workman' ? 'selected="selected"' : '' ?>>Workman</option>
+            </select>
+            <div class="error-container">
+                <?php echo isset($errorMessages['jabatan']) ? $errorMessages['jabatan'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">Departemen</div>
+        <div class="fieldset-kanan">
+            <select class="medium" name="departemen">
+                <option value="">[pilih satu]</option>
+                <?php foreach ($departmentList as $department) : ?>
+                <option value="<?php echo $department ?>" <?php echo $params['departemen'] == $department ? 'selected="selected"' : '' ?>>
+                    <?php echo $department ?>
+                </option>
+                <?php endforeach; ?>
+            </select>
+            <div class="error-container">
+                <?php echo isset($errorMessages['departemen']) ? $errorMessages['departemen'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">Status</div>
+        <div class="fieldset-kanan">
+            <select id="status" class="medium" name="status" />
+                <option value="">[pilih satu]</option>
+                <option value="kontrak" <?php echo $params['status'] == 'kontrak' ? 'selected="selected"' : '' ?>>Kontrak</option>
+                <option value="tetap" <?php echo $params['status'] == 'tetap' ? 'selected="selected"' : '' ?>>Tetap</option>
+                <option value="keluar" <?php echo $params['status'] == 'keluar' ? 'selected="selected"' : '' ?>>Keluar</option>
+            </select>
+            <div class="error-container">
+                <?php echo isset($errorMessages['jabatan']) ? $errorMessages['jabatan'] : '' ?>
+            </div>
+        </div>
+        <div id="tanggalAwalKontrakKerjaContainer">
+            <div class="fieldset-kiri required">Tanggal Awal Kontrak Kerja</div>
+            <div class="fieldset-kanan">
+                <input type="text" id="tanggalAwalKontrakKerja" class="medium" name="tanggalAwalKontrakKerja" readonly="readonly" value="<?php echo $params['tanggalAwalKontrakKerja'] ?>" />
+                <div class="error-container">
+                    <?php echo isset($errorMessages['tanggalAwalKontrakKerja']) ? $errorMessages['tanggalAwalKontrakKerja'] : '' ?>
+                </div>
+            </div>
+        </div>
+        <div id="tanggalAkhirKontrakKerjaContainer">
+            <div class="fieldset-kiri required">Tanggal Akhir Kontrak Kerja</div>
+            <div class="fieldset-kanan">
+                <input type="text" id="tanggalAkhirKontrakKerja" class="medium" name="tanggalAkhirKontrakKerja" readonly="readonly" value="<?php echo $params['tanggalAkhirKontrakKerja'] ?>" />
+                <div class="error-container">
+                    <?php echo isset($errorMessages['tanggalAkhirKontrakKerja']) ? $errorMessages['tanggalAkhirKontrakKerja'] : '' ?>
+                </div>
+            </div>
+        </div>
+        <div id="tanggalMasukKerjaContainer">
+            <div class="fieldset-kiri required">Tanggal Masuk Kerja</div>
+            <div class="fieldset-kanan">
+                <input type="text" id="tanggalMasukKerja" class="medium" name="tanggalMasukKerja" readonly="readonly" value="<?php echo $params['tanggalMasukKerja'] ?>" />
+                <div class="error-container">
+                    <?php echo isset($errorMessages['tanggalMasukKerja']) ? $errorMessages['tanggalMasukKerja'] : '' ?>
+                </div>
+            </div>
+        </div>
+        <div id="tanggalKeluarKerjaContainer">
+            <div class="fieldset-kiri required">Tanggal Keluar Kerja</div>
+            <div class="fieldset-kanan">
+                <input type="text" id="tanggalKeluarKerja" class="medium" name="tanggalKeluarKerja" readonly="readonly" value="<?php echo $params['tanggalKeluarKerja'] ?>" />
+                <div class="error-container">
+                    <?php echo isset($errorMessages['tanggalKeluarKerja']) ? $errorMessages['tanggalKeluarKerja'] : '' ?>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="fieldset-kiri"></div>
+        <div class="fieldset-button">
+            <input id="reset" type="reset" value="Reset" />&nbsp;
+            <input type="submit" name="btx" value="Simpan" />
+        </div>
+    <?php else : ?>
+        <div class="fieldset-kiri required">NIK</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="nik" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['nik']) ? $errorMessages['nik'] : '' ?>
+            </div>
+        </div>
+        <hr />
+        <div class="fieldset-kiri"></div>
+        <div class="fieldset-button">
+            <input type="submit" name="btx" value="Batal" />
+            <input type="submit" name="btx" value="Proses" />
+        </div>
+    <?php endif; ?>
+    </fieldset>
+</form>
+
+<style type="text/css">
+    .fieldset-kiri {
+        width: 150px;
+        float: left;
+        margin-bottom: 5px;
+        clear: left;
+        vertical-align: top;
+    }
+
+    .fieldset-kanan {
+        margin-left: 150px;
+        margin-bottom: 5px;
+        vertical-align: top;
+    }
+
+    .fieldset-kanan:before {
+        content: ': ';
+        vertical-align: top;
+    }
+
+    .fieldset-empty:before {
+        content: ' ';
+    }
+
+    .fieldset-button {
+        margin-left: 157px;
+        margin-bottom: 5px;
+    }
+
+    .required:after {
+        content: ' *';
+        color: red;
+    }
+
+    .error-head {
+        color: red;
+        font-weight: bold;
+    }
+
+    .error-container {
+        color: red;
+        margin-left: 7px;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#tanggalAwalKontrakKerja, #tanggalAkhirKontrakKerja, #tanggalMasukKerja, #tanggalKeluarKerja").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-55:-0'
+        });
+
+        $("#tanggalAwalKontrakKerja").change(function(){
+            $("#tanggalMasukKerja").val($("#tanggalAwalKontrakKerja").val());
+        });
+
+        toggleDetailByStatus();
+
+        $("#status").change(function(){
+            toggleDetailByStatus();
+        });
+
+        $("#reset").click(function(){
+            setTimeout(function(){
+                toggleDetailByStatus();
+            }, 1);
+        });
+    });
+
+    function toggleDetailByStatus()
+    {
+        switch ($("#status").val()) {
+            case 'kontrak':
+                $("#tanggalAwalKontrakKerjaContainer").show();
+            case 'tetap':
+                $("#tanggalAkhirKontrakKerjaContainer").show();
+                $("#tanggalMasukKerjaContainer").show();
+                $("#tanggalKeluarKerjaContainer").hide();
+                break;
+            case 'keluar':
+                $("#tanggalAwalKontrakKerjaContainer").hide();
+                $("#tanggalAkhirKontrakKerjaContainer").hide();
+                $("#tanggalMasukKerjaContainer").hide();
+                $("#tanggalKeluarKerjaContainer").show();
+                break;
+            default:
+                $("#tanggalAwalKontrakKerjaContainer").hide();
+                $("#tanggalAkhirKontrakKerjaContainer").hide();
+                $("#tanggalMasukKerjaContainer").hide();
+                $("#tanggalKeluarKerjaContainer").hide();
+                break;
+        }
+    }
+</script>

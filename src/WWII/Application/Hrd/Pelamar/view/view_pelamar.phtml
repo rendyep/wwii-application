@@ -1,0 +1,115 @@
+<h3>Data Pelamar</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+
+    $imagePath = './images/'
+        . $this->routeManager->getModule() . '/'
+        . $this->routeManager->getController() . '/';
+
+    $filePath = './files/'
+            . $this->routeManager->getModule() . '/'
+            . $this->routeManager->getController() . '/';
+?>
+<hr />
+<form action="" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <div class="fieldset-kiri">Nama Lengkap</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getNamaLengkap() ?></div>
+        <div class="fieldset-kiri">Nama Panggilan</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getNamaPanggilan() ?></div>
+        <div class="fieldset-kiri">Jenis Kelamin</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getJenisKelamin() ?></div>
+        <div class="fieldset-kiri">Tanggal Lahir</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getTanggalLahir()->format('d/M/Y') ?></div>
+        <div class="fieldset-kiri">Agama</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getAgama() ?></div>
+        <div class="fieldset-kiri">Status Perkawinan</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getStatusPerkawinan() ?></div>
+        <div class="fieldset-kiri">Pendidikan</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getPendidikan() ?></div>
+        <div class="fieldset-kiri">Jurusan</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getJurusan() ?></div>
+        <div class="fieldset-kiri">Alamat</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getAlamat() ?></div>
+        <div class="fieldset-kiri">Kota</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getKota() ?></div>
+        <div class="fieldset-kiri">Kode Pos</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getKodePos() ?></div>
+        <div class="fieldset-kiri">Telepon</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getTelepon() ?></div>
+        <div class="fieldset-kiri">Hand Phone 1</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getPonsel() ?></div>
+        <div class="fieldset-kiri">Hand Phone 2</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getPonselLain() ?></div>
+        <div class="fieldset-kiri">Email</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getEmail() ?></div>
+        <div class="fieldset-kiri">NPWP</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getNpwp() ?></div>
+        <div class="fieldset-kiri">Posisi</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getDetailPelamar()->getPosisi() ?></div>
+        <div class="fieldset-kiri">Status</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getDetailPelamar()->getStatus() ?></div>
+        <div class="fieldset-kiri">Tanggal Interview</div>
+        <div class="fieldset-kanan"><?php echo $pelamar->getDetailPelamar()->gettanggalInterview()->format('d/M/Y') ?></div>
+        <div class="fieldset-kiri">Foto</div>
+        <div class="fieldset-kanan">
+        <?php if ($pelamar->getphoto() != null) : ?>
+            <a href="<?php echo $imagePath . $pelamar->getphoto() ?>">
+                <img src="<?php echo $imagePath . $pelamar->getphoto() ?>" width="100px" />
+            </a>
+        <?php endif; ?>
+        </div>
+        <div class="fieldset-kiri">Files</div>
+        <div class="fieldset-kanan">
+        <?php if (count($pelamar->getfilePelamar() > 0)) : ?>
+            <?php foreach ($pelamar->getfilePelamar() as $file) : ?>
+                <a href="<?php echo $filePath . $file->getNamaFile() ?>">
+                    <?php echo $file->getNamaFile() ?>
+                </a>
+                <?php
+                    end($pelamar->getfilePelamar());
+                    if ($file !== end($pelamar->getfilePelamar())) {
+                        echo '<br />';
+                    }
+                ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        </div>
+        <hr />
+        <div class="fieldset-kiri"></div>
+        <div class="fieldset-button">
+            <input type="submit" name="btx" value="Kembali" />
+        </div>
+    </fieldset>
+</form>
+
+<style type="text/css">
+    .fieldset-kiri {
+        width: 140px;
+        float: left;
+        margin-bottom: 5px;
+        clear: left;
+        vertical-align: top;
+    }
+
+    .fieldset-kanan {
+        margin-left: 140px;
+        margin-bottom: 5px;
+        vertical-align: top;
+    }
+
+    .fieldset-kanan:before {
+        content: ': ';
+        vertical-align: top;
+    }
+
+    .fieldset-button {
+        margin-left: 140px;
+        margin-bottom: 5px;
+    }
+</style>
+
+<script type="text/javascript">
+</script>

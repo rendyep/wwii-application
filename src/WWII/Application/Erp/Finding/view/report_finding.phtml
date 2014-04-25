@@ -1,0 +1,146 @@
+<h3>Report Finding</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<hr />
+<form action='' method='post'>
+    <table border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>Pilih Jenis Laporan</td>
+                <td>
+                    <input type="radio" value="date" name="range"<?php echo $params['range'] == 'date' ? 'checked="checked"' : ' /' ?>>By Date
+                    <input type="radio" value="month" name="range"<?php echo $params['range'] == 'month' ? 'checked="checked"' : ' /' ?>>By Month
+                </td>
+            </tr>
+            <tr>
+                <td>Filter</td>
+                <td>
+                    <div id='filterDateContainer'>
+                        <input type="text" id="tanggal" name="tanggal" value="<?php echo $params['tanggal'] ?>" />
+                    </div>
+                    <div id='filterMonthContainer'>
+                        <select id="bulan" name="bulan" class="small">
+                            <option value="">Pilih Bulan</option>
+                            <option value="01"<?php echo $params['bulan'] == '01' ? 'selected="selected"' : '' ?>>Januari</option>
+                            <option value="02"<?php echo $params['bulan'] == '02' ? 'selected="selected"' : '' ?>>Februari</option>
+                            <option value="03"<?php echo $params['bulan'] == '03' ? 'selected="selected"' : '' ?>>Maret</option>
+                            <option value="04"<?php echo $params['bulan'] == '04' ? 'selected="selected"' : '' ?>>april</option>
+                            <option value="05"<?php echo $params['bulan'] == '05' ? 'selected="selected"' : '' ?>>Mei</option>
+                            <option value="06"<?php echo $params['bulan'] == '06' ? 'selected="selected"' : '' ?>>Juni</option>
+                            <option value="07"<?php echo $params['bulan'] == '07' ? 'selected="selected"' : '' ?>>Juli</option>
+                            <option value="08"<?php echo $params['bulan'] == '08' ? 'selected="selected"' : '' ?>>Agustus</option>
+                            <option value="09"<?php echo $params['bulan'] == '09' ? 'selected="selected"' : '' ?>>September</option>
+                            <option value="10"<?php echo $params['bulan'] == '10' ? 'selected="selected"' : '' ?>>Oktober</option>
+                            <option value="11"<?php echo $params['bulan'] == '11' ? 'selected="selected"' : '' ?>>November</option>
+                            <option value="12"<?php echo $params['bulan'] == '12' ? 'selected="selected"' : '' ?>>Desember</option>
+                        </select>
+                        <select class="small" id="tahun" name="tahun">
+                            <option value="">Pilih Tahun</option>
+                            <option value="2011"<?php echo $params['tahun'] == '2011' ? 'selected="selected"' : '' ?>>2011</option>
+                            <option value="2012"<?php echo $params['tahun'] == '2012' ? 'selected="selected"' : '' ?>>2012</option>
+                            <option value="2013"<?php echo $params['tahun'] == '2013' ? 'selected="selected"' : '' ?>>2013</option>
+                            <option value="2014"<?php echo $params['tahun'] == '2014' ? 'selected="selected"' : '' ?>>2014</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type='reset' value='Reset' />
+    <input type='submit' value='Proses' name='btx' />
+    <?php if ($data !== null) : ?>
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Tanggal</th>
+                <th>Kejadian</th>
+                <th>Tindakan</th>
+                <th>Pelaksana</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (count($data) > 0) :
+                $number = 1;
+                foreach ($data as $row) : ?>
+            <tr>
+                <td style='vertical-align: top;'><?php echo $number++ ?></td>
+                <td style='vertical-align: top;'><?php echo $row->getTanggal()->format('d-M-Y') ?></td>
+                <td style='vertical-align: top;'><?php echo nl2br($row->getKejadian()) ?></td>
+                <td style='vertical-align: top;'><?php echo nl2br($row->getTindakan()) ?></td>
+                <td style='vertical-align: top;'><?php echo nl2br($row->getPelaksana()) ?></td>
+                <td style='vertical-align: top; white-space: nowrap;'>
+                    <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'view_finding', 'key' => $row->getId())) ?>'>lihat foto</a> |
+                    <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'edit_finding', 'key' => $row->getId())) ?>'>revisi</a> |
+                    <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'delete_finding', 'key' => $row->getId())) ?>'>hapus</a>
+                </td>
+            </tr>
+            <?php endforeach;
+                else : ?>
+            <tr>
+                <td colspan='0' style='text-align: center;'>Data kosong</td>
+            </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+    <?php endif; ?>
+</form>
+<?php if (count($data) > 0) : ?>
+    <input type='button' value='Print' onclick='window.open("<?php echo $this->routeManager->generateRoute(array('action' => 'report_finding_print', 'bypass' => true)) ?>")' />
+<?php endif; ?>
+
+<script src="./libs/ui.datepicker.js" type="text/javascript" charset="utf-8"></script>
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $("#tanggal").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-55:-0'
+        });
+
+        updateFilterRange();
+    });
+
+    $('[name=range]').change(function(){
+        selectFilterBy($(this).val());
+    });
+
+    function updateFilterRange() {
+        var checked = false;
+        $.each($('[name=range]'), function(){
+            if($(this).is(':checked')) {
+                checked = true;
+            }
+        });
+
+        if (checked === true) {
+            selectFilterBy($('[name=range]:checked').val());
+        } else {
+            selectFilterBy('date');
+        }
+    }
+
+    function selectFilterBy(type) {
+        if (type == 'date') {
+            $('#tanggal').attr('disabled', false);
+            $('#bulan').attr('disabled', true);
+            $('#tahun').attr('disabled', true);
+            $('[name=range][value=date]').attr('checked', true);
+            $('[name=range][value=month]').attr('checked', false);
+            $('#filterDateContainer').show();
+            $('#filterMonthContainer').hide();
+        } else if (type == 'month') {
+            $('#tanggal').attr('disabled', true);
+            $('#bulan').attr('disabled', false);
+            $('#tahun').attr('disabled', false);
+            $('[name=range][value=date]').attr('checked', false);
+            $('[name=range][value=month]').attr('checked', true);
+            $('#filterDateContainer').hide();
+            $('#filterMonthContainer').show();
+        }
+    }
+</script>

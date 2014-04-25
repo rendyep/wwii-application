@@ -1,0 +1,63 @@
+<h3>Input Cuti</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<hr />
+<form action="" method="post" enctype="multipart/form-data">
+    <fieldset>
+    <?php if ((strtoupper($params['btx']) == 'PROSES' && empty($errorMessages)) || strtoupper($params['btx']) == 'SIMPAN') : ?>
+        <div class="fieldset-kiri">NIK</div>
+        <div class="fieldset-kanan">
+            <?php echo $params['nik'] ?>
+            <input type="hidden" name="nik" value="<?php echo $params['nik'] ?>" />
+        </div>
+        <div class="fieldset-kiri">Nama Karyawan</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="namaKaryawan" value="<?php echo $params['namaKaryawan'] ?>" />
+        </div>
+        <div class="fieldset-kiri required">Tanggal Cuti</div>
+        <div class="fieldset-kanan">
+            <input type="text" id="tanggalAwal" class="medium" name="tanggalAwal" value="<?php echo $params['tanggalAwal'] ?>" />
+            s/d <input type="text" id="tanggalAkhir" class="medium" name="tanggalAkhir" value="<?php echo $params['tanggalAkhir'] ?>" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['tanggal']) ? $errorMessages['tanggal'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">Keterangan</div>
+        <div class="fieldset-kanan">
+            <textarea name="keterangan"><?php echo $params['jurusan'] ?></textarea>
+        </div>
+        <hr />
+        <div class="fieldset-kiri"></div>
+        <div class="fieldset-button">
+            <input type="submit" name="btx" value="Batal" />&nbsp;
+            <input type="submit" name="btx" value="Simpan" />
+        </div>
+        <?php else : ?>
+        <div class="fieldset-kiri required">NIK</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="nik" value="<?php echo $params['nik'] ?>" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['nik']) ? $errorMessages['nik'] : '' ?>
+            </div>
+        </div>
+        <hr />
+        <div class="fieldset-kiri"></div>
+        <div class="fieldset-button">
+            <input type="submit" name="btx" value="Batal" />&nbsp;
+            <input type="submit" name="btx" value="Proses" />
+        </div>
+        <?php endif; ?>
+    </fieldset>
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#tanggalAwal, #tanggalAkhir").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-55:-0'
+        });
+    });
+</script>

@@ -1,0 +1,78 @@
+<h3>Report Komputer</h3>
+<?php if (!empty($errorMessages)) : ?>
+<ul>
+    <?php foreach ($errorMessages as $errorMessage) : ?>
+        <li><?php echo $errorMessage ?></li>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+<form action='' method='post'>
+    <table border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>Nomor Seri</td>
+                <td><input type='text' size='30' name='nomorSeri' value='<?php echo $data->getNomorSeri() ?>' /></td>
+            </tr>
+            <tr>
+                <td>Sistem Operasi</td>
+                <td><input type='text' size='30' name='sistemOperasi' value='<?php echo $data->getOs() ?>' /></td>
+            </tr>
+            <tr>
+                <td>IP Address</td>
+                <td><input type='text' size='30' name='ip' value='<?php echo $data->getIp() ?>' /></td>
+            </tr>
+            <tr>
+                <td>Mac Address</td>
+                <td><input type='text' size='30' name='mac' value='<?php echo $data->getMac() ?>' /></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type='text' size='30' name='email' value='<?php echo $data->getEmail() ?>' /></td>
+            </tr>
+            <tr>
+                <td>User</td>
+                <td><input type='text' size='30' name='user' value='<?php echo $data->getUser() ?>' /></td>
+            </tr>
+            <tr>
+                <td>User Account</td>
+                <td><input type='text' size='30' name='userAccount' value='<?php echo $data->getUserAccount() ?>' /></td>
+            </tr>
+            <tr>
+                <td>Lokasi</td>
+                <td><input type='text' size='30' name='lokasi' value='<?php echo $data->getLokasi() ?>' /></td>
+            </tr>
+            <tr>
+                <td>Tahun</td>
+                <td><input type='text' size='30' name='tahun' value='<?php echo $data->getTahun() ?>' /></td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="margin-top: 20px;">Spesifikasi</div>
+    <table border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>CPU</td>
+                <td><input type='text' size='30' name='cpu' value='<?php echo $data->getCpu() ?>' /></td>
+            </tr>
+            <tr>
+                <td>Hard Disk</td>
+                <td><input type='text' size='30' name='hardDisk' value='<?php echo $data->getHardDisk() ?>' /></td>
+            </tr>
+            <tr>
+                <td>RAM</td>
+                <td><input type='text' size='30' name='ram' value='<?php echo $data->getRam() ?>' /></td>
+            </tr>
+            <tr>
+                <td>LCD</td>
+                <td><input type='text' size='30' name='lcd' value='<?php echo $data->getLcd() ?>' /></td>
+            </tr>
+            <tr>
+                <td>Optical Drive</td>
+                <td><input type='text' size='30' name='opticalDrive' value='<?php echo $data->getOpticalDrive() ?>' /></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type='reset' value='Reset'>
+    <input type='submit' value='Simpan' name='btx'>
+</form>

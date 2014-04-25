@@ -1,0 +1,33 @@
+<h3>Report Sistem Operasi</h3>
+<?php if (!empty($errorMessages)) : ?>
+<ul>
+    <?php foreach ($errorMessages as $errorMessage) : ?>
+        <li><?php echo $errorMessage ?></li>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+<form action='' method='post'>
+    <table border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>Nama Sistem Operasi</td>
+                <td><input type='text' size='50' name='nama' value='<?php echo $data->getNama() ?>' /></td>
+            </tr>
+            <tr>
+                <td>Serial Number</td>
+                <td><input type='text' size='50' name='serial' value='<?php echo $data->getSerial() ?>' /></td>
+            </tr>
+            <tr>
+                <td>Versi</td>
+                <td><input type='text' size='30' name='versi' value='<?php echo $data->getVersi() ?>' /></td>
+            </tr>
+            <tr>
+                <td>Lisensi</td>
+                <td><input type='text' size='30' name='lisensi' value='<?php echo $data->getLisensi() ?>' /></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type='reset' value='Reset'>
+    <input type='submit' value='Simpan' name='btx'>
+</form>

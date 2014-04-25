@@ -1,0 +1,93 @@
+<h3>Data Karyawan - Form Cuti</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<hr />
+<form action="" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <div class="fieldset-kiri required">NIK</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="nik" readonly="readonly" value="<?php echo $params['nik'] ?>" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['nik']) ? $errorMessages['nik'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">Tanggal Awal</div>
+        <div class="fieldset-kanan">
+            <input type="text" id="tanggalAwal" class="medium" name="tanggalAwal" readonly="readonly" value="<?php echo $params['tanggalAwal'] ?>" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['tanggalAwal']) ? $errorMessages['tanggalAwal'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">Tanggal Akhir</div>
+        <div class="fieldset-kanan">
+            <input type="text" id="tanggalAkhir" class="medium" name="tanggalAkhir" readonly="readonly" value="<?php echo $params['tanggalAkhir'] ?>" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['tanggalAkhir']) ? $errorMessages['tanggalAkhir'] : '' ?>
+            </div>
+        </div>
+        <hr />
+        <div class="fieldset-kiri"></div>
+        <div class="fieldset-button">
+            <input type="submit" name="btx" value="Batal" />&nbsp;
+            <input type="submit" name="btx" value="Simpan" />
+        </div>
+    </fieldset>
+</form>
+
+<style type="text/css">
+    .fieldset-kiri {
+        width: 150px;
+        float: left;
+        margin-bottom: 5px;
+        clear: left;
+        vertical-align: top;
+    }
+
+    .fieldset-kanan {
+        margin-left: 150px;
+        margin-bottom: 5px;
+        vertical-align: top;
+    }
+
+    .fieldset-kanan:before {
+        content: ': ';
+        vertical-align: top;
+    }
+
+    .fieldset-empty:before {
+        content: ' ';
+    }
+
+    .fieldset-button {
+        margin-left: 157px;
+        margin-bottom: 5px;
+    }
+
+    .required:after {
+        content: ' *';
+        color: red;
+    }
+
+    .error-head {
+        color: red;
+        font-weight: bold;
+    }
+
+    .error-container {
+        color: red;
+        margin-left: 7px;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#tanggalAwal, #tanggalAkhir").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-55:-0'
+        });
+    });
+</script>
+
