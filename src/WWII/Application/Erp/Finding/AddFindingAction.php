@@ -57,8 +57,8 @@ class AddFindingAction
             $finding->setTindakan($params['tindakan']);
 
             $loginSession = explode(',', $_SESSION['arinaSess']);
-            $petugas = $loginSession[1];
-            $finding->setPelaksana($petugas);
+            $pelaksana = $loginSession[1];
+            $finding->setPelaksana($pelaksana);
 
             $this->entityManager->persist($finding);
             $this->entityManager->flush();
