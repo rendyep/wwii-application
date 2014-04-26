@@ -15,7 +15,8 @@
         </div>
         <div class="fieldset-kiri">Nama Karyawan</div>
         <div class="fieldset-kanan">
-            <input type="text" class="medium" name="namaKaryawan" value="<?php echo $params['namaKaryawan'] ?>" />
+            <?php echo $params['namaKaryawan'] ?>
+            <input type="hidden" name="namaKaryawan" value="<?php echo $params['namaKaryawan'] ?>" />
         </div>
         <div class="fieldset-kiri required">Tanggal Cuti</div>
         <div class="fieldset-kanan">
@@ -27,7 +28,10 @@
         </div>
         <div class="fieldset-kiri required">Keterangan</div>
         <div class="fieldset-kanan">
-            <textarea name="keterangan"><?php echo $params['jurusan'] ?></textarea>
+            <textarea name="keterangan"><?php echo $params['keterangan'] ?></textarea>
+            <div class="error-container">
+                <?php echo isset($errorMessages['keterangan']) ? $errorMessages['keterangan'] : '' ?>
+            </div>
         </div>
         <hr />
         <div class="fieldset-kiri"></div>

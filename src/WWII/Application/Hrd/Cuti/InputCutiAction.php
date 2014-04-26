@@ -18,6 +18,8 @@ class InputCutiAction
 
     protected $departmentHelper;
 
+    protected $errorMessages = array();
+
     public function __construct(\WWII\Service\ServiceManagerInterface $serviceManager, \Doctrine\ORM\EntityManager $entityManager)
     {
         $this->serviceManager = $serviceManager;
@@ -26,7 +28,8 @@ class InputCutiAction
         $this->flashMessenger = $serviceManager->get('FlashMessenger');
         $this->templateManager = $serviceManager->get('TemplateManager');
         $this->entityManager = $entityManager;
-        $this->departmentHelper = new \WWII\Common\Helper\Collection\MsSQL\ActiveDepartment($this->serviceManager, $this->entityManager);
+        $this->departmentHelper = new \WWII\Common\Helper\Collection\MsSQL\Department($this->serviceManager, $this->entityManager);
+        $this->employeeHelper = new \WWII\Common\Helper\Collection\MsSQL\Employee($this->serviceManager, $this->entityManager);
     }
 
     public function dispatch($params)
@@ -55,7 +58,7 @@ class InputCutiAction
     {
         $errorMessages = $this->validateData($params);
 
-        if (empty($errorMessages)) {
+        if (!empty($errorMessages)) {
             $this->errorMessages = array_merge($this->errorMessages, $errorMessages);
         }
     }
@@ -75,6 +78,14 @@ class InputCutiAction
             $tanggalAwal = new \DateTime($arrayTanggalAwal[2] . '-' . $arrayTanggalAwal[1] . '-' . $arrayTanggalAwal[0]);
             $pengambilanCuti->setTanggalAwal($tanggalAwal);
 
+            $arrayTanggalAkhir = explode('/', $params['tanggalAkhir']);
+            $tanggalAkhir = new \DateTime($arrayTanggaAkhir[2] . '-' . $arrayTanggalAkhir[1] . '-' . $arrayTanggalAkhir[0]);
+            $pengambilanCuti->setTanggalAkhir($tanggalAkhir);
+
+            $loginSession = explode(',', $_SESSION['arinaSess']);
+            $pelaksana = $loginSession[1];
+            $pengambilanCuti->setPelaksana($pelaksana);
+
             $pengambilanCuti->setMasterCuti($masterCuti);
 
             $this->entityManager->persist($pengambilanCuti);
@@ -83,11 +94,7 @@ class InputCutiAction
             $this->flashMessenger->addMessage('Data berhasil disimpan.');
             $this->routeManager->redirect(array('action' => 'report_cuti'));
         } else {
-            return array(
-                'departmentList' => $this->departmentHelper->getDepartmentList(),
-                'errorMessages' => $errorMessages,
-                'params' => $params,
-            );
+            $this->errorMessages = array_merge($this->errorMessages, $errorMessages);
         }
     }
 
@@ -95,61 +102,46 @@ class InputCutiAction
     {
         $errorMessages = array();
 
-        if (strtoupper($params['btx']) == 'PROSES') {
-            $masterCuti = $this->getRequestedMasterCuti($params['nik']);
-
-            if ($masterCuti == null) {
-                $errorMessages['nik'] = 'tidak ditemukan';
-            } else {
-                if ($pelamar->getDetailPelamar()->getStatus() == 'diterima') {
-                    $model = $this->entityManager
-                        ->getRepository('WWII\Domain\Hrd\Karyawan\Karyawan')
-                        ->findOneByPelamar($pelamar->getId());
-
-                    if ($model != null) {
-                        $errorMessages['namaLengkap'] = 'sudah tercatat di data karyawan';
-                    }
-                } else {
-                    $errorMessages['namaLengkap'] = 'status pelamar sedang interview atau ditolak';
-                }
-            }
-        }
-
-        if (strtoupper($params['btx']) == 'SIMPAN') {
+        if (empty($params['nik'])) {
+            $errorMessages['nik'] = $this->getErrorMessage(0);
+        } elseif ($this->employeeHelper->isActive($params['nik']) === false) {
+            $errorMessages['nik'] = $this->getErrorMessage(1);
+        } else {
             $masterCuti = $this->getRequestedMasterCuti($params['nik']);
 
             if ($masterCuti === null) {
-                $errorMessages['nik'] = 'karyawan belum memiliki hak cuti';
-            } else {
-                if ($masterCuti->getSisaLimit() == 0 || $masterCuti->isExpired()) {
-                    $errorMessages['nik'] = 'karyawan tidak memiliki sisa cuti';
+                $errorMessages['nik'] = $this->getErrorMessage(2);
+            } elseif ($masterCuti->getSisaLimit() === 0) {
+                if ($masterCuti->getParent() !== null) {
+                    if ($masterCuti->getParent()->getPerpanjanganCuti() !== null) {
+                        if ($masterCuti->getParent()->getPerpanjanganCuti()->isExpired()) {
+                            $errorMessages['nik'] = $this->getErrorMessage(3);
+                        } elseif ($masterCuti->getParent()->getPerpanjanganCuti()->getSisaLimit() === 0) {
+                            $errorMessages['nik'] = $this->getErrorMessage(3);
+                        }
+                    }
+                } else {
+                    $this->getErrorMessage(3);
                 }
             }
 
-            if ($params['tanggalAwal'] == '') {
-                $errorMessages['tanggal'] = 'tanggal harus diisi';
-            } else {
-                $arrayTanggalAwal = explode('/', $params['tanggalAwal']);
-                try {
-                    $tanggalAwal = new \DateTime($arrayTanggalAwal[2] . '-' . $arrayTanggalAwal[1] . '-' . $arrayTanggalAwal[0]);
-                } catch(\Exception $e) {
-                    $this->errorMessages['tanggal'] = 'format tidak valid (ex. 17/03/2014)';
+            if (strtoupper($params['btx']) == 'SIMPAN') {
+                if ($params['tanggalAwal'] == '' || $params['tanggalAkhir'] == '') {
+                    $errorMessages['tanggal'] = $this->getErrorMessage(4);
+                } else {
+                    $arrayTanggalAwal = explode('/', $params['tanggalAwal']);
+                    $arrayTanggalAkhir = explode('/', $params['tanggalAkhir']);
+                    try {
+                        $tanggalAwal = new \DateTime($arrayTanggalAwal[2] . '-' . $arrayTanggalAwal[1] . '-' . $arrayTanggalAwal[0]);
+                        $tanggalAkhir = new \DateTime($arrayTanggalAkhir[2] . '-' . $arrayTanggalAkhir[1] . '-' . $arrayTanggalAkhir[0]);
+                    } catch(\Exception $e) {
+                        $this->errorMessages['tanggal'] = $this->getErrorMessage(5);
+                    }
                 }
-            }
 
-            if ($params['tanggalAkhir'] == '') {
-                $errorMessages['tanggal'] = 'tanggal harus diisi';
-            } else {
-                $arrayTanggalAkhir = explode('/', $params['tanggalAkhir']);
-                try {
-                    $tanggalAkhir = new \DateTime($arrayTanggalAkhir[2] . '-' . $arrayTanggalAkhir[1] . '-' . $arrayTanggalAkhir[0]);
-                } catch(\Exception $e) {
-                    $this->errorMessages['tanggal'] = 'format tidak valid (ex. 17/03/2014)';
+                if ($params['keterangan'] == '') {
+                    $errorMessages['keterangan'] = 'harus diisi';
                 }
-            }
-
-            if ($params['keterangan'] == '') {
-                $errorMessages['keterangan'] = 'harus diisi';
             }
         }
 
@@ -191,8 +183,11 @@ class InputCutiAction
                         return '-';
                     }
                 }, $masterCuti),
-            )
+            ),
+            $params
         );
+
+        return $params;
     }
 
     protected function getRequestedMasterCuti($nik)
@@ -210,9 +205,30 @@ class InputCutiAction
         return $masterCuti;
     }
 
-    public function render(array $params = array())
+    public function getErrorMessage($code = null)
     {
-        extract($params);
+        switch ($code) {
+            case 0:
+                return 'NIK harus diisi';
+            case 1:
+                return 'karyawan sudah tidak aktif';
+            case 2:
+                return 'karyawan belum memiliki hak cuti';
+            case 3:
+                return 'karyawan tidak memiliki sisa cuti';
+            case 4:
+                return 'tanggal harus diisi';
+            case 5:
+                return 'format tidak valid (ex. 17/03/2014)';
+            default:
+                'karyawan belum memiliki hak cuti';
+        }
+    }
+
+    public function render(array $params = null)
+    {
+        $errorMessages = $this->errorMessages;
+        $departmentList = $this->departmentHelper->getDepartmentList();
 
         $this->templateManager->renderHeader();
         include('view/input_cuti.phtml');
