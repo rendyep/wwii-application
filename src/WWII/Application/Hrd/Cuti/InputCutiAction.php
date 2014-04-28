@@ -69,26 +69,63 @@ class InputCutiAction
 
         if (empty($errorMessages)) {
             $masterCuti = $this->getRequestedMasterCuti($params['nik']);
+            $masterCutiParent = null;
+
+            if ($masterCuti->getParent() !== null
+                && $masterCuti->getParent()->getPerpanjanganCuti() !== null
+                && !$masterCuti->getParent()->getPerpanjanganCuti()->isExpired()
+                && $masterCuti->getParent()->getSisaLimit() > 0) {
+                $masterCutiParent = $masterCuti->getParent();
+            }
+
+            $arrayTanggalAwal = explode('/', $params['tanggalAwal']);
+            $tanggalAwal = new \DateTime($arrayTanggalAwal[2] . '-' . $arrayTanggalAwal[1] . '-' . $arrayTanggalAwal[0]);
+
+            $arrayTanggalAkhir = explode('/', $params['tanggalAkhir']);
+            $tanggalAkhir = new \DateTime($arrayTanggalAkhir[2] . '-' . $arrayTanggalAkhir[1] . '-' . $arrayTanggalAkhir[0]);
 
             $pengambilanCuti = new \WWII\Domain\Hrd\Cuti\PengambilanCuti();
 
             $pengambilanCuti->setKeterangan($params['keterangan']);
-
-            $arrayTanggalAwal = explode('/', $params['tanggalAwal']);
-            $tanggalAwal = new \DateTime($arrayTanggalAwal[2] . '-' . $arrayTanggalAwal[1] . '-' . $arrayTanggalAwal[0]);
-            $pengambilanCuti->setTanggalAwal($tanggalAwal);
-
-            $arrayTanggalAkhir = explode('/', $params['tanggalAkhir']);
-            $tanggalAkhir = new \DateTime($arrayTanggaAkhir[2] . '-' . $arrayTanggalAkhir[1] . '-' . $arrayTanggalAkhir[0]);
-            $pengambilanCuti->setTanggalAkhir($tanggalAkhir);
-
+            $pengambilanCuti->setTanggalInput(new \DateTime());
             $loginSession = explode(',', $_SESSION['arinaSess']);
             $pelaksana = $loginSession[1];
             $pengambilanCuti->setPelaksana($pelaksana);
 
-            $pengambilanCuti->setMasterCuti($masterCuti);
+            if ($masterCutiParent === null) {
+                $pengambilanCuti->setTanggalAwal($tanggalAwal);
+                $pengambilanCuti->setTanggalAkhir($tanggalAkhir);
+                $pengambilanCuti->setMasterCuti($masterCuti);
 
-            $this->entityManager->persist($pengambilanCuti);
+                $this->entityManager->persist($pengambilanCuti);
+            } elseif ($masterCutiParent !== null
+                && $tanggalAwal->diff($tanggalAkhir)->format('%a') <= $masterCutiParent->getSisaLimit()) {
+                $pengambilanCuti->setTanggalAwal($tanggalAwal);
+                $pengambilanCuti->setTanggalAkhir($tanggalAkhir);
+                $pengambilanCuti->setMasterCuti($masterCutiParent);
+
+                $this->entityManager->persist($pengambilanCuti);
+            } else {
+                $pengambilanCutiParent = clone($pengambilanCuti);
+
+                $tanggalAkhirParent = clone($tanggalAwal);
+                $tanggalAkhirParent->add(new \DateInterval('P' . ($masterCutiParent->getSisaLimit()-1) . 'D'));
+
+                $tanggalAwalChild = clone($tanggalAkhirParent);
+                $tanggalAwalChild->add(new \DateInterval('P1D'));
+
+                $pengambilanCutiParent->setTanggalAwal($tanggalAwal);
+                $pengambilanCutiParent->setTanggalAkhir($tanggalAkhirParent);
+                $pengambilanCutiParent->setMasterCuti($masterCutiParent);
+
+                $pengambilanCuti->setTanggalAwal($tanggalAwalChild);
+                $pengambilanCuti->setTanggalAkhir($tanggalAkhir);
+                $pengambilanCuti->setMasterCuti($masterCuti);
+
+                $this->entityManager->persist($pengambilanCutiParent);
+                $this->entityManager->persist($pengambilanCuti);
+            }
+
             $this->entityManager->flush();
 
             $this->flashMessenger->addMessage('Data berhasil disimpan.');
@@ -153,9 +190,10 @@ class InputCutiAction
         $params = array_merge(
             array(
                 'nik' => isset($params['nik']) ? $params['nik'] : '',
-                'namaKaryawan' => isset($params['namaKaryawan']) ? $params['namaKaryawan'] : $masterCuti->getNamaKaryawan(),
+                'namaKaryawan' => $masterCuti->getNamaKaryawan(),
                 'departemen' => isset($params['departemen']) ? $params['departemen'] : $masterCuti->getDepartemen(),
-                'tanggalKadaluarsaAktif' => call_user_func(function($masterCuti) {
+                'sisaLimitPeriodeAktif' => $masterCuti->getSisaLimit(),
+                'tanggalKadaluarsaPeriodeAktif' => call_user_func(function($masterCuti) {
                     if (!$masterCuti->isExpired()) {
                         return $masterCuti->getTanggalKadaluarsa()->format('d/m/Y');
                     } elseif($masterCuti->getPerpanjanganCuti() !== null && !$masterCuti->getPerpanjanganCuti()->isExpired()) {
@@ -164,21 +202,20 @@ class InputCutiAction
                         return '-';
                     }
                 }, $masterCuti),
-                'sisaCutiAktif' => $masterCuti->getSisaLimit(),
+                'sisaLimitPeriodeSebelumnya' => call_user_func(function($masterCuti) {
+                    if ($masterCuti->getParent() !== null
+                        && $masterCuti->getParent()->getPerpanjanganCuti() !== null
+                        && !$masterCuti->getParent()->getPerpanjanganCuti()->isExpired()) {
+                        return $masterCuti->getParent()->getSisaLimit();
+                    } else {
+                        return '-';
+                    }
+                }, $masterCuti),
                 'tanggalKadaluarsaPeriodeSebelumnya' => call_user_func(function($masterCuti) {
                     if ($masterCuti->getParent() !== null
                         && $masterCuti->getParent()->getPerpanjanganCuti() !== null
                         && !$masterCuti->getParent()->getPerpanjanganCuti()->isExpired()) {
                         return $masterCuti->getParent()->getPerpanjanganCuti()->getTanggalKadaluarsa()->format('d/m/Y');
-                    } else {
-                        return '-';
-                    }
-                }, $masterCuti),
-                'sisaCutiPeriodeSebelumnya' => call_user_func(function($masterCuti) {
-                    if ($masterCuti->getParent() !== null
-                        && $masterCuti->getParent()->getPerpanjanganCuti() !== null
-                        && !$masterCuti->getParent()->getPerpanjanganCuti()->isExpired()) {
-                        return $masterCuti->getParent()->getSisaLimit();
                     } else {
                         return '-';
                     }
