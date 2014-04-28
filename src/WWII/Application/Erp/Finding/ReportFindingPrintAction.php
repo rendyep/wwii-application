@@ -79,7 +79,6 @@ class ReportFindingPrintAction
         $errorMessages = $this->errorMessages;
         $data = $this->data;
 
-        $this->templateManager->clean();
         include('/view/report_finding_print.phtml');
     }
 }
