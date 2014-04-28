@@ -16,7 +16,16 @@
         <div class="fieldset-kiri">Nama Karyawan</div>
         <div class="fieldset-kanan">
             <?php echo $params['namaKaryawan'] ?>
-            <input type="hidden" name="namaKaryawan" value="<?php echo $params['namaKaryawan'] ?>" />
+        </div>
+        <div class="fieldset-kiri">Sisa Limit Periode Aktif</div>
+        <div class="fieldset-kanan">
+            <?php echo $params['sisaLimitPeriodeAktif'] ?>
+            (expired <?php echo $params['tanggalKadaluarsaPeriodeAktif'] ?>)
+        </div>
+        <div class="fieldset-kiri">Sisa Limit Periode Sebelumnya</div>
+        <div class="fieldset-kanan">
+            <?php echo $params['sisaLimitPeriodeSebelumnya'] ?>
+            (expired <?php echo $params['tanggalKadaluarsaPeriodeSebelumnya'] ?>)
         </div>
         <div class="fieldset-kiri required">Tanggal Cuti</div>
         <div class="fieldset-kanan">
