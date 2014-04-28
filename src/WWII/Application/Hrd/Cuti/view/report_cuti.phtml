@@ -1,0 +1,75 @@
+<h3>Report Cuti</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<hr />
+<form action='' method='post'>
+    <table border='0' width='100%'>
+        <tbody>
+            <tr>
+                <td>NIK</td>
+                <td><input type='text' class='medium' name='nik' value='<?php echo $params['nik'] ?>'></td>
+            </tr>
+            <tr>
+                <td>Departemen</td>
+                <td><input type='text' class='medium' name='departemen' value='<?php echo $params['departemen'] ?>'></td>
+            </tr>
+            <tr>
+                <td>Tanggal</td>
+                <td>
+                    <input type='text' id='tanggalAwal' class='medium' name='tanggalAwal' value='<?php echo $params['tanggalAwal'] ?>'>
+                    s/d <input type='text' id='tanggalAkhir' class='medium' name='tanggalAkhir' value='<?php echo $params['tanggalAkhir'] ?>'>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type='reset' value='Reset'>
+    <input type='submit' value='Proses' name='btx'>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>nik</th>
+            <th>Nama Karyawan</th>
+            <th>Departemen</th>
+            <th>Tanggal Awal</th>
+            <th>Tanggal Akhir</th>
+            <th>Jumlah Hari</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+            if (count($data) > 0) :
+                $number = 1;
+                foreach ($data as $row) :
+                    $pengambilanCuti = $row;
+                    $masterCuti = $row->getMasterCuti();
+        ?>
+        <tr>
+            <td><?php echo $number++ ?></td>
+            <td><?php echo $masterCuti->getNik() ?></td>
+            <td><?php echo $masterCuti->getNamaKaryawan() ?></td>
+            <td><?php echo $masterCuti->getDepartemen() ?></td>
+            <td style='text-align: center'><?php echo $pengambilanCuti->getTanggalAwal()->format('d/m/Y') ?></td>
+            <td style='text-align: center'><?php echo $pengambilanCuti->getTanggalAkhir()->format('d/m/Y') ?></td>
+            <td style='text-align: center'><?php echo $pengambilanCuti->getJumlahHari() ?></td>
+            <td style='text-align: center'>
+                <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'view_cuti', 'key' => $row->getId())) ?>'>detail</a>
+                <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'edit_cuti', 'key' => $row->getId())) ?>'>revisi</a>
+                <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'delete_cuti', 'key' => $row->getId())) ?>'>hapus</a>
+            </td>
+        </tr>
+        <?php endforeach;
+            else : ?>
+        <tr>
+            <td colspan='0' style='text-align: center;'>Data kosong</td>
+        </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
