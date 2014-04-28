@@ -141,6 +141,8 @@ class InputCutiAction
 
         if (empty($params['nik'])) {
             $errorMessages['nik'] = $this->getErrorMessage(0);
+        } elseif ($this->employeeHelper->findOneByNik($params['nik']) === null) {
+            $errorMessages['nik'] = $this->getErrorMessage(6);
         } elseif ($this->employeeHelper->isActive($params['nik']) === false) {
             $errorMessages['nik'] = $this->getErrorMessage(1);
         } else {
@@ -257,8 +259,10 @@ class InputCutiAction
                 return 'tanggal harus diisi';
             case 5:
                 return 'format tidak valid (ex. 17/03/2014)';
+            case 6:
+                return 'NIK tidak ditemukan di data karyawan';
             default:
-                'karyawan belum memiliki hak cuti';
+                return 'karyawan belum memiliki hak cuti';
         }
     }
 
