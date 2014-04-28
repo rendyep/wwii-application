@@ -14,7 +14,16 @@
             </tr>
             <tr>
                 <td>Departemen</td>
-                <td><input type='text' class='medium' name='departemen' value='<?php echo $params['departemen'] ?>'></td>
+                <td>
+                    <select name="departemen">
+                        <option value="">[semua]</option>
+                        <?php foreach ($departmentList as $department) : ?>
+                        <option value="<?php echo $department ?>" <?php echo $params['departemen'] == $department ? 'selected="selected"' : '' ?>>
+                            <?php echo $department ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>Tanggal</td>
