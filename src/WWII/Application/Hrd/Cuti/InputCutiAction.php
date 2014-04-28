@@ -10,6 +10,8 @@ class InputCutiAction
 
     protected $entityManager;
 
+    protected $sessionContainer;
+
     protected $routeManager;
 
     protected $templateManager;
@@ -27,6 +29,7 @@ class InputCutiAction
         $this->databaseManager = $serviceManager->get('DatabaseManager');
         $this->flashMessenger = $serviceManager->get('FlashMessenger');
         $this->templateManager = $serviceManager->get('TemplateManager');
+        $this->sessionContainer = $serviceManager->get('SessionContainer');
         $this->entityManager = $entityManager;
         $this->departmentHelper = new \WWII\Common\Helper\Collection\MsSQL\Department($this->serviceManager, $this->entityManager);
         $this->employeeHelper = new \WWII\Common\Helper\Collection\MsSQL\Employee($this->serviceManager, $this->entityManager);
@@ -128,8 +131,18 @@ class InputCutiAction
 
             $this->entityManager->flush();
 
-            $this->flashMessenger->addMessage('Data berhasil disimpan.');
-            $this->routeManager->redirect(array('action' => 'report_cuti'));
+            $data = array(
+                'tanggalPengajuan' => new \DateTime(),
+                'tanggalAwal' => $tanggalAwal,
+                'tanggalAkhir' => $tanggalAkhir,
+                'keterangan' => $params['keterangan'],
+                'nik' => $masterCuti->getNik(),
+                'namaKaryawan' => $masterCuti->getNamaKaryawan(),
+                'pelaksana' => $pelaksana,
+            );
+            $this->addSessionData('data', $data);
+
+            $this->routeManager->redirect(array('action' => 'print_input_cuti', 'bypass' => true));
         } else {
             $this->errorMessages = array_merge($this->errorMessages, $errorMessages);
         }
@@ -259,6 +272,40 @@ class InputCutiAction
             ->getQuery()->getOneOrNullResult();
 
         return $masterCuti;
+    }
+
+    public function addSessionData($name, $data)
+    {
+        $module = $this->routeManager->getModule();
+        $controller = $this->routeManager->getController();
+        $action = $this->routeManager->getAction();
+
+        $sessionNamespace = "{$module}_{$controller}_{$action}";
+
+        if (!isset($this->sessionContainer->{$sessionNamespace})) {
+            $this->sessionContainer->{$sessionNamespace} = new \StdClass();
+        }
+
+        $this->sessionContainer->{$sessionNamespace}->{$name} = $data;
+    }
+
+    public function getSessionData($name)
+    {
+        $module = $this->routeManager->getModule();
+        $controller = $this->routeManager->getController();
+        $action = $this->routeManager->getAction();
+
+        $sessionNamespace = "{$module}_{$controller}_{$action}";
+
+        if (!isset($this->sessionContainer->{$sessionNamespace})) {
+            $this->sessionContainer->{$sessionNamespace} = new \StdClass();
+        }
+
+        if (isset($this->sessionContainer->{$sessionNamespace}->{$name})) {
+            return $this->sessionContainer->{$sessionNamespace}->{$name};
+        } else {
+            return null;
+        }
     }
 
     public function getErrorMessage($code = null)

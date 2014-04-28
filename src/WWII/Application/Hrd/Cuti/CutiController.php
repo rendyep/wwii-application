@@ -33,6 +33,12 @@ class CutiController extends \WWII\Controller\AbstractController
         $action->dispatch($_POST);
     }
 
+    public function printInputCutiAction()
+    {
+        $action = new PrintInputCutiAction($this->serviceManager, $this->entityManager);
+        $action->dispatch($_POST);
+    }
+
     public function editCutiAction()
     {
         $action = new EditCutiAction($this->serviceManager, $this->entityManager);
