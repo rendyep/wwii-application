@@ -155,12 +155,12 @@ class InputCutiAction
                     if ($masterCuti->getParent()->getPerpanjanganCuti() !== null) {
                         if ($masterCuti->getParent()->getPerpanjanganCuti()->isExpired()) {
                             $errorMessages['nik'] = $this->getErrorMessage(3);
-                        } elseif ($masterCuti->getParent()->getPerpanjanganCuti()->getSisaLimit() === 0) {
+                        } elseif ($masterCuti->getParent()->getSisaLimit() === 0) {
                             $errorMessages['nik'] = $this->getErrorMessage(3);
                         }
                     }
                 } else {
-                    $this->getErrorMessage(3);
+                    $errorMessages['nik'] = $this->getErrorMessage(3);
                 }
             }
 
@@ -173,8 +173,25 @@ class InputCutiAction
                     try {
                         $tanggalAwal = new \DateTime($arrayTanggalAwal[2] . '-' . $arrayTanggalAwal[1] . '-' . $arrayTanggalAwal[0]);
                         $tanggalAkhir = new \DateTime($arrayTanggalAkhir[2] . '-' . $arrayTanggalAkhir[1] . '-' . $arrayTanggalAkhir[0]);
+
+                        $sisaLimit = 0;
+                        if (!$masterCuti->isExpired()) {
+                            $sisaLimit += $masterCuti->getSisaLimit();
+                        }
+
+                        if ($masterCuti->getParent() !== null) {
+                            if ($masterCuti->getParent()->getPerpanjanganCuti() !== null) {
+                                if (!$masterCuti->getParent()->getPerpanjanganCuti()->isExpired()) {
+                                    $sisaLimit += $masterCuti->getParent()->getSisaLimit();
+                                }
+                            }
+                        }
+
+                        if ($tanggalAwal->diff($tanggalAkhir)->format('%a') + 1 > $sisaLimit) {
+                            $errorMessages['tanggal'] = $this->getErrorMessage(7);
+                        }
                     } catch(\Exception $e) {
-                        $this->errorMessages['tanggal'] = $this->getErrorMessage(5);
+                        $errorMessages['tanggal'] = $this->getErrorMessage(5);
                     }
                 }
 
@@ -261,6 +278,8 @@ class InputCutiAction
                 return 'format tidak valid (ex. 17/03/2014)';
             case 6:
                 return 'NIK tidak ditemukan di data karyawan';
+            case 7:
+                return 'Jumlah permintaan cuti melebihi sisa limit';
             default:
                 return 'karyawan belum memiliki hak cuti';
         }
