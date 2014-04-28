@@ -73,7 +73,7 @@ class ReportCutiAction
             $arrayTanggalAwal = explode('/', $params['tanggalAwal']);
             try {
                 $tanggalAwal = new \DateTime($arrayTanggalAwal[2] . '-' . $arrayTanggalAwal[1] . '-' . $arrayTanggalAwal[0]);
-                $query->andWhere('detailPelamar.tanggalInterview >= :tanggalAwal')
+                $query->andWhere('pengambilanCuti.tanggalInput >= :tanggalAwal')
                     ->setParameter('tanggalAwal', $tanggalAwal->format('Y-m-d'));
             } catch (\Exception $e) {
                 $this->errorMessages['tanggal'] = 'Format tanggal tidak valid (ex. 17/03/2014).';
@@ -84,7 +84,7 @@ class ReportCutiAction
             $arrayTanggalAkhir = explode('/', $params['tanggalAkhir']);
             try {
                 $tanggalAkhir = new \DateTime($arrayTanggalAkhir[2] . '-' . $arrayTanggalAkhir[1] . '-' . $arrayTanggalAkhir[0]);
-                $query->andWhere('detailPelamar.tanggalInterview <= :tanggalAkhir')
+                $query->andWhere('pengambilanCuti.tanggalInterview <= :tanggalAkhir')
                     ->setParameter('tanggalAkhir', $tanggalAkhir->format('Y-m-d'));
             } catch (\Exception $e) {
                 $this->errorMessages['tanggal'] = 'Format tanggal tidak valid (ex. 17/03/2014).';

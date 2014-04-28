@@ -26,7 +26,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Tanggal</td>
+                <td>Tanggal Pengajuan</td>
                 <td>
                     <input type='text' id='tanggalAwal' class='medium' name='tanggalAwal' value='<?php echo $params['tanggalAwal'] ?>'>
                     s/d <input type='text' id='tanggalAkhir' class='medium' name='tanggalAkhir' value='<?php echo $params['tanggalAkhir'] ?>'>
@@ -49,6 +49,7 @@
             <th>Tanggal Awal</th>
             <th>Tanggal Akhir</th>
             <th>Jumlah Hari</th>
+            <th>Tanggal Pengajuan</th>
             <!-- th>Action</th -->
         </tr>
     </thead>
@@ -68,6 +69,7 @@
             <td style='text-align: center'><?php echo $pengambilanCuti->getTanggalAwal()->format('d/m/Y') ?></td>
             <td style='text-align: center'><?php echo $pengambilanCuti->getTanggalAkhir()->format('d/m/Y') ?></td>
             <td style='text-align: center'><?php echo $pengambilanCuti->getJumlahHari() ?></td>
+            <td style='text-align: center'><?php echo $pengambilanCuti->getTanggalInput()->format('d/m/Y') ?></td>
             <!-- td style='text-align: center'>
                 <a href='<?php //echo $this->routeManager->generateRoute(array('action' => 'view_cuti', 'key' => $row->getId())) ?>'>detail</a>
                 <a href='<?php //echo $this->routeManager->generateRoute(array('action' => 'edit_cuti', 'key' => $row->getId())) ?>'>revisi</a>
