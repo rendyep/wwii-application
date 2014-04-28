@@ -40,7 +40,7 @@
             <th>Tanggal Awal</th>
             <th>Tanggal Akhir</th>
             <th>Jumlah Hari</th>
-            <th>Action</th>
+            <!-- th>Action</th -->
         </tr>
     </thead>
     <tbody>
@@ -59,11 +59,11 @@
             <td style='text-align: center'><?php echo $pengambilanCuti->getTanggalAwal()->format('d/m/Y') ?></td>
             <td style='text-align: center'><?php echo $pengambilanCuti->getTanggalAkhir()->format('d/m/Y') ?></td>
             <td style='text-align: center'><?php echo $pengambilanCuti->getJumlahHari() ?></td>
-            <td style='text-align: center'>
-                <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'view_cuti', 'key' => $row->getId())) ?>'>detail</a>
-                <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'edit_cuti', 'key' => $row->getId())) ?>'>revisi</a>
-                <a href='<?php echo $this->routeManager->generateRoute(array('action' => 'delete_cuti', 'key' => $row->getId())) ?>'>hapus</a>
-            </td>
+            <!-- td style='text-align: center'>
+                <a href='<?php //echo $this->routeManager->generateRoute(array('action' => 'view_cuti', 'key' => $row->getId())) ?>'>detail</a>
+                <a href='<?php //echo $this->routeManager->generateRoute(array('action' => 'edit_cuti', 'key' => $row->getId())) ?>'>revisi</a>
+                <a href='<?php //echo $this->routeManager->generateRoute(array('action' => 'delete_cuti', 'key' => $row->getId())) ?>'>hapus</a>
+            </td -->
         </tr>
         <?php endforeach;
             else : ?>
