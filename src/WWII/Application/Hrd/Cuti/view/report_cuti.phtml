@@ -73,3 +73,12 @@
         <?php endif; ?>
     </tbody>
 </table>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#tanggalAwal, #tanggalAkhir").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-55:-0'
+        });
+    });
+</script>
