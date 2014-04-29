@@ -8,24 +8,151 @@
 <form action="" method="post" enctype="multipart/form-data">
     <fieldset>
         <div class="fieldset-kiri">NIK</div>
-        <div class="fieldset-kanan"><?php echo $params['nik'] ?></div>
+        <div class="fieldset-kanan"><?php echo $data->getNik() ?></div>
         <div class="fieldset-kiri">Nama Karyawan</div>
-        <div class="fieldset-kanan"><?php echo $params['namaKaryawan'] ?></div>
+        <div class="fieldset-kanan"><?php echo $data->getNamaKaryawan() ?></div>
         <div class="fieldset-kiri">Departemen</div>
-        <div class="fieldset-kanan"><?php echo $params['departemen'] ?></div>
+        <div class="fieldset-kanan"><?php echo $data->getDepartemen() ?></div>
         <hr />
+
         <div><h3>Detail Cuti Periode Aktif</h3></div>
+        <?php
+            $tanggalKadaluarsa = $data->getTanggalKadaluarsa()->format('d/m/Y');
+
+            if ($data->getPerpanjanganCuti() !== null) {
+                $tanggalKadaluarsa = $data->getPerpanjanganCuti()->getTanggalKadaluarsa()->format('d/m/Y');
+            }
+        ?>
         <div class="fieldset-kiri">Sisa</div>
-        <div class="fieldset-kanan"><?php echo $params['sisaCutiAktif'] ?></div>
+        <div class="fieldset-kanan"><?php echo $data->getSisaLimit() ?></div>
         <div class="fieldset-kiri">Tanggal Kadaluarsa</div>
-        <div class="fieldset-kanan"><?php echo $params['tanggalKadaluarsaAktif'] ?></div>
+        <div class="fieldset-kanan"><?php echo $tanggalKadaluarsa ?></div>
+        <div>
+            <table>
+                <tr>
+                    <th rowspan=2>No.</th>
+                    <th rowspan=2>Year</th>
+                    <th rowspan=2>Balance</th>
+                    <th colspan=2>Date</th>
+                    <th rowspan=2>Days</th>
+                    <th rowspan=2>Remarks</th>
+                    <th rowspan=2>Employee</th>
+                    <th colspan=3>Approved</th>
+                </tr>
+                <tr>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>SPV</th>
+                    <th>MGR</th>
+                    <th>HRD</th>
+                </tr>
+                <?php
+                    if (count($data->getPengambilanCuti()) > 0) :
+                        $number = 1;
+                        $limit = $data->getTotalLimit();
+                        foreach ($data->getPengambilanCuti() as $pengambilanCuti) :
+                            $tanggalAwal  = $pengambilanCuti->getTanggalAwal();
+                            $tanggalAkhir = $pengambilanCuti->getTanggalAkhir();
+                            $jumlahHari   = $tanggalAwal->diff($tanggalAkhir)->format('%d') + 1;
+                ?>
+                <tr>
+                    <td><?php echo $number++ ?>.</td>
+                    <td style='text-align: center;'><?php echo $tanggalAwal->format('Y') ?></td>
+                    <td style='text-align: center;'><?php echo $limit ?></td>
+                    <td style='text-align: center;'><?php echo $tanggalAwal->format('d/m/Y') ?></td>
+                    <td style='text-align: center;'><?php echo $tanggalAkhir->format('d/m/Y') ?></td>
+                    <td style='text-align: center;'><?php echo $jumlahHari; ?></td>
+                    <td><?php echo nl2br($pengambilanCuti->getKeterangan()) ?></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <?php
+                            $limit -= $jumlahHari;
+                        endforeach;
+                    else :
+                ?>
+                <tr>
+                    <td colspan=0 style='text-align: center;'>Data Kosong</td>
+                </tr>
+                <?php endif; ?>
+            </table>
+        </div>
         <hr />
-        <div><h3>Detail Cuti Periode Lalu (sisa cuti yang belum kadaluarsa)</h3></div>
+
+        <div><h3>Detail Cuti Periode Lalu</h3></div>
+        <?php
+            $sisaLimit = '0';
+            $tanggalKadaluarsa = '-';
+
+            if ($data->getParent() !== null) {
+                $sisaLimit = $data->getParent()->getSisaLimit();
+                $tanggalKadaluarsa = $data->getParent()->getTanggalKadaluarsa()->format('d/m/Y');
+
+                if ($data->getParent()->getPerpanjanganCuti() !== null) {
+                    $tanggalKadaluarsa = $data->getParent()->getPerpanjanganCuti()->getTanggalKadaluarsa()->format('d/m/Y');
+                }
+            }
+        ?>
         <div class="fieldset-kiri">Sisa</div>
-        <div class="fieldset-kanan"><?php echo $params['sisaCutiPeriodeSebelumnya'] ?></div>
+        <div class="fieldset-kanan"><?php echo $sisaLimit ?></div>
         <div class="fieldset-kiri">Tanggal Kadaluarsa</div>
-        <div class="fieldset-kanan"><?php echo $params['tanggalKadaluarsaPeriodeSebelumnya'] ?></div>
+        <div class="fieldset-kanan"><?php echo $tanggalKadaluarsa ?></div>
+        <div>
+            <table>
+                <tr>
+                    <th rowspan=2>No.</th>
+                    <th rowspan=2>Year</th>
+                    <th rowspan=2>Balance</th>
+                    <th colspan=2>Date</th>
+                    <th rowspan=2>Days</th>
+                    <th rowspan=2>Remarks</th>
+                    <th rowspan=2>Employee</th>
+                    <th colspan=3>Approved</th>
+                </tr>
+                <tr>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>SPV</th>
+                    <th>MGR</th>
+                    <th>HRD</th>
+                </tr>
+                <?php
+                    if ($data->getParent() !== null && count($data->getParent()->getPengambilanCuti()) > 0) :
+                        $number = 1;
+                        $limit = $data->getParent()->getTotalLimit();
+                        foreach ($data->getParent()->getPengambilanCuti() as $pengambilanCuti) :
+                            $tanggalAwal  = $pengambilanCuti->getTanggalAwal();
+                            $tanggalAkhir = $pengambilanCuti->getTanggalAkhir();
+                            $jumlahHari   = $tanggalAwal->diff($tanggalAkhir)->format('%d') + 1;
+                ?>
+                <tr>
+                    <td><?php echo $number++ ?>.</td>
+                    <td style='text-align: center;'><?php echo $tanggalAwal->format('Y') ?></td>
+                    <td style='text-align: center;'><?php echo $limit ?></td>
+                    <td style='text-align: center;'><?php echo $tanggalAwal->format('d/m/Y') ?></td>
+                    <td style='text-align: center;'><?php echo $tanggalAkhir->format('d/m/Y') ?></td>
+                    <td style='text-align: center;'><?php echo $jumlahHari; ?></td>
+                    <td><?php echo nl2br($pengambilanCuti->getKeterangan()) ?></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <?php
+                            $limit -= $jumlahHari;
+                        endforeach;
+                    else :
+                ?>
+                <tr>
+                    <td colspan=0 style='text-align: center;'>Data Kosong</td>
+                </tr>
+                <?php endif; ?>
+            </table>
+        </div>
         <hr />
+
         <div class="fieldset-kiri"></div>
         <div class="fieldset-button">
             <input type="submit" name="btx" value="Kembali" />

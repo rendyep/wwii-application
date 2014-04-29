@@ -42,55 +42,24 @@ class DetailMasterCutiAction
         }
 
         $masterCuti = $this->getRequestedModel();
-        $params = $this->populateData($masterCuti, $params);
+        $this->data = $masterCuti;
 
         $this->render($params);
     }
 
-    protected function populateData(\WWII\Domain\Hrd\Cuti\MasterCuti $masterCuti, $params)
-    {
-        $params = array(
-            'nik' => $masterCuti->getNik(),
-            'namaKaryawan' => $masterCuti->getNamaKaryawan(),
-            'departemen' => $masterCuti->getDepartemen(),
-            'tanggalKadaluarsaAktif' => call_user_func(function($masterCuti) {
-                if (!$masterCuti->isExpired()) {
-                    return $masterCuti->getTanggalKadaluarsa()->format('d/m/Y');
-                } elseif($masterCuti->getPerpanjanganCuti() !== null && !$masterCuti->getPerpanjanganCuti()->isExpired()) {
-                    return $masterCuti->getPerpanjanganCuti()->getTanggalKadaluarsa()->format('d/m/Y');
-                } else {
-                    return '-';
-                }
-            }, $masterCuti),
-            'sisaCutiAktif' => $masterCuti->getSisaLimit(),
-            'tanggalKadaluarsaPeriodeSebelumnya' => call_user_func(function($masterCuti) {
-                if ($masterCuti->getParent() !== null
-                    && $masterCuti->getParent()->getPerpanjanganCuti() !== null
-                    && !$masterCuti->getParent()->getPerpanjanganCuti()->isExpired()) {
-                    return $masterCuti->getParent()->getPerpanjanganCuti()->getTanggalKadaluarsa()->format('d/m/Y');
-                } else {
-                    return '-';
-                }
-            }, $masterCuti),
-            'sisaCutiPeriodeSebelumnya' => call_user_func(function($masterCuti) {
-                if ($masterCuti->getParent() !== null
-                    && $masterCuti->getParent()->getPerpanjanganCuti() !== null
-                    && !$masterCuti->getParent()->getPerpanjanganCuti()->isExpired()) {
-                    return $masterCuti->getParent()->getSisaLimit();
-                } else {
-                    return '-';
-                }
-            }, $masterCuti),
-        );
-
-        return $params;
-    }
-
     protected function getRequestedModel()
     {
-        $model = $this->entityManager
-            ->getRepository('WWII\Domain\Hrd\Cuti\MasterCuti')
-            ->findOneById($this->routeManager->getKey());
+        $model = $this->entityManager->createQueryBuilder()
+            ->select('masterCuti')
+            ->from('WWII\Domain\Hrd\Cuti\MasterCuti', 'masterCuti')
+            //~->leftJoin('masterCuti.pengambilanCuti', 'pengambilanCuti')
+            //~->leftJoin('masterCuti.parent', 'parent')
+            //~->leftJoin('parent.pengambilanCuti', 'pengambilanCuti2')
+            //~->where('pengambilanCuti2.tanggalAwal > parent.tanggalKadaluarsa')
+            ->andWhere('masterCuti.id = :id')
+            ->setParameter('id', $this->routeManager->getKey())
+            ->setFirstResult(0)->setMaxResults(1)
+            ->getQuery()->getOneOrNullResult();
 
         if ($model == null) {
             $this->flashMessenger->addMessage('Data yang anda minta tidak ada.');
