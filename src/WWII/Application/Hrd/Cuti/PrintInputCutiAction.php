@@ -41,7 +41,10 @@ class PrintInputCutiAction
     public function render($params)
     {
         $data = $this->data;
+
         include('/view/print_input_cuti.phtml');
-        //~unset($this->sessionContainer->{$sessionNamespace});
+
+        $sessionNamespace = 'hrd_cuti_input_cuti';
+        unset($this->sessionContainer->{$sessionNamespace});
     }
 }
