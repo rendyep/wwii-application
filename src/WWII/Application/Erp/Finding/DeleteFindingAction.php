@@ -117,6 +117,6 @@ class DeleteFindingAction
 
         $this->templateManager->renderHeader();
         include('view/delete_finding.phtml');
-        $this->templateManager->renderFooterer();
+        $this->templateManager->renderFooter();
     }
 }
