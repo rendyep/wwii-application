@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="WWII Application Library" default="build">
+    <description>
+        WWII Application Library (wwii/application)
+    </description>
+
+    <target name="build" depends="prepare, lint, phpcb, phpdoc" />
+
+    <target name="clean" description="Cleanup build artifacts">
+        <delete dir="${basedir}/build/phpdocs" />
+        <delete dir="${basedir}/build/code-browser" />
+        <delete dir="${basedir}/build/logs" />
+    </target>
+
+    <target name="prepare" depends="clean" description="Prepare for build">
+        <mkdir dir="${basedir}/build/phpdocs" />
+        <mkdir dir="${basedir}/build/code-browser" />
+        <mkdir dir="${basedir}/build/logs" />
+    </target>
+
+    <target name="lint">
+        <apply executable="php.exe" failonerror="true">
+            <arg value="-l" />
+            <fileset dir="${basedir}/src">
+                <include name="**/*.php" />
+            </fileset>
+            <fileset dir="${basedir}/tests">
+                <include name="**/*.php" />
+            </fileset>
+        </apply>
+    </target>
+
+    <target name="phpdoc" description="API documentation generator for PHP 5.3+">
+        <exec executable="${basedir}/../../bin/apigen.bat" dir="${basedir}">
+            <arg value="--source" />
+            <arg path="${basedir}/src" />
+            <arg value="--destination" />
+            <arg path="${basedir}/build/phpdocs" />
+        </exec>
+    </target>
+
+    <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
+        <exec executable="${basedir}/../../bin/phpcb.bat">
+            <arg value="--log" />
+            <arg path="${basedir}/build/logs" />
+            <arg value="--source" />
+            <arg path="${basedir}/src" />
+            <arg value="--output" />
+            <arg path="${basedir}/build/code-browser" />
+        </exec>
+    </target>
+
+</project>
