@@ -21,6 +21,12 @@ class CutiController extends \WWII\Controller\AbstractController
         $action->dispatch($_POST);
     }
 
+    public function printDetailMasterCutiAction()
+    {
+        $action = new PrintDetailMasterCutiAction($this->serviceManager, $this->entityManager);
+        $action->dispatch($_POST);
+    }
+
     public function reportCutiAction()
     {
         $action = new ReportCutiAction($this->serviceManager, $this->entityManager);

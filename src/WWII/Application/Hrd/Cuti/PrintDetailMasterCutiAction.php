@@ -2,7 +2,7 @@
 
 namespace WWII\Application\Hrd\Cuti;
 
-class DetailMasterCutiAction
+class PrintDetailMasterCutiAction
 {
     protected $serviceManager;
 
@@ -49,14 +49,12 @@ class DetailMasterCutiAction
 
     protected function getRequestedModel()
     {
-        $now = new \DateTime();
-
         $model = $this->entityManager->createQueryBuilder()
             ->select('masterCuti')
             ->from('WWII\Domain\Hrd\Cuti\MasterCuti', 'masterCuti', 'masterCuti')
             ->leftJoin('masterCuti.pengambilanCuti', 'pengambilanCuti')
             ->leftJoin('masterCuti.parent', 'parent')
-            ->leftJoin('parent.pengambilanCuti', 'pengambilanCutiParent')
+            ->leftJoin('parent.pengambilanCuti', 'pengambilanCuti2')
             ->where('masterCuti.id = :id')
             ->setParameter('id', $this->routeManager->getKey())
             ->setFirstResult(0)->setMaxResults(1)

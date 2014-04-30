@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+        <meta name="author" content="Gatot S" />
+        <style type="text/css">
+            body, .content {
+                width: 100%;
+                text-align: center;
+            }
+
+            table.centered {
+                margin: 0 auto;
+            }
+
+            table.full-border {
+                border-collapse: collapse;
+                border: 1px solid #000000;
+            }
+
+            table.full-border th,
+            table.full-border td {
+                border: 1px solid #000000;
+            }
+
+            table.full-border td {
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="head">
+            <h3>
+                PT. Woodworth Wooden Industries Indonesia<br />
+                Online Reporting System
+            </h3>
+        </div>
+        <div id="container">
+            <div id="content">
+                <h3>Pengajuan Cuti</h3>
+                <?php if ($data !== null) : ?>
+                <table style="margin-left: auto; margin-right: auto;">
+                    <tbody>
+                        <tr>
+                            <td>Tanggal Pengajuan</td>
+                            <td>: <?php echo $data['tanggalPengajuan']->format('d/m/Y') ?></td>
+                        </tr>
+                        <tr>
+                            <td>NIK</td>
+                            <td>: <?php echo $data['nik'] ?></td>
+                        </tr>
+                        <tr>
+                            <td>Nama Karyawan</td>
+                            <td>: <?php echo $data['namaKaryawan'] ?></td>
+                        </tr>
+                        <tr>
+                            <td>Tanggal Cuti</td>
+                            <td>
+                                : <?php echo $data['tanggalAwal']->format('d/m/Y') ?>
+                                s/d <?php echo $data['tanggalAwal']->format('d/m/Y') ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <?php endif; ?>
+            </div>
+            <input type="submit" name="btx" value="Kembali" />
+        </div>
+    </body>
+</html>
+
+<style type="text/css">
+    table td {
+        text-align: left;
+    }
+
+    table td:first-child {
+        width: 200px;
+    }
+
+    table td:last-child {
+        width: 200px;
+    }
+</style>
