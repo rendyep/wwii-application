@@ -6,11 +6,15 @@ class AddFindingAction
 {
     protected $serviceManager;
 
+    protected $configManager;
+
     protected $databaseManager;
 
     protected $entityManager;
 
     protected $routeManager;
+
+    protected $mailManager;
 
     protected $templateManager;
 
@@ -21,11 +25,13 @@ class AddFindingAction
     public function __construct(\WWII\Service\ServiceManagerInterface $serviceManager, \Doctrine\ORM\EntityManager $entityManager)
     {
         $this->serviceManager = $serviceManager;
+        $this->configManager = $serviceManager->getConfigManager();
         $this->routeManager = $serviceManager->get('RouteManager');
         $this->databaseManager = $serviceManager->get('DatabaseManager');
         $this->flashMessenger = $serviceManager->get('FlashMessenger');
         $this->templateManager = $serviceManager->get('TemplateManager');
         $this->entityManager = $entityManager;
+        $this->mailManager = $serviceManager->get('MailManager');
     }
 
     public function dispatch($params)
@@ -67,6 +73,8 @@ class AddFindingAction
                 $photos = $this->rearrayFiles($_FILES['photos']);
                 $this->savePhotos($photos, $finding);
             }
+
+            $this->sendReportMail($finding);
 
             $this->flashMessenger->addMessage('Data berhasil disimpan.');
             $this->routeManager->redirect(array('action' => 'report_finding'));
@@ -151,6 +159,20 @@ class AddFindingAction
                 }
             }
         }
+    }
+
+    protected function sendReportMail(\WWII\Domain\Erp\Finding\Finding $model)
+    {
+        $mailSubscription = $this->configManager->get('mail_subscription');
+        $recipients = $mailSubscription['WWII_Application_Erp_Finding']['recipients'];
+        $subject = $mailSubscription['WWII_Application_Erp_Finding']['subject'];
+
+        $content = "Tanggal : {$model->getTanggal()->format('d/m/Y')}\n"
+            . "Pelaksana : {$model->getPelaksana()}\n\n"
+            . "Kejadian :\n{$model->getKejadian()}\n\n"
+            . "Tindakan :\n{$model->getTindakan()}";
+
+        $this->mailManager->send($recipients, $subject, $content);
     }
 
     public function render($params)
