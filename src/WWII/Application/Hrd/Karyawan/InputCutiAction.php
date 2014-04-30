@@ -33,7 +33,7 @@ class InputCutiAction
                 $this->dispatchSimpan($params);
                 break;
             case 'BATAL' :
-                $this->routeManager->redirect(array('action' => 'report_cuti');
+                $this->routeManager->redirect(array('action' => 'report_cuti'));
                 break;
         }
 

@@ -34,12 +34,12 @@ class DeleteKaryawanAction
     {
         if (!$this->isRemovable()) {
             $this->flashMessenger->addMessage('Data karyawan tidak bisa dihapus.');
-            $this->routeManager->redirect(array('action' => 'report_karyawan');
+            $this->routeManager->redirect(array('action' => 'report_karyawan'));
         }
 
         switch (strtoupper($params['btx'])) {
             case 'BATAL' :
-                $this->routeManager->redirect(array('action' => 'report_karyawan');
+                $this->routeManager->redirect(array('action' => 'report_karyawan'));
             case 'HAPUS' :
                 $this->dispatchDelete($params);
                 break;
@@ -56,7 +56,7 @@ class DeleteKaryawanAction
 
         if (!$this->isRemovable($karyawan)) {
             $this->flashMessenger->addMessage('Data karyawan tidak bisa dihapus.');
-            $this->routeManager->redirect(array('action' => 'report_karyawan');
+            $this->routeManager->redirect(array('action' => 'report_karyawan'));
         }
 
         $this->deletePhotoKaryawan($karyawan);
@@ -65,7 +65,7 @@ class DeleteKaryawanAction
         $this->entityManager->flush();
 
         $this->flashMessenger->addMessage('Data berhasil dihapus.');
-        $this->routeManager->redirect(array('action' => 'report_karyawan');
+        $this->routeManager->redirect(array('action' => 'report_karyawan'));
     }
 
     protected function deletePhotoKaryawan(\WWII\Domain\Hrd\Karyawan\Karyawan $karyawan)
@@ -82,7 +82,8 @@ class DeleteKaryawanAction
 
     protected function getRequestedModel()
     {
-        if (empty($this->routeManager->getKey())) {
+        $key = $this->routeManager->getKey();
+        if (empty($key)) {
             $this->routeManager->redirect(array('action' => 'report_karyawan'));
         }
 

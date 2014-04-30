@@ -31,7 +31,7 @@ class CetakPkwtAction
     {
         switch (strtoupper($params['btx'])) {
             case 'KEMBALI' :
-                $this->routeManager->redirect(array('action' => 'report_karyawan');
+                $this->routeManager->redirect(array('action' => 'report_karyawan'));
                 break;
         }
 
@@ -107,7 +107,7 @@ class CetakPkwtAction
 
         if ($karyawan == null) {
             $this->flashMessenger->addMessage('Data yang anda minta tidak ada.');
-            $this->routeManager->redirect(array('action' => 'report_karyawan');
+            $this->routeManager->redirect(array('action' => 'report_karyawan'));
         }
 
         return $karyawan;
