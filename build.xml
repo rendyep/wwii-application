@@ -4,7 +4,7 @@
         WWII Application Library (wwii/application)
     </description>
 
-    <target name="build" depends="prepare, lint, phpcb, phpdoc" />
+    <target name="build" depends="prepare, lint, phpcs, phpcb, phpdoc" />
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="${basedir}/build/phpdocs" />
@@ -49,5 +49,16 @@
             <arg path="${basedir}/build/code-browser" />
         </exec>
     </target>
+
+    <target name="phpcs"
+         description="Find coding standard violations using PHP_CodeSniffer">
+  <exec executable="${basedir}/../../bin/phpcs.bat">
+   <arg value="--report=checkstyle" />
+   <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
+   <arg value="--standard=PSR2" />
+   <arg value="--extensions=php" />
+   <arg path="${basedir}/src" />
+  </exec>
+ </target>
 
 </project>
