@@ -1,1 +1,3 @@
-config/config.sensitive.php
+/config/config.sensitive.php
+/build/*
+!/build/.gitkeep
