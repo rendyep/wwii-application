@@ -31,7 +31,7 @@
     </target>
 
     <target name="phpdoc" description="API documentation generator for PHP 5.3+">
-        <exec executable="${basedir}/../../bin/apigen.bat" dir="${basedir}">
+        <exec executable="${basedir}/../../bin/apigen.php.bat" dir="${basedir}">
             <arg value="--source" />
             <arg path="${basedir}/src" />
             <arg value="--destination" />
