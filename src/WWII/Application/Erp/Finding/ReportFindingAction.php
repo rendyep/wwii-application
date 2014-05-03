@@ -68,7 +68,7 @@ class ReportFindingAction
                     ->from('WWII\Domain\Erp\Finding\Finding', 'finding')
                     ->where("finding.tanggal >= '{$tanggal->format('Y-m-d')}'")
                     ->andWhere("finding.tanggal <= '{$tanggal->format('Y-m-t')}'")
-                    ->orderBy("finding.tanggal", "ASC")
+                    ->orderBy("finding.tanggal", "DESC")
                     ->getQuery()->getResult();
             } catch (\Exception $e) {
                 $this->errorMessages[] = 'Format tanggal tidak valid (ex. 17/03/2014).';

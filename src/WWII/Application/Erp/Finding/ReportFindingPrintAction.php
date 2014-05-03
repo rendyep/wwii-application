@@ -70,7 +70,7 @@ class ReportFindingPrintAction
                 ->from('WWII\Domain\Erp\Finding\Finding', 'finding')
                 ->where("finding.tanggal >= '{$tanggal->format('Y-m-d')}'")
                 ->andWhere("finding.tanggal <= '{$tanggal->format('Y-m-t')}'")
-                ->orderBy("finding.tanggal", "ASC")
+                ->orderBy("finding.tanggal", "DESC")
                 ->getQuery()->getResult();
         }
     }
