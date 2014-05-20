@@ -51,7 +51,7 @@
         <?php else : ?>
         <div class="fieldset-kiri required">NIK</div>
         <div class="fieldset-kanan">
-            <input type="text" class="medium" name="nik" value="<?php echo $params['nik'] ?>" />
+            <input required type="text" class="medium" name="nik" value="<?php echo $params['nik'] ?>" />
             <div class="error-container">
                 <?php echo isset($errorMessages['nik']) ? $errorMessages['nik'] : '' ?>
             </div>

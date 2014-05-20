@@ -26,7 +26,14 @@ class PrintInputCutiAction
 
     public function dispatch($params)
     {
-        $this->dispatchOutput($params);
+        switch (strtoupper($params['btx'])) {
+            case 'KEMBALI':
+                $this->routeManager->redirect(array('action' => 'report_cuti'));
+                break;
+            default:
+                $this->dispatchOutput($params);
+                break;
+        }
 
         $this->render($params);
     }
