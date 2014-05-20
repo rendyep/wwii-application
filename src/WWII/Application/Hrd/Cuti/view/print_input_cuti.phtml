@@ -118,7 +118,8 @@
                         </div>
                     </div>
                     <div class="footer">
-                        <div class="footer-date">Tgl ....................</div>
+                        <?php $now = new \DateTime(); ?>
+                        <div class="footer-date">Tgl <?php echo $now->format('d-m-Y') ?></div>
                         <div class="footer-sign">
                             <div>
                                 Mengetahui,<br />
