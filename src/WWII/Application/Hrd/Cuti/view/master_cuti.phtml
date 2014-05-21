@@ -27,8 +27,9 @@
     <input type='submit' name='btx' value='Proses' />
     <input type='reset' value='Reset' />
     <?php
-        if ($data !== null) :
+        if ($data !== null) {
             echo $data->getControl();
+        }
     ?>
     <table>
         <thead>
@@ -112,5 +113,4 @@
             <?php endif; ?>
         </tbody>
     </table>
-    <?php endif; ?>
 </form>

@@ -1,0 +1,33 @@
+<h3>Report Cuti</h3>
+<?php
+    if (! empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+        var_dump($errorMessages);
+    }
+?>
+<hr />
+<form action="" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <div class="fieldset-kiri">Tanggal Pengajuan</div>
+        <div class="fieldset-kanan"><?php echo $data->getTanggalInput()->format('d/m/Y') ?></div>
+        <div class="fieldset-kiri">NIK</div>
+        <div class="fieldset-kanan"><?php echo $data->getMasterCuti()->getNik() ?></div>
+        <div class="fieldset-kiri">Nama Karyawan</div>
+        <div class="fieldset-kanan"><?php echo $data->getMasterCuti()->getNamaKaryawan() ?></div>
+        <div class="fieldset-kiri">Tanggal Cuti</div>
+        <div class="fieldset-kanan">
+            <?php echo $data->getTanggalAwal()->format('d/m/Y') ?> s/d
+            <?php echo $data->getTanggalAkhir()->format('d/m/Y') ?>
+        </div>
+        <div class="fieldset-kiri">Jumlah Hari</div>
+        <div class="fieldset-kanan"><?php echo $data->getJumlahHari() ?></div>
+        <div class="fieldset-kiri">Sisa Cuti</div>
+        <div class="fieldset-kanan"><?php echo $data->getMasterCuti()->getSisaLimit() ?></div>
+        <hr />
+        <div class="fieldset-kiri"></div>
+        <div class="fieldset-button">
+            <input type="submit" name="btx" value="Approve" />
+            <input type="submit" name="btx" value="Batal" />
+        </div>
+    </fieldset>
+</form>

@@ -84,7 +84,7 @@ class ReportCutiAction
             $arrayTanggalAkhir = explode('/', $params['tanggalAkhir']);
             try {
                 $tanggalAkhir = new \DateTime($arrayTanggalAkhir[2] . '-' . $arrayTanggalAkhir[1] . '-' . $arrayTanggalAkhir[0]);
-                $query->andWhere('pengambilanCuti.tanggalInterview <= :tanggalAkhir')
+                $query->andWhere('pengambilanCuti.tanggalInput <= :tanggalAkhir')
                     ->setParameter('tanggalAkhir', $tanggalAkhir->format('Y-m-d'));
             } catch (\Exception $e) {
                 $this->errorMessages['tanggal'] = 'Format tanggal tidak valid (ex. 17/03/2014).';

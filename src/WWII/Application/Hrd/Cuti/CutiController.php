@@ -62,4 +62,10 @@ class CutiController extends \WWII\Controller\AbstractController
         $action = new DeleteCutiAction($this->serviceManager, $this->entityManager);
         $action->dispatch($_POST);
     }
+
+    public function approvisasiCutiAction()
+    {
+        $action = new ApprovisasiCutiAction($this->serviceManager, $this->entityManager);
+        $action->dispatch($_POST);
+    }
 }
