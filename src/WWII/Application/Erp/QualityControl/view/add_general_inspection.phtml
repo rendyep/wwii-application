@@ -73,191 +73,190 @@
     <div id="modalWrapper">
         <div id="modalWindow">
             <div style="text-align: right;"><a id="modalClose" href="#"><b>X</b></a></div>
-                <fieldset>
-                    <legend>Items</legend>
-                    <div>
-                        <div class="grid">
-                            <div class="fieldset-kiri required">Waktu (HH:mm)</div>
-                            <div class="fieldset-kanan">
-                                <input type="time" required min="07:00" max="16:30" class="medium" name="waktu" value="<?php echo $params['waktu'] ? $params['waktu'] : '07:00' ?>" />
-                                <div class="error-container">
-                                    <?php echo isset($errorMessages['waktu']) ? $errorMessages['waktu'] : '' ?>
-                                </div>
-                            </div>
-                            <div class="fieldset-kiri required">Kode Produk</div>
-                            <div class="fieldset-kanan">
-                                <input type="text" required class="medium" name="kodeProduk" value="<?php echo $params['kodeProduk'] ?>" />
-                                <div class="error-container">
-                                    <?php echo isset($errorMessages['kodeProduk']) ? $errorMessages['kodeProduk'] : '' ?>
-                                </div>
-                            </div>
-                            <div class="fieldset-kiri required">Nama Produk</div>
-                            <div class="fieldset-kanan">
-                                <input type="text" required class="medium" name="namaProduk" value="<?php echo $params['namaProduk'] ?>" />
-                                <div class="error-container">
-                                    <?php echo isset($errorMessages['namaProduk']) ? $errorMessages['namaProduk'] : '' ?>
-                                </div>
-                            </div>
-                            <div class="fieldset-kiri required">Inspection Level</div>
-                            <div class="fieldset-kanan">
-                                <select required name="level">
-                                    <option value="">[pilih satu]</option>
-                                    <?php foreach ($levelList as $level) : ?>
-                                    <option value="<?php echo $level->getCode() ?>" <?php echo $params['level'] == $level->getCode() ? 'selected="selected"' : ''  ?>>
-                                        <?php echo $level->getCode() ?>
-                                    </option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <div class="error-container">
-                                    <?php echo isset($errorMessages['level']) ? $errorMessages['level'] : '' ?>
-                                </div>
-                            </div>
-                            <div class="fieldset-kiri required">Acceptance Index</div>
-                            <div class="fieldset-kanan">
-                                <select required name="acceptanceIndex">
-                                    <option value="">[pilih satu]</option>
-                                    <?php foreach ($acceptanceIndexList as $acceptanceIndex) : ?>
-                                    <option value="<?php echo $acceptanceIndex->getCode() ?>" <?php echo $params['acceptanceIndex'] == $acceptanceIndex->getCode() ? 'selected="selected"' : ''  ?>>
-                                        <?php echo $acceptanceIndex->getCode() ?>
-                                    </option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <div class="error-container">
-                                    <?php echo isset($errorMessages['level']) ? $errorMessages['level'] : '' ?>
-                                </div>
-                            </div>
-                            <div class="fieldset-kiri required">Jumlah Lot</div>
-                            <div class="fieldset-kanan">
-                                <input type="number" required min=2 pattern="\d*" class="small" name="jumlahLot" value="<?php echo $params['jumlahLot'] ? $params['jumlahLot'] > 0 ? $params['jumlahLot'] : 2 : 2 ?>" />
-                                <div class="error-container">
-                                    <?php echo isset($errorMessages['jumlahLot']) ? $errorMessages['jumlahLot'] : '' ?>
-                                </div>
+            <fieldset>
+                <legend>Items</legend>
+                <div>
+                    <div class="grid">
+                        <div class="fieldset-kiri required">Waktu (HH:mm)</div>
+                        <div class="fieldset-kanan">
+                            <input type="time" required min="07:00" max="16:30" class="medium" name="waktu" value="<?php echo $params['waktu'] ? $params['waktu'] : '07:00' ?>" />
+                            <div class="error-container">
+                                <?php echo isset($errorMessages['waktu']) ? $errorMessages['waktu'] : '' ?>
                             </div>
                         </div>
-                        <div class="grid" style="width: 100%;">
-                            <fieldset>
-                                <legend>Detail</legend>
-                                <div class="grid">
-                                    <div class="fieldset-kiri required">Kain tergores</div>
-                                    <div class="fieldset-kanan">
-                                        <input type="number" required min=0 pattern="\d*" name="jumlahItemKainTergores" value="<?php echo $params['jumlahItemKainTergores'] ? $params['jumlahItemKainTergores'] : 0 ?>" />
-                                        <div class="error-container">
-                                            <?php echo isset($errorMessages['jumlahItemKainTergores']) ? $errorMessages['jumlahItemKainTergores'] : '' ?>
-                                        </div>
-                                    </div>
-                                    <div class="fieldset-kiri required">Tidak presisi</div>
-                                    <div class="fieldset-kanan">
-                                        <input type="number" required min=0 pattern="\d*" name="jumlahItemTidakPresisi" value="<?php echo $params['jumlahItemTidakPresisi'] ? $params['jumlahItemTidakPresisi'] : 0 ?>" />
-                                        <div class="error-container">
-                                            <?php echo isset($errorMessages['jumlahItemTidakPresisi']) ? $errorMessages['jumlahItemTidakPresisi'] : '' ?>
-                                        </div>
-                                    </div>
-                                    <div class="fieldset-kiri required">Salah Posisi Lubang</div>
-                                    <div class="fieldset-kanan">
-                                        <input type="number" required min=0 pattern="\d*" name="jumlahItemSalahPosisiLubang" value="<?php echo $params['jumlahItemSalahPosisiLubang'] ? $params['jumlahItemSalahPosisiLubang'] : 0 ?>" />
-                                        <div class="error-container">
-                                            <?php echo isset($errorMessages['jumlahItemSalahPosisiLubang']) ? $errorMessages['jumlahItemSalahPosisiLubang'] : '' ?>
-                                        </div>
-                                    </div>
-                                    <div class="fieldset-kiri required">Salah ukuran</div>
-                                    <div class="fieldset-kanan">
-                                        <input type="number" required min=0 pattern="\d*" name="jumlahItemSalahUkuran" value="<?php echo $params['jumlahItemSalahUkuran'] ? $params['jumlahItemSalahUkuran'] : 0 ?>" />
-                                        <div class="error-container">
-                                            <?php echo isset($errorMessages['jumlahItemSalahUkuran']) ? $errorMessages['jumlahItemSalahUkuran'] : '' ?>
-                                        </div>
-                                    </div>
-                                    <div class="fieldset-kiri required">Tergores</div>
-                                    <div class="fieldset-kanan">
-                                        <input type="number" required min=0 pattern="\d*" name="jumlahItemTergores" value="<?php echo $params['jumlahItemTergores'] ? $params['jumlahItemTergores'] : 0 ?>" />
-                                        <div class="error-container">
-                                            <?php echo isset($errorMessages['jumlahItemTergores']) ? $errorMessages['jumlahItemTergores'] : '' ?>
-                                        </div>
-                                    </div>
-                                    <div class="fieldset-kiri required">Kelebihan lem</div>
-                                    <div class="fieldset-kanan">
-                                        <input type="number" required min=0 pattern="\d*" name="jumlahItemKelebihanLem" value="<?php echo $params['jumlahItemKelebihanLem'] ? $params['jumlahItemKelebihanLem'] : 0 ?>" />
-                                        <div class="error-container">
-                                            <?php echo isset($errorMessages['jumlahItemKelebihanLem']) ? $errorMessages['jumlahItemKelebihanLem'] : '' ?>
-                                        </div>
-                                    </div>
-                                    <div class="fieldset-kiri required">Struktur longgar</div>
-                                    <div class="fieldset-kanan">
-                                        <input type="number" required min=0 pattern="\d*" name="jumlahItemStrukturLonggar" value="<?php echo $params['jumlahItemStrukturLonggar'] ? $params['jumlahItemStrukturLonggar'] : 0 ?>" />
-                                        <div class="error-container">
-                                            <?php echo isset($errorMessages['jumlahItemStrukturLonggar']) ? $errorMessages['jumlahItemStrukturLonggar'] : '' ?>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="grid">
-                                    <div class="fieldset-kiri required">Cover terpotong</div>
-                                    <div class="fieldset-kanan">
-                                        <input type="number" required min=0 pattern="\d*" name="jumlahItemCoverTerpotong" value="<?php echo $params['jumlahItemCoverTerpotong'] ? $params['jumlahItemCoverTerpotong'] : 0 ?>" />
-                                        <div class="error-container">
-                                            <?php echo isset($errorMessages['jumlahItemCoverTerpotong']) ? $errorMessages['jumlahItemCoverTerpotong'] : '' ?>
-                                        </div>
-                                    </div>
-                                    <div class="fieldset-kiri required">Retak</div>
-                                    <div class="fieldset-kanan">
-                                        <input type="number" required min=0 pattern="\d*" name="jumlahItemRetak" value="<?php echo $params['jumlahItemRetak'] ? $params['jumlahItemRetak'] : 0 ?>" />
-                                        <div class="error-container">
-                                            <?php echo isset($errorMessages['jumlahItemRetak']) ? $errorMessages['jumlahItemRetak'] : '' ?>
-                                        </div>
-                                    </div>
-                                    <div class="fieldset-kiri required">Sanding buruk</div>
-                                    <div class="fieldset-kanan">
-                                        <input type="number" required min=0 pattern="\d*" name="jumlahItemSandingBuruk" value="<?php echo $params['jumlahItemSandingBuruk'] ? $params['jumlahItemSandingBuruk'] : 0 ?>" />
-                                        <div class="error-container">
-                                            <?php echo isset($errorMessages['jumlahItemSandingBuruk']) ? $errorMessages['jumlahItemSandingBuruk'] : '' ?>
-                                        </div>
-                                    </div>
-                                    <div class="fieldset-kiri required">Paku keluar</div>
-                                    <div class="fieldset-kanan">
-                                        <input type="number" required min=0 pattern="\d*" name="jumlahItemPakuKeluar" value="<?php echo $params['jumlahItemPakuKeluar'] ? $params['jumlahItemPakuKeluar'] : 0 ?>" />
-                                        <div class="error-container">
-                                            <?php echo isset($errorMessages['jumlahItemPakuKeluar']) ? $errorMessages['jumlahItemPakuKeluar'] : '' ?>
-                                        </div>
-                                    </div>
-                                    <div class="fieldset-kiri required">Lem degumming</div>
-                                    <div class="fieldset-kanan">
-                                        <input type="number" required min=0 pattern="\d*" name="jumlahItemLemDegumming" value="<?php echo $params['jumlahItemLemDegumming'] ? $params['jumlahItemLemDegumming'] : 0 ?>" />
-                                        <div class="error-container">
-                                            <?php echo isset($errorMessages['jumlahItemLemDegumming']) ? $errorMessages['jumlahItemLemDegumming'] : '' ?>
-                                        </div>
-                                    </div>
-                                    <div class="fieldset-kiri required">Gap</div>
-                                    <div class="fieldset-kanan">
-                                        <input type="number" required min=0 pattern="\d*" name="jumlahItemGap" value="<?php echo $params['jumlahItemGap'] ? $params['jumlahItemGap'] : 0 ?>" />
-                                        <div class="error-container">
-                                            <?php echo isset($errorMessages['jumlahItemGap']) ? $errorMessages['jumlahItemGap'] : '' ?>
-                                        </div>
-                                    </div>
-                                    <div class="fieldset-kiri required">Lainnya</div>
-                                    <div class="fieldset-kanan">
-                                        <input type="number" required min=0 pattern="\d*" name="jumlahItemBurukLainnya" value="<?php echo $params['jumlahItemLainnya'] ? $params['jumlahItemBurukLainnya'] : 0 ?>" />
-                                        <div class="error-container">
-                                            <?php echo isset($errorMessages['jumlahItemBurukLainnya']) ? $errorMessages['jumlahItemBurukLainnya'] : '' ?>
-                                        </div>
-                                    </div>
-                                    <div class="fieldset-kiri required">Kekurangan</div>
-                                    <div class="fieldset-kanan">
-                                        <input type="number" required min=0 pattern="\d*" name="jumlahItemKekurangan" value="<?php echo $params['jumlahItemKekurangan'] ? $params['jumlahItemKekurangan'] : 0 ?>" />
-                                        <div class="error-container">
-                                            <?php echo isset($errorMessages['jumlahItemKekurangan']) ? $errorMessages['jumlahItemKekurangan'] : '' ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
+                        <div class="fieldset-kiri required">Kode Produk</div>
+                        <div class="fieldset-kanan">
+                            <input type="text" required class="medium" name="kodeProduk" value="<?php echo $params['kodeProduk'] ?>" />
+                            <div class="error-container">
+                                <?php echo isset($errorMessages['kodeProduk']) ? $errorMessages['kodeProduk'] : '' ?>
+                            </div>
+                        </div>
+                        <div class="fieldset-kiri required">Nama Produk</div>
+                        <div class="fieldset-kanan">
+                            <input type="text" required class="medium" name="namaProduk" value="<?php echo $params['namaProduk'] ?>" readonly />
+                            <div class="error-container">
+                                <?php echo isset($errorMessages['namaProduk']) ? $errorMessages['namaProduk'] : '' ?>
+                            </div>
+                        </div>
+                        <div class="fieldset-kiri required">Inspection Level</div>
+                        <div class="fieldset-kanan">
+                            <select required name="level">
+                                <option value="">[pilih satu]</option>
+                                <?php foreach ($levelList as $level) : ?>
+                                <option value="<?php echo $level->getCode() ?>" <?php echo $params['level'] == $level->getCode() ? 'selected="selected"' : ''  ?>>
+                                    <?php echo $level->getCode() ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <div class="error-container">
+                                <?php echo isset($errorMessages['level']) ? $errorMessages['level'] : '' ?>
+                            </div>
+                        </div>
+                        <div class="fieldset-kiri required">Acceptance Index</div>
+                        <div class="fieldset-kanan">
+                            <select required name="acceptanceIndex">
+                                <option value="">[pilih satu]</option>
+                                <?php foreach ($acceptanceIndexList as $acceptanceIndex) : ?>
+                                <option value="<?php echo $acceptanceIndex->getCode() ?>" <?php echo $params['acceptanceIndex'] == $acceptanceIndex->getCode() ? 'selected="selected"' : ''  ?>>
+                                    <?php echo $acceptanceIndex->getCode() ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <div class="error-container">
+                                <?php echo isset($errorMessages['level']) ? $errorMessages['level'] : '' ?>
+                            </div>
+                        </div>
+                        <div class="fieldset-kiri required">Jumlah Lot</div>
+                        <div class="fieldset-kanan">
+                            <input type="number" required min=2 pattern="\d*" class="small" name="jumlahLot" value="<?php echo $params['jumlahLot'] ? $params['jumlahLot'] > 0 ? $params['jumlahLot'] : 2 : 2 ?>" />
+                            <div class="error-container">
+                                <?php echo isset($errorMessages['jumlahLot']) ? $errorMessages['jumlahLot'] : '' ?>
+                            </div>
                         </div>
                     </div>
-                    <div style="clear:both;">
-                        <hr />
-                        <div class="fieldset-kiri"></div>
-                        <div class="fieldset-button">
-                            <input type="submit" name="btx" value="Add" />
-                        </div>
+                    <div class="grid" style="width: 100%;">
+                        <fieldset>
+                            <legend>Detail</legend>
+                            <div class="grid">
+                                <div class="fieldset-kiri required">Kain tergores</div>
+                                <div class="fieldset-kanan">
+                                    <input type="number" required min=0 pattern="\d*" name="jumlahItemKainTergores" value="<?php echo $params['jumlahItemKainTergores'] ? $params['jumlahItemKainTergores'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemKainTergores']) ? $errorMessages['jumlahItemKainTergores'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">Tidak presisi</div>
+                                <div class="fieldset-kanan">
+                                    <input type="number" required min=0 pattern="\d*" name="jumlahItemTidakPresisi" value="<?php echo $params['jumlahItemTidakPresisi'] ? $params['jumlahItemTidakPresisi'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemTidakPresisi']) ? $errorMessages['jumlahItemTidakPresisi'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">Salah Posisi Lubang</div>
+                                <div class="fieldset-kanan">
+                                    <input type="number" required min=0 pattern="\d*" name="jumlahItemSalahPosisiLubang" value="<?php echo $params['jumlahItemSalahPosisiLubang'] ? $params['jumlahItemSalahPosisiLubang'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemSalahPosisiLubang']) ? $errorMessages['jumlahItemSalahPosisiLubang'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">Salah ukuran</div>
+                                <div class="fieldset-kanan">
+                                    <input type="number" required min=0 pattern="\d*" name="jumlahItemSalahUkuran" value="<?php echo $params['jumlahItemSalahUkuran'] ? $params['jumlahItemSalahUkuran'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemSalahUkuran']) ? $errorMessages['jumlahItemSalahUkuran'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">Tergores</div>
+                                <div class="fieldset-kanan">
+                                    <input type="number" required min=0 pattern="\d*" name="jumlahItemTergores" value="<?php echo $params['jumlahItemTergores'] ? $params['jumlahItemTergores'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemTergores']) ? $errorMessages['jumlahItemTergores'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">Kelebihan lem</div>
+                                <div class="fieldset-kanan">
+                                    <input type="number" required min=0 pattern="\d*" name="jumlahItemKelebihanLem" value="<?php echo $params['jumlahItemKelebihanLem'] ? $params['jumlahItemKelebihanLem'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemKelebihanLem']) ? $errorMessages['jumlahItemKelebihanLem'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">Struktur longgar</div>
+                                <div class="fieldset-kanan">
+                                    <input type="number" required min=0 pattern="\d*" name="jumlahItemStrukturLonggar" value="<?php echo $params['jumlahItemStrukturLonggar'] ? $params['jumlahItemStrukturLonggar'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemStrukturLonggar']) ? $errorMessages['jumlahItemStrukturLonggar'] : '' ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="fieldset-kiri required">Cover terpotong</div>
+                                <div class="fieldset-kanan">
+                                    <input type="number" required min=0 pattern="\d*" name="jumlahItemCoverTerpotong" value="<?php echo $params['jumlahItemCoverTerpotong'] ? $params['jumlahItemCoverTerpotong'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemCoverTerpotong']) ? $errorMessages['jumlahItemCoverTerpotong'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">Retak</div>
+                                <div class="fieldset-kanan">
+                                    <input type="number" required min=0 pattern="\d*" name="jumlahItemRetak" value="<?php echo $params['jumlahItemRetak'] ? $params['jumlahItemRetak'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemRetak']) ? $errorMessages['jumlahItemRetak'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">Sanding buruk</div>
+                                <div class="fieldset-kanan">
+                                    <input type="number" required min=0 pattern="\d*" name="jumlahItemSandingBuruk" value="<?php echo $params['jumlahItemSandingBuruk'] ? $params['jumlahItemSandingBuruk'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemSandingBuruk']) ? $errorMessages['jumlahItemSandingBuruk'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">Paku keluar</div>
+                                <div class="fieldset-kanan">
+                                    <input type="number" required min=0 pattern="\d*" name="jumlahItemPakuKeluar" value="<?php echo $params['jumlahItemPakuKeluar'] ? $params['jumlahItemPakuKeluar'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemPakuKeluar']) ? $errorMessages['jumlahItemPakuKeluar'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">Lem degumming</div>
+                                <div class="fieldset-kanan">
+                                    <input type="number" required min=0 pattern="\d*" name="jumlahItemLemDegumming" value="<?php echo $params['jumlahItemLemDegumming'] ? $params['jumlahItemLemDegumming'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemLemDegumming']) ? $errorMessages['jumlahItemLemDegumming'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">Gap</div>
+                                <div class="fieldset-kanan">
+                                    <input type="number" required min=0 pattern="\d*" name="jumlahItemGap" value="<?php echo $params['jumlahItemGap'] ? $params['jumlahItemGap'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemGap']) ? $errorMessages['jumlahItemGap'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">Lainnya</div>
+                                <div class="fieldset-kanan">
+                                    <input type="number" required min=0 pattern="\d*" name="jumlahItemBurukLainnya" value="<?php echo $params['jumlahItemLainnya'] ? $params['jumlahItemBurukLainnya'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemBurukLainnya']) ? $errorMessages['jumlahItemBurukLainnya'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">Kekurangan</div>
+                                <div class="fieldset-kanan">
+                                    <input type="number" required min=0 pattern="\d*" name="jumlahItemKekurangan" value="<?php echo $params['jumlahItemKekurangan'] ? $params['jumlahItemKekurangan'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemKekurangan']) ? $errorMessages['jumlahItemKekurangan'] : '' ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
-                </fieldset>
-            </form>
+                </div>
+                <div style="clear:both;">
+                    <hr />
+                    <div class="fieldset-kiri"></div>
+                    <div class="fieldset-button">
+                        <input type="submit" name="btx" value="Add" />
+                    </div>
+                </div>
+            </fieldset>
         </div>
     </div>
 </form>
@@ -442,6 +441,10 @@
     #modalWindow fieldset {
         padding: 10px !important;
     }
+
+    .ui-autocomplete {
+        z-index: 201;
+    }
 </style>
 
 <script type="text/javascript">
@@ -491,5 +494,34 @@
         <?php else : ?>
         $("#tanggalInspeksi").attr('readonly', 'readonly');
         <?php endif; ?>
+
+        $("input[name=kodeProduk]").autocomplete({
+            minLenght: 3,
+            source: function(request, response) {
+                $.getJSON(
+                    "<?php echo $this->routeManager->generateRoute(array('action' => 'autocomplete_produk', 'bypass' => 'true')) ?>",
+                    { key: request.term },
+                    response
+                );
+            },
+            select: function(event, ui) {
+                $("input[name=kodeProduk]").val(ui.item.fFgCode);
+                $("input[name=namaProduk]").val(ui.item.fFgEName);
+
+                return false;
+            },
+            change: function(event, ui) {
+                if (! ui.item) {
+                    $("input[name=kodeProduk]").val('');
+                    $("input[name=namaProduk]").val('');
+                }
+
+                return false
+            }
+        }).data("ui-autocomplete")._renderItem = function( ul, item ) {
+            return $( "<li>" )
+                .append( "<a><strong>[" + item.fFgCode + "]</strong> " + item.fFgName + "</a>" )
+                .appendTo( ul );
+        };
     });
 </script>
