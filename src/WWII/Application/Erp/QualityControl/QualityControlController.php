@@ -20,4 +20,10 @@ class QualityControlController extends \WWII\Controller\AbstractController
         $action = new AddGeneralInspectionAction($this->serviceManager, $this->entityManager);
         $action->dispatch($_POST);
     }
+
+    public function autocompleteProdukAction()
+    {
+        $action = new AutocompleteProdukAction($this->serviceManager, $this->entityManager);
+        $action->dispatch($_GET);
+    }
 }
