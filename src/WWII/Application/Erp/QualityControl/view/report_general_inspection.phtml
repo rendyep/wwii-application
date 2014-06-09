@@ -141,7 +141,7 @@
             <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemBurukLainnya() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemKekurangan() ?></td>
             <td style="text-align:right;"><?php echo $item->getJumlahTotalItemBuruk() ?></td>
-            <td style="text-align:center;"><?php echo $this->inspectionStatusHelper->getInspectionStatus($item) ? 'v' : 'x' ?></td>
+            <td style="text-align:center;"><?php echo $this->inspectionStatusHelper->getInspectionStatus($item) ? 'pass' : 'fail' ?></td>
         </tr>
         <?php
                         endforeach;
