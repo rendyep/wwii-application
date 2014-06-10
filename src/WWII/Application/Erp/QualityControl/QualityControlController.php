@@ -15,6 +15,12 @@ class QualityControlController extends \WWII\Controller\AbstractController
         $action->dispatch($_POST);
     }
 
+    public function reportGeneralInspectionPrintAction()
+    {
+        $action = new ReportGeneralInspectionPrintAction($this->serviceManager, $this->entityManager);
+        $action->dispatch($_POST);
+    }
+
     public function addGeneralInspectionAction()
     {
         $action = new AddGeneralInspectionAction($this->serviceManager, $this->entityManager);
