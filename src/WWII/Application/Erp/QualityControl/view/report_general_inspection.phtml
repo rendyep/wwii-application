@@ -120,7 +120,10 @@
         <tr>
             <td rowspan=<?php echo $timeGroupRowSpan; ?>><?php echo $timeGroup->getWaktuInspeksi()->format('H:i:s'); ?></td>
         </tr>
-        <?php foreach ($timeGroup->getDailyInspectionItem() as $item) : ?>
+        <?php
+            foreach ($timeGroup->getDailyInspectionItem() as $item) :
+                $status = $this->inspectionStatusHelper->getInspectionStatus($item);
+        ?>
         <tr>
             <td><?php echo $item->getKodeProduk() ?></td>
             <td><?php echo $item->getNamaProduk() ?></td>
@@ -141,7 +144,7 @@
             <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemBurukLainnya() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemKekurangan() ?></td>
             <td style="text-align:right;"><?php echo $item->getJumlahTotalItemBuruk() ?></td>
-            <td style="text-align:center;"><?php echo $this->inspectionStatusHelper->getInspectionStatus($item) ? 'pass' : 'fail' ?></td>
+            <td style="text-align:center;color:<?php echo $status ? 'green' : 'red' ?>"><?php echo $status ? 'pass' : 'fail' ?></td>
         </tr>
         <?php
                         endforeach;
