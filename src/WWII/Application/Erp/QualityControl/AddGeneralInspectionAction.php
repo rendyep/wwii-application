@@ -219,8 +219,11 @@ class AddGeneralInspectionAction
             $this->entityManager->persist($dailyInspection);
             $this->entityManager->flush();
 
-            $this->flashMessenger->addMessage('Data berhasil disimpan.');
-            $this->routeManager->redirect(array('action' => 'report_general_inspection'));
+            $this->routeManager->redirect(array(
+                'action' => 'report_general_inspection_print',
+                'key' => $dailyInspection->getId(),
+                'print' => 1
+            ));
         }
 
         return array(
