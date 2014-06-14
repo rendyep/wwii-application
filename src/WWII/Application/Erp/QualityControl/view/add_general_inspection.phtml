@@ -1,4 +1,7 @@
-<h3>Input General Inspection</h3>
+<h3>
+    Input General Inspection<br />
+    输入一般检查
+</h3>
 <?php
     if (! empty($errorMessages)) {
         echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
@@ -19,19 +22,19 @@
 <hr />
 <form action="" method="post" enctype="multipart/form-data">
     <fieldset>
-        <legend>General</legend>
-        <div class="fieldset-kiri required">Tanggal</div>
+        <legend>General / 一般</legend>
+        <div class="fieldset-kiri required">Tanggal / 日期</div>
         <div class="fieldset-kanan">
             <input type="date" required pattern="\d{1,2}/\d{1,2}/\d{4}" id="tanggalInspeksi" class="medium" name="tanggalInspeksi" value="<?php echo $params['tanggalInspeksi'] ?>" />
             <div class="error-container">
                 <?php echo isset($errorMessages['tanggalInspeksi']) ? $errorMessages['tanggalInspeksi'] : '' ?>
             </div>
         </div>
-        <div class="fieldset-kiri required">Group/Departemen</div>
+        <div class="fieldset-kiri required">Group/Departemen / 组/部门</div>
         <div class="fieldset-kanan">
             <select required class="medium" name="group" />
                 <?php if (strtoupper($proses) == 'PROSES') : ?>
-                <option value="">[pilih satu]</option>
+                <option value="">[ pilih satu / 选一项 ]</option>
                 <?php endif; ?>
                 <?php
                     foreach ($departmentList as $department) :
@@ -50,7 +53,7 @@
                 <?php echo isset($errorMessages['group']) ? $errorMessages['group'] : '' ?>
             </div>
         </div>
-        <div class="fieldset-kiri required">Lokasi</div>
+        <div class="fieldset-kiri required">Lokasi / 位置</div>
         <div class="fieldset-kanan">
             <input type="text" required id="lokasi" class="medium" name="lokasi" value="<?php echo $params['lokasi'] ?>" />
             <div class="error-container">
@@ -74,34 +77,34 @@
         <div id="modalWindow">
             <div style="text-align: right;"><a id="modalClose" href="#"><b>X</b></a></div>
             <fieldset>
-                <legend>Items</legend>
+                <legend>Items / 产品</legend>
                 <div>
                     <div class="grid">
-                        <div class="fieldset-kiri required">Waktu (HH:mm)</div>
+                        <div class="fieldset-kiri required">Waktu / 时间 (HH:mm)</div>
                         <div class="fieldset-kanan">
                             <input type="time" required min="07:00" max="16:30" class="medium" name="waktu" value="<?php echo $params['waktu'] ? $params['waktu'] : '07:00' ?>" />
                             <div class="error-container">
                                 <?php echo isset($errorMessages['waktu']) ? $errorMessages['waktu'] : '' ?>
                             </div>
                         </div>
-                        <div class="fieldset-kiri required">Kode Produk</div>
+                        <div class="fieldset-kiri required">Kode Produk / 產品編號</div>
                         <div class="fieldset-kanan">
                             <input type="text" required class="medium" name="kodeProduk" value="<?php echo $params['kodeProduk'] ?>" />
                             <div class="error-container">
                                 <?php echo isset($errorMessages['kodeProduk']) ? $errorMessages['kodeProduk'] : '' ?>
                             </div>
                         </div>
-                        <div class="fieldset-kiri required">Nama Produk</div>
+                        <div class="fieldset-kiri required">Nama Produk / 產品名稱</div>
                         <div class="fieldset-kanan">
                             <input type="text" required class="medium" name="namaProduk" value="<?php echo $params['namaProduk'] ?>" readonly />
                             <div class="error-container">
                                 <?php echo isset($errorMessages['namaProduk']) ? $errorMessages['namaProduk'] : '' ?>
                             </div>
                         </div>
-                        <div class="fieldset-kiri required">Inspection Level</div>
+                        <div class="fieldset-kiri required">Inspection Level / 检查级别</div>
                         <div class="fieldset-kanan">
                             <select id="level" required name="level">
-                                <option value="">[pilih satu]</option>
+                                <option value="">[ pilih satu / 选一项 ]</option>
                                 <?php foreach ($levelList as $level) : ?>
                                 <option value="<?php echo $level->getCode() ?>" <?php echo $params['level'] == $level->getCode() ? 'selected="selected"' : ''  ?>>
                                     <?php echo $level->getCode() ?>
@@ -112,10 +115,10 @@
                                 <?php echo isset($errorMessages['level']) ? $errorMessages['level'] : '' ?>
                             </div>
                         </div>
-                        <div class="fieldset-kiri required">Acceptance Index</div>
+                        <div class="fieldset-kiri required">Acceptance Index / 验收指数</div>
                         <div class="fieldset-kanan">
                             <select id="acceptanceIndex" required name="acceptanceIndex">
-                                <option value="">[pilih satu]</option>
+                                <option value="">[ pilih satu / 选一项 ]</option>
                                 <?php foreach ($acceptanceIndexList as $acceptanceIndex) : ?>
                                 <option value="<?php echo $acceptanceIndex->getCode() ?>" <?php echo $params['acceptanceIndex'] == $acceptanceIndex->getCode() ? 'selected="selected"' : ''  ?>>
                                     <?php echo $acceptanceIndex->getCode() ?>
@@ -126,7 +129,7 @@
                                 <?php echo isset($errorMessages['level']) ? $errorMessages['level'] : '' ?>
                             </div>
                         </div>
-                        <div class="fieldset-kiri required">Jumlah Lot</div>
+                        <div class="fieldset-kiri required">Jumlah Lot / 批数量</div>
                         <div class="fieldset-kanan">
                             <input id='jumlahLot' type="number" required min=2 pattern="\d*" class="small" name="jumlahLot" value="<?php echo $params['jumlahLot'] ? $params['jumlahLot'] > 0 ? $params['jumlahLot'] : 2 : 2 ?>" />
                             <div class="error-container">
@@ -136,51 +139,51 @@
                     </div>
                     <div class="grid" style="width: 100%;">
                         <fieldset>
-                            <legend>Detail</legend>
+                            <legend>Detail / 明细</legend>
                             <div class="grid">
-                                <div class="fieldset-kiri required">Kain tergores</div>
+                                <div class="fieldset-kiri required">Kain tergores / 絨布劃傷</div>
                                 <div class="fieldset-kanan">
                                     <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemKainTergores" value="<?php echo $params['jumlahItemKainTergores'] ? $params['jumlahItemKainTergores'] : 0 ?>" />
                                     <div class="error-container">
                                         <?php echo isset($errorMessages['jumlahItemKainTergores']) ? $errorMessages['jumlahItemKainTergores'] : '' ?>
                                     </div>
                                 </div>
-                                <div class="fieldset-kiri required">Tidak presisi</div>
+                                <div class="fieldset-kiri required">Tidak presisi / 抽斗配套</div>
                                 <div class="fieldset-kanan">
                                     <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemTidakPresisi" value="<?php echo $params['jumlahItemTidakPresisi'] ? $params['jumlahItemTidakPresisi'] : 0 ?>" />
                                     <div class="error-container">
                                         <?php echo isset($errorMessages['jumlahItemTidakPresisi']) ? $errorMessages['jumlahItemTidakPresisi'] : '' ?>
                                     </div>
                                 </div>
-                                <div class="fieldset-kiri required">Salah Posisi Lubang</div>
+                                <div class="fieldset-kiri required">Salah Posisi Lubang / 孔位不對</div>
                                 <div class="fieldset-kanan">
                                     <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemSalahPosisiLubang" value="<?php echo $params['jumlahItemSalahPosisiLubang'] ? $params['jumlahItemSalahPosisiLubang'] : 0 ?>" />
                                     <div class="error-container">
                                         <?php echo isset($errorMessages['jumlahItemSalahPosisiLubang']) ? $errorMessages['jumlahItemSalahPosisiLubang'] : '' ?>
                                     </div>
                                 </div>
-                                <div class="fieldset-kiri required">Salah ukuran</div>
+                                <div class="fieldset-kiri required">Salah ukuran / 尺寸不對</div>
                                 <div class="fieldset-kanan">
                                     <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemSalahUkuran" value="<?php echo $params['jumlahItemSalahUkuran'] ? $params['jumlahItemSalahUkuran'] : 0 ?>" />
                                     <div class="error-container">
                                         <?php echo isset($errorMessages['jumlahItemSalahUkuran']) ? $errorMessages['jumlahItemSalahUkuran'] : '' ?>
                                     </div>
                                 </div>
-                                <div class="fieldset-kiri required">Tergores</div>
+                                <div class="fieldset-kiri required">Tergores / 劃傷</div>
                                 <div class="fieldset-kanan">
                                     <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemTergores" value="<?php echo $params['jumlahItemTergores'] ? $params['jumlahItemTergores'] : 0 ?>" />
                                     <div class="error-container">
                                         <?php echo isset($errorMessages['jumlahItemTergores']) ? $errorMessages['jumlahItemTergores'] : '' ?>
                                     </div>
                                 </div>
-                                <div class="fieldset-kiri required">Kelebihan lem</div>
+                                <div class="fieldset-kiri required">Kelebihan lem / 溢膠</div>
                                 <div class="fieldset-kanan">
                                     <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemKelebihanLem" value="<?php echo $params['jumlahItemKelebihanLem'] ? $params['jumlahItemKelebihanLem'] : 0 ?>" />
                                     <div class="error-container">
                                         <?php echo isset($errorMessages['jumlahItemKelebihanLem']) ? $errorMessages['jumlahItemKelebihanLem'] : '' ?>
                                     </div>
                                 </div>
-                                <div class="fieldset-kiri required">Struktur longgar</div>
+                                <div class="fieldset-kiri required">Struktur longgar / 結構鬆動</div>
                                 <div class="fieldset-kanan">
                                     <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemStrukturLonggar" value="<?php echo $params['jumlahItemStrukturLonggar'] ? $params['jumlahItemStrukturLonggar'] : 0 ?>" />
                                     <div class="error-container">
@@ -189,56 +192,56 @@
                                 </div>
                             </div>
                             <div class="grid">
-                                <div class="fieldset-kiri required">Cover terpotong</div>
+                                <div class="fieldset-kiri required">Cover terpotong / 崩缺</div>
                                 <div class="fieldset-kanan">
                                     <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemCoverTerpotong" value="<?php echo $params['jumlahItemCoverTerpotong'] ? $params['jumlahItemCoverTerpotong'] : 0 ?>" />
                                     <div class="error-container">
                                         <?php echo isset($errorMessages['jumlahItemCoverTerpotong']) ? $errorMessages['jumlahItemCoverTerpotong'] : '' ?>
                                     </div>
                                 </div>
-                                <div class="fieldset-kiri required">Retak</div>
+                                <div class="fieldset-kiri required">Retak / 開裂</div>
                                 <div class="fieldset-kanan">
                                     <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemRetak" value="<?php echo $params['jumlahItemRetak'] ? $params['jumlahItemRetak'] : 0 ?>" />
                                     <div class="error-container">
                                         <?php echo isset($errorMessages['jumlahItemRetak']) ? $errorMessages['jumlahItemRetak'] : '' ?>
                                     </div>
                                 </div>
-                                <div class="fieldset-kiri required">Sanding buruk</div>
+                                <div class="fieldset-kiri required">Sanding buruk / 砂光不良</div>
                                 <div class="fieldset-kanan">
                                     <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemSandingBuruk" value="<?php echo $params['jumlahItemSandingBuruk'] ? $params['jumlahItemSandingBuruk'] : 0 ?>" />
                                     <div class="error-container">
                                         <?php echo isset($errorMessages['jumlahItemSandingBuruk']) ? $errorMessages['jumlahItemSandingBuruk'] : '' ?>
                                     </div>
                                 </div>
-                                <div class="fieldset-kiri required">Paku keluar</div>
+                                <div class="fieldset-kiri required">Paku keluar / 出釘</div>
                                 <div class="fieldset-kanan">
                                     <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemPakuKeluar" value="<?php echo $params['jumlahItemPakuKeluar'] ? $params['jumlahItemPakuKeluar'] : 0 ?>" />
                                     <div class="error-container">
                                         <?php echo isset($errorMessages['jumlahItemPakuKeluar']) ? $errorMessages['jumlahItemPakuKeluar'] : '' ?>
                                     </div>
                                 </div>
-                                <div class="fieldset-kiri required">Lem degumming</div>
+                                <div class="fieldset-kiri required">Lem degumming / 脫膠</div>
                                 <div class="fieldset-kanan">
                                     <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemLemDegumming" value="<?php echo $params['jumlahItemLemDegumming'] ? $params['jumlahItemLemDegumming'] : 0 ?>" />
                                     <div class="error-container">
                                         <?php echo isset($errorMessages['jumlahItemLemDegumming']) ? $errorMessages['jumlahItemLemDegumming'] : '' ?>
                                     </div>
                                 </div>
-                                <div class="fieldset-kiri required">Gap</div>
+                                <div class="fieldset-kiri required">Gap / 縫隙</div>
                                 <div class="fieldset-kanan">
                                     <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemGap" value="<?php echo $params['jumlahItemGap'] ? $params['jumlahItemGap'] : 0 ?>" />
                                     <div class="error-container">
                                         <?php echo isset($errorMessages['jumlahItemGap']) ? $errorMessages['jumlahItemGap'] : '' ?>
                                     </div>
                                 </div>
-                                <div class="fieldset-kiri required">Lainnya</div>
+                                <div class="fieldset-kiri required">Lainnya / 其他</div>
                                 <div class="fieldset-kanan">
                                     <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemBurukLainnya" value="<?php echo $params['jumlahItemLainnya'] ? $params['jumlahItemBurukLainnya'] : 0 ?>" />
                                     <div class="error-container">
                                         <?php echo isset($errorMessages['jumlahItemBurukLainnya']) ? $errorMessages['jumlahItemBurukLainnya'] : '' ?>
                                     </div>
                                 </div>
-                                <div class="fieldset-kiri required">Kekurangan</div>
+                                <div class="fieldset-kiri required">Kekurangan / 缺點數</div>
                                 <div class="fieldset-kanan">
                                     <input class="jumlahItemKekurangan" type="number" required min=0 pattern="\d*" name="jumlahItemKekurangan" value="<?php echo $params['jumlahItemKekurangan'] ? $params['jumlahItemKekurangan'] : 0 ?>" />
                                     <div class="error-container">
