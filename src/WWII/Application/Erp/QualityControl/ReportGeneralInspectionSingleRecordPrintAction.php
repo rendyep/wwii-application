@@ -2,7 +2,7 @@
 
 namespace WWII\Application\Erp\QualityControl;
 
-class ReportGeneralInspectionPrintAction
+class ReportGeneralInspectionSingleRecordPrintAction
 {
     protected $serviceManager;
 
@@ -60,6 +60,6 @@ class ReportGeneralInspectionPrintAction
     public function render($params)
     {
         extract($this->result);
-        include('/view/report_general_inspection_print.phtml');
+        include('/view/report_general_inspection_single_record_print.phtml');
     }
 }

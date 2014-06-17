@@ -9,15 +9,15 @@ class QualityControlController extends \WWII\Controller\AbstractController
         //
     }
 
-    public function reportGeneralInspectionAction()
+    public function reportGeneralInspectionSingleRecordAction()
     {
-        $action = new ReportGeneralInspectionAction($this->serviceManager, $this->entityManager);
+        $action = new ReportGeneralInspectionSingleRecordAction($this->serviceManager, $this->entityManager);
         $action->dispatch($_POST);
     }
 
-    public function reportGeneralInspectionPrintAction()
+    public function reportGeneralInspectionSingleRecordPrintAction()
     {
-        $action = new ReportGeneralInspectionPrintAction($this->serviceManager, $this->entityManager);
+        $action = new ReportGeneralInspectionSingleRecordPrintAction($this->serviceManager, $this->entityManager);
         $action->dispatch($_POST);
     }
 

@@ -2,7 +2,7 @@
 
 namespace WWII\Application\Erp\QualityControl;
 
-class ReportGeneralInspectionAction
+class ReportGeneralInspectionSingleRecordAction
 {
     protected $serviceManager;
 
@@ -180,7 +180,7 @@ class ReportGeneralInspectionAction
         }
 
         $this->templateManager->renderHeader();
-        include('view/report_general_inspection.phtml');
+        include('view/report_general_inspection_single_record.phtml');
         $this->templateManager->renderFooter();
     }
 }
