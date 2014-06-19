@@ -9,7 +9,7 @@
     <table border="0" width="100%">
         <tbody>
             <tr>
-                <td>Tanggal Inspeksi</td>
+                <td>日期 Tanggal Inspeksi</td>
                 <td>
                     <input type="text" required id="tanggal" class="medium" name="tanggal" value="<?php echo $params['tanggal'] ?>">
                     <div class="error-container">
@@ -18,10 +18,10 @@
                 </td>
             </tr>
             <tr>
-                <td>Group/Departemen</td>
+                <td>组/部门 Group/Departemen</td>
                 <td>
                     <select name="group">
-                        <option value="">[pilih satu]</option>
+                        <option value="">[ 选一项 pilih satu ]</option>
                         <?php foreach ($departmentList as $department) : ?>
                         <option value="<?php echo $department ?>" <?php echo $params['group'] == $department ? 'selected="selected"' : '' ?>>
                             <?php echo $department ?>
@@ -34,7 +34,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Lokasi</td>
+                <td>定位點 Lokasi</td>
                 <td>
                     <input type="text" required id="lokasi" class="medium" name="lokasi" value="<?php echo $params['lokasi'] ?>" />
                     <div class="error-container">

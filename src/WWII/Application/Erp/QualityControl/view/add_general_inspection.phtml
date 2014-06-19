@@ -22,19 +22,19 @@
 <hr />
 <form action="" method="post" enctype="multipart/form-data">
     <fieldset>
-        <legend>General / 一般</legend>
-        <div class="fieldset-kiri required">Tanggal / 日期</div>
+        <legend>一般 General</legend>
+        <div class="fieldset-kiri required">日期Tanggal</div>
         <div class="fieldset-kanan">
             <input type="date" required pattern="\d{1,2}/\d{1,2}/\d{4}" id="tanggalInspeksi" class="medium" name="tanggalInspeksi" value="<?php echo $params['tanggalInspeksi'] ?>" />
             <div class="error-container">
                 <?php echo isset($errorMessages['tanggalInspeksi']) ? $errorMessages['tanggalInspeksi'] : '' ?>
             </div>
         </div>
-        <div class="fieldset-kiri required">Group/Departemen / 组/部门</div>
+        <div class="fieldset-kiri required">组/部门 Group/Departemen</div>
         <div class="fieldset-kanan">
             <select required class="medium" name="group" />
                 <?php if (strtoupper($proses) == 'PROSES') : ?>
-                <option value="">[ pilih satu / 选一项 ]</option>
+                <option value="">[ 选一项 pilih satu ]</option>
                 <?php endif; ?>
                 <?php
                     foreach ($departmentList as $department) :
