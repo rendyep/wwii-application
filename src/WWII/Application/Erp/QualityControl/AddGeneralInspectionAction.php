@@ -147,6 +147,13 @@ class AddGeneralInspectionAction
                     'waktuInspeksi' => $waktuInspeksi
                 ));
 
+            $time = null;
+            foreach ($dailyInspection->getDailyInspectionTime() as $tmpTime) {
+                if ($tmpTime->getWaktuInspeksi() == $waktuInspeksi) {
+                    $time = $tmpTime;
+                }
+            }
+
             if ($time == null) {
                 $time = new \WWII\Domain\Erp\QualityControl\GeneralInspection\DailyInspectionTime();
                 $time->setWaktuInspeksi($waktuInspeksi);
@@ -156,7 +163,6 @@ class AddGeneralInspectionAction
                 foreach ($dailyInspection->getDailyInspectionTime() as $dailyInspectionTime) {
                     if ($dailyInspectionTime->getWaktuInspeksi() == $time->getWaktuInspeksi()) {
                         $dailyInspectionTime->addDailyInspectionItem($item);
-                        break;
                     }
                 }
             }

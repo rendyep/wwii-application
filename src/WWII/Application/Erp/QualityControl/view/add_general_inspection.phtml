@@ -137,7 +137,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="grid" style="width: 100%;">
+                    <div id="detail" class="grid" style="width: 100%;">
                         <fieldset>
                             <legend>明细 Detail</legend>
                             <div class="grid">
@@ -256,7 +256,7 @@
                     <hr />
                     <div class="fieldset-kiri"></div>
                     <div class="fieldset-button">
-                        <input type="submit" name="btx" value="Add" />
+                        <input id="addButton" type="submit" name="btx" value="Add" />
                     </div>
                 </div>
             </fieldset>
@@ -269,6 +269,7 @@
             <th rowspan=0>時 間<br /><strong>Waktu</strong></th>
             <th rowspan=0>產 品<br />編 號<br /><strong>Kode Produk</strong></th>
             <th rowspan=0>產 品<br />名 稱<br /><strong>Nama Produk</strong></th>
+            <th rowspan=0>批<br />数<br />量<br />Jumlah<br />Lot</th>
             <th rowspan=0>檢<br />驗<br />數<br /><strong>Jumlah Inspeksi</strong></th>
             <th colspan=28>不 良 內 容<br /><strong>Konten Kondisi Buruk</strong></th>
             <th colspan=3>生 產 狀 況<br /><strong>Kondisi Produksi</strong></th>
@@ -321,6 +322,7 @@
         <tr>
             <td><?php echo $item->getKodeProduk() ?></td>
             <td><?php echo $item->getNamaProduk() ?></td>
+            <td style="text-align:right;"><?php echo $item->getJumlahLot() ?></td>
             <td style="text-align:right;"><?php echo $item->getJumlahInspeksi() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemKainTergores() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemTidakPresisi() ?></td>
@@ -468,6 +470,7 @@
             modalWindow.style.marginTop = (-modalWindow.offsetHeight)/2 + "px";
             modalWindow.style.marginLeft = (-modalWindow.offsetWidth)/2 + "px";
             e.preventDefault ? e.preventDefault() : e.returnValue = false;
+            toggleDetail();
         };
         var closeModal = function(e) {
             modalWrapper.className = "";
@@ -500,7 +503,7 @@
         <?php endif; ?>
 
         $("input[name=kodeProduk]").autocomplete({
-            minLenght: 3,
+            minLength: 1,
             source: function(request, response) {
                 $.getJSON(
                     "<?php echo $this->routeManager->generateRoute(array('action' => 'autocomplete_produk', 'bypass' => 'true')) ?>",
@@ -540,14 +543,33 @@
             }
         });
 
+        $("#level").change(function(){
+            toggleDetail();
+        });
+
+        $("#acceptanceIndex").change(function(){
+            toggleDetail();
+        });
+
         $("#jumlahLot").change(function(){
             validateData($(this));
         });
     });
 
+    function toggleDetail()
+    {
+        if ($("#level").val() == '' || $("#acceptanceIndex").val() == '') {
+            $("#detail").hide();
+            $("#addButton").hide();
+        } else {
+            $("#detail").show();
+            $("#addButton").show();
+        }
+    }
+
     function validateData(target)
     {
-        var jumlahLot = $("#jumlahLot").val();
+        var jumlahLot       = $("#jumlahLot").val();
         var jumlahItemBuruk = 0;
 
         $.each($(".jumlahItemBuruk"), function(index, element){

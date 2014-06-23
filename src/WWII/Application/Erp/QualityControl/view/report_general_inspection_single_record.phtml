@@ -57,7 +57,8 @@
             <th rowspan=0>時 間<br />Waktu</th>
             <th rowspan=0>產 品<br />編 號<br />Kode Produk</th>
             <th rowspan=0>產 品<br />名 稱<br />Nama Produk</th>
-            <th rowspan=0>檢<br />驗<br />數<br />Jumlah Inspeksi</th>
+            <th rowspan=0>批<br />数<br />量<br />Jumlah<br />Lot</th>
+            <th rowspan=0>檢<br />驗<br />數<br />Jumlah<br />Inspeksi</th>
             <th colspan=28>不 良 內 容<br />Konten Kondisi Buruk</th>
             <th colspan=3>生 產 狀 況<br />Kondisi Produksi</th>
             <th rowspan=0>Status</th>
@@ -104,7 +105,6 @@
                 foreach ($data as $dailyInspection) :
                     $numberRowSpan = 1;
                     foreach ($dailyInspection->getDailyInspectionTime() as $timeGroup) {
-                        //~$numberRowSpan++;
                         foreach ($timeGroup->getDailyInspectionItem() as $item) {
                             $numberRowSpan++;
                         }
@@ -126,6 +126,7 @@
         <tr>
             <td><?php echo $item->getKodeProduk() ?></td>
             <td><?php echo $item->getNamaProduk() ?></td>
+            <td style="text-align:right;"><?php echo $item->getJumlahLot() ?></td>
             <td style="text-align:right;"><?php echo $item->getJumlahInspeksi() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemKainTergores() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemTidakPresisi() ?></td>
