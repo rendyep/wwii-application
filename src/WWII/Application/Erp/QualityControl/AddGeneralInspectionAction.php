@@ -196,24 +196,19 @@ class AddGeneralInspectionAction
 
                 $dailyInspection = $this->entityManager->merge($dailyInspection);
 
-                foreach ($tmpDailyInspectionItems as $key => $items) {
+                foreach ($tmpDailyInspectionTimes as $tmpDailyInspectionTime) {
+                    $dailyInspection->addDailyInspectionTime($dailyInspectionTime);
+                }
+
+                foreach ($tmpDailyInspectionItems as $key => $tmpDailyInspectionItem) {
                     foreach ($dailyInspection->getDailyInspectionTime() as $dailyInspectionTime) {
                         if ($dailyInspectionTime->getId() == $key) {
-                            foreach ($items as $item) {
+                            foreach ($tmpDailyInspectionItem as $item) {
                                 $dailyInspectionTime->addDailyInspectionItem($item);
                             }
-                            break;
                         }
                     }
                 }
-
-                foreach ($tmpDailyInspectionTimes as $time) {
-                    $dailyInspection->addDailyInspectionTime($time);
-                }
-            } else {
-                echo '<pre>';
-                var_dump($dailyInspection);
-                echo '</pre>';
             }
 
             $this->entityManager->persist($dailyInspection);

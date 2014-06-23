@@ -104,19 +104,18 @@
                 foreach ($data as $dailyInspection) :
                     $numberRowSpan = 1;
                     foreach ($dailyInspection->getDailyInspectionTime() as $timeGroup) {
-                        $numberRowSpan++;
+                        //~$numberRowSpan++;
                         foreach ($timeGroup->getDailyInspectionItem() as $item) {
                             $numberRowSpan++;
                         }
                     }
+
+                    foreach ($dailyInspection->getDailyInspectionTime() as $timeGroup) :
+                        $timeGroupRowSpan = count($timeGroup->getDailyInspectionItem()) + 1;
         ?>
         <tr>
             <td rowspan=<?php echo $numberRowSpan ?>><?php echo $number++; ?></td>
         </tr>
-        <?php
-            foreach ($dailyInspection->getDailyInspectionTime() as $timeGroup) :
-                $timeGroupRowSpan = count($timeGroup->getDailyInspectionItem()) + 1;
-        ?>
         <tr>
             <td rowspan=<?php echo $timeGroupRowSpan; ?>><?php echo $timeGroup->getWaktuInspeksi()->format('H:i:s'); ?></td>
         </tr>
