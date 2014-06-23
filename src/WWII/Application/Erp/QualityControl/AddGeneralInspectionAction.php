@@ -50,7 +50,7 @@ class AddGeneralInspectionAction
                 $result = $this->dispatchSimpan($params);
                 break;
             case 'BATAL':
-                $this->routeManager->redirect(array('action' => 'report_general_inspection'));
+                $this->routeManager->redirect(array('action' => 'report_general_inspection_single_record'));
                 break;
             default:
                 $this->clearSessionData();
@@ -220,7 +220,7 @@ class AddGeneralInspectionAction
             $this->entityManager->flush();
 
             $this->routeManager->redirect(array(
-                'action' => 'report_general_inspection_print',
+                'action' => 'report_general_inspection_single_record_print',
                 'key' => $dailyInspection->getId(),
                 'print' => 1
             ));
