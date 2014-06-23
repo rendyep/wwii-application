@@ -79,7 +79,11 @@ class ReportGeneralInspectionSingleRecordAction
                 $dailyInspection->andWhere('dailyInspection.group = :group')
                     ->setParameter('group', $params['group']);
 
-                $data = $dailyInspection->getQuery()->getResult();
+                $data = $dailyInspection
+                    ->getQuery()
+                    ->setFirstResult(0)
+                    ->setMaxResults(1)
+                    ->getOneOrNullResult();
             }
         }
 

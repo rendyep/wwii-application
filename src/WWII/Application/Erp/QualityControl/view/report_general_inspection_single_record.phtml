@@ -53,7 +53,6 @@
 <table class="content">
     <thead>
         <tr>
-            <th rowspan=0>No.</th>
             <th rowspan=0>時 間<br />Waktu</th>
             <th rowspan=0>產 品<br />編 號<br />Kode Produk</th>
             <th rowspan=0>產 品<br />名 稱<br />Nama Produk</th>
@@ -99,23 +98,12 @@
     </thead>
     <tbody>
         <?php
-            if (count($data) > 0) :
-                $number = 1;
-
-                foreach ($data as $dailyInspection) :
-                    $numberRowSpan = 1;
-                    foreach ($dailyInspection->getDailyInspectionTime() as $timeGroup) {
-                        foreach ($timeGroup->getDailyInspectionItem() as $item) {
-                            $numberRowSpan++;
-                        }
-                    }
-
-                    foreach ($dailyInspection->getDailyInspectionTime() as $timeGroup) :
-                        $timeGroupRowSpan = count($timeGroup->getDailyInspectionItem()) + 1;
+            if ($data !== null) :
+                $dailyInspectionTime = $data->getDailyInspectionTime();
+                    if (count($dailyInspectionTime) > 0) :
+                        foreach ($dailyInspectionTime as $timeGroup) :
+                            $timeGroupRowSpan = count($timeGroup->getDailyInspectionItem()) + 1;
         ?>
-        <tr>
-            <td rowspan=<?php echo $numberRowSpan ?>><?php echo $number++; ?></td>
-        </tr>
         <tr>
             <td rowspan=<?php echo $timeGroupRowSpan; ?>><?php echo $timeGroup->getWaktuInspeksi()->format('H:i:s'); ?></td>
         </tr>
@@ -149,7 +137,7 @@
         <?php
                         endforeach;
                     endforeach;
-                endforeach;
+                endif;
             else :
         ?>
         <tr>
@@ -158,6 +146,17 @@
         <?php endif; ?>
     </tbody>
 </table>
+
+<button
+    onclick="javascript:window.location.href='<?php
+        echo $this->routeManager->generateRoute(array(
+            'action' => 'report_general_inspection_single_record_print',
+            'key' => $date->getId(),
+            'print' => true
+        ));
+    ?>'">
+    Print
+</button>
 
 <style type="text/css">
     fieldset {
