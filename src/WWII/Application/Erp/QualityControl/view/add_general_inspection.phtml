@@ -82,7 +82,17 @@
                     <div class="grid">
                         <div class="fieldset-kiri required">时间 Waktu (HH:mm)</div>
                         <div class="fieldset-kanan">
-                            <input type="time" required min="07:00" max="16:30" class="medium" name="waktu" />
+                            <!--input type="time" required min="07:00" max="16:30" class="medium" name="waktu" /-->
+                            <select name="waktu" class="medium">
+                                <option value="07:00:00">07:00:00</option>
+                                <option value="08:00:00">08:00:00</option>
+                                <option value="09:00:00">09:00:00</option>
+                                <option value="10:00:00">10:00:00</option>
+                                <option value="12:30:00">12:30:00</option>
+                                <option value="13:30:00">13:30:00</option>
+                                <option value="14:30:00">14:30:00</option>
+                                <option value="15:30:00">15:30:00</option>
+                            </select>
                             <div class="error-container">
                                 <?php echo isset($errorMessages['waktu']) ? $errorMessages['waktu'] : '' ?>
                             </div>
@@ -473,6 +483,8 @@
         var modalWrapper = document.getElementById("modalWrapper");
         var modalWindow = document.getElementById("modalWindow");
         var openModal = function(e) {
+            $("#detail").show();
+            $("#addButton").show();
             modalWrapper.className = "overlay";
             modalWindow.style.marginTop = (-modalWindow.offsetHeight)/2 + "px";
             modalWindow.style.marginLeft = (-modalWindow.offsetWidth)/2 + "px";
