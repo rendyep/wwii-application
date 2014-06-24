@@ -32,4 +32,10 @@ class QualityControlController extends \WWII\Controller\AbstractController
         $action = new AutocompleteProdukAction($this->serviceManager, $this->entityManager);
         $action->dispatch($_GET);
     }
+
+    public function requestSampleSizeAction()
+    {
+        $action = new RequestSampleSizeAction($this->serviceManager, $this->entityManager);
+        $action->dispatch($_GET);
+    }
 }

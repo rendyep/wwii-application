@@ -84,39 +84,13 @@ class AddGeneralInspectionAction
         $errorMessages = $this->validateData($params);
 
         if (empty($errorMessages)) {
-            $lootRange = $this->entityManager->createQueryBuilder()
-                ->select('lotRange')
-                ->from('WWII\Domain\Erp\QualityControl\GeneralInspection\LotRange', 'lotRange')
-                ->leftJoin('lotRange.level', 'level')
-                ->where('level.code = :level')
-                    ->setParameter('level', $params['level'])
-                ->andWhere('lotRange.minLot <= :minLot')
-                    ->setParameter('minLot', $params['jumlahLot'])
-                ->andWhere('lotRange.maxLot >= :maxLot')
-                    ->setParameter('maxLot', $params['jumlahLot'])
-                ->orderBy('lotRange.minLot', 'asc')
-                ->getQuery()
-                ->setFirstResult(0)
-                ->setMaxResults(1)
-                ->getOneOrNullResult();
-
-            $category = $lootRange->getCategory();
-
-            $acceptanceIndex = $this->entityManager
-                ->getRepository('WWII\Domain\Erp\QualityControl\GeneralInspection\AcceptanceIndex')
-                ->findOneByCode($params['acceptanceIndex']);
-
-            $acceptanceLimit = $this->entityManager
-                ->getRepository('WWII\Domain\Erp\QualityControl\GeneralInspection\AcceptanceLimit')
-                ->findOneBy(array('category' => $category, 'acceptanceIndex' => $acceptanceIndex));
-
             $item = new \WWII\Domain\Erp\QualityControl\GeneralInspection\DailyInspectionItem();
             $item->setKodeProduk($params['kodeProduk']);
             $item->setNamaProduk($params['namaProduk']);
             $item->setInspectionLevel($params['level']);
             $item->setAcceptanceIndex($params['acceptanceIndex']);
             $item->setJumlahLot($params['jumlahLot']);
-            $item->setJumlahInspeksi($acceptanceLimit->getSampleSize());
+            $item->setJumlahInspeksi($params['jumlahInspeksi']);
             $item->setJumlahItemKainTergores($params['jumlahItemKainTergores']);
             $item->setJumlahItemTidakPresisi($params['jumlahItemTidakPresisi']);
             $item->setJumlahItemSalahPosisiLubang($params['jumlahItemSalahPosisiLubang']);

@@ -20,7 +20,7 @@
     }
 ?>
 <hr />
-<form action="" method="post" enctype="multipart/form-data">
+<form id="generalInspectionForm" action="" method="post" enctype="multipart/form-data">
     <fieldset>
         <legend>一般 General</legend>
         <div class="fieldset-kiri required">日期 Tanggal</div>
@@ -82,21 +82,21 @@
                     <div class="grid">
                         <div class="fieldset-kiri required">时间 Waktu (HH:mm)</div>
                         <div class="fieldset-kanan">
-                            <input type="time" required min="07:00" max="16:30" class="medium" name="waktu" value="<?php echo $params['waktu'] ? $params['waktu'] : '07:00' ?>" />
+                            <input type="time" required min="07:00" max="16:30" class="medium" name="waktu" />
                             <div class="error-container">
                                 <?php echo isset($errorMessages['waktu']) ? $errorMessages['waktu'] : '' ?>
                             </div>
                         </div>
                         <div class="fieldset-kiri required">產品編號 Kode Produk</div>
                         <div class="fieldset-kanan">
-                            <input type="text" required class="medium" name="kodeProduk" value="<?php echo $params['kodeProduk'] ?>" />
+                            <input type="text" required class="medium" name="kodeProduk" />
                             <div class="error-container">
                                 <?php echo isset($errorMessages['kodeProduk']) ? $errorMessages['kodeProduk'] : '' ?>
                             </div>
                         </div>
                         <div class="fieldset-kiri required">產品名稱 Nama Produk</div>
                         <div class="fieldset-kanan">
-                            <input type="text" required class="medium" name="namaProduk" value="<?php echo $params['namaProduk'] ?>" readonly />
+                            <input type="text" required class="medium" name="namaProduk" readonly />
                             <div class="error-container">
                                 <?php echo isset($errorMessages['namaProduk']) ? $errorMessages['namaProduk'] : '' ?>
                             </div>
@@ -106,7 +106,7 @@
                             <select id="level" required name="level">
                                 <option value="">[ 选一项 pilih satu ]</option>
                                 <?php foreach ($levelList as $level) : ?>
-                                <option value="<?php echo $level->getCode() ?>" <?php echo $params['level'] == $level->getCode() ? 'selected="selected"' : ''  ?>>
+                                <option value="<?php echo $level->getCode() ?>">
                                     <?php echo $level->getCode() ?>
                                 </option>
                                 <?php endforeach; ?>
@@ -120,20 +120,27 @@
                             <select id="acceptanceIndex" required name="acceptanceIndex">
                                 <option value="">[ 选一项 pilih satu ]</option>
                                 <?php foreach ($acceptanceIndexList as $acceptanceIndex) : ?>
-                                <option value="<?php echo $acceptanceIndex->getCode() ?>" <?php echo $params['acceptanceIndex'] == $acceptanceIndex->getCode() ? 'selected="selected"' : ''  ?>>
+                                <option value="<?php echo $acceptanceIndex->getCode() ?>">
                                     <?php echo $acceptanceIndex->getCode() ?>
                                 </option>
                                 <?php endforeach; ?>
                             </select>
                             <div class="error-container">
-                                <?php echo isset($errorMessages['level']) ? $errorMessages['level'] : '' ?>
+                                <?php echo isset($errorMessages['acceptanceIndex']) ? $errorMessages['acceptanceIndex'] : '' ?>
                             </div>
                         </div>
                         <div class="fieldset-kiri required">批数量 Jumlah Lot</div>
                         <div class="fieldset-kanan">
-                            <input id='jumlahLot' type="number" required min=2 pattern="\d*" class="small" name="jumlahLot" value="<?php echo $params['jumlahLot'] ? $params['jumlahLot'] > 0 ? $params['jumlahLot'] : 2 : 2 ?>" />
+                            <input id='jumlahLot' type="number" required min=2 pattern="\d*" class="small" name="jumlahLot" value="2" />
                             <div class="error-container">
                                 <?php echo isset($errorMessages['jumlahLot']) ? $errorMessages['jumlahLot'] : '' ?>
+                            </div>
+                        </div>
+                        <div class="fieldset-kiri required">檢驗數 Jumlah Inspeksi</div>
+                        <div class="fieldset-kanan">
+                            <input id='jumlahInspeksi' type="number" readonly required min=2 pattern="\d*" class="small" name="jumlahInspeksi" value="2" />
+                            <div class="error-container">
+                                <?php echo isset($errorMessages['jumlahInspeksi']) ? $errorMessages['jumlahInspeksi'] : '' ?>
                             </div>
                         </div>
                     </div>
@@ -470,7 +477,7 @@
             modalWindow.style.marginTop = (-modalWindow.offsetHeight)/2 + "px";
             modalWindow.style.marginLeft = (-modalWindow.offsetWidth)/2 + "px";
             e.preventDefault ? e.preventDefault() : e.returnValue = false;
-            toggleDetail();
+            processDetail();
         };
         var closeModal = function(e) {
             modalWrapper.className = "";
@@ -543,41 +550,53 @@
             }
         });
 
-        $("#level").change(function(){
-            toggleDetail();
-        });
-
-        $("#acceptanceIndex").change(function(){
-            toggleDetail();
+        $("#level, #acceptanceIndex, #jumlahLot").change(function(){
+            processDetail();
         });
 
         $("#jumlahLot").change(function(){
             validateData($(this));
         });
+
+        $("input[value=Simpan]").click(function(e){
+            $("#generalInspectionForm").attr("novalidate", "novalidate");
+        });
     });
 
-    function toggleDetail()
+    function processDetail()
     {
-        if ($("#level").val() == '' || $("#acceptanceIndex").val() == '') {
+        if ($("#level").val() == '' || $("#acceptanceIndex").val() == '' || parseInt($("#jumlahLot").val()) == 0) {
             $("#detail").hide();
             $("#addButton").hide();
+            $("#jumlahInspeksi").val("0");
         } else {
             $("#detail").show();
             $("#addButton").show();
+
+            $.ajax("<?php echo $this->routeManager->generateRoute(array(
+                'action' => 'request_sample_size',
+                'bypass' => true
+            )) ?>"
+            + "&inspectionLevel=" + $("#level").val()
+            + "&acceptanceIndex=" + $("#acceptanceIndex").val()
+            + "&jumlahLot=" + $("#jumlahLot").val()
+            ).done(function(result){
+                    $("#jumlahInspeksi").val(result);
+                });
         }
     }
 
     function validateData(target)
     {
-        var jumlahLot       = $("#jumlahLot").val();
+        var jumlahInspeksi  = parseInt($("#jumlahInspeksi").val());
         var jumlahItemBuruk = 0;
 
         $.each($(".jumlahItemBuruk"), function(index, element){
             jumlahItemBuruk += parseInt($(element).val());
         });
 
-        if (jumlahLot < jumlahItemBuruk) {
-            alert('Jumlah Item Buruk melebihi Jumlah Lot.');
+        if (jumlahInspeksi < jumlahItemBuruk) {
+            alert('Jumlah Item Buruk melebihi Jumlah Inspeksi.');
             target.val(0);
         }
     }
