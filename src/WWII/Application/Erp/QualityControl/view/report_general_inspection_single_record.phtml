@@ -146,18 +146,18 @@
         <?php endif; ?>
     </tbody>
 </table>
-
-<button
+<?php if ($data !== null) : ?>
+<input
+    type="button"
+    value="Print"
     onclick="javascript:window.location.href='<?php
         echo $this->routeManager->generateRoute(array(
             'action' => 'report_general_inspection_single_record_print',
-            'key' => $date->getId(),
+            'key' => $data->getId(),
             'print' => true
         ));
     ?>'">
-    Print
-</button>
-
+<?php endif; ?>
 <style type="text/css">
     fieldset {
         border: 1px solid;
