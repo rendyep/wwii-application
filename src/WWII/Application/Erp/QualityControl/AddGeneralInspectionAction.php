@@ -112,7 +112,7 @@ class AddGeneralInspectionAction
             $arrayTanggalInspeksi = explode('/', $params['tanggalInspeksi']);
             $waktuInspeksi = new \DateTime(
                 $arrayTanggalInspeksi[2]. '-' . $arrayTanggalInspeksi[1] . '-' . $arrayTanggalInspeksi[0]
-                . ' ' . $params['waktu'] . ':00'
+                . ' ' . $params['waktu']
             );
             $time = $this->entityManager
                 ->getRepository('WWII\Domain\Erp\QualityControl\GeneralInspection\DailyInspectionTime')
