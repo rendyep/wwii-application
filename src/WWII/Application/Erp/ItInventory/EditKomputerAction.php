@@ -81,7 +81,10 @@ class EditKomputerAction
             $komputer->setUser($params['user']);
             $komputer->setUserAccount($params['userAccount']);
             $komputer->setLokasi($params['lokasi']);
-            $komputer->setTahun($params['tahun']);
+
+            if ($params['tahun'] !== '') {
+                $komputer->setTahun($params['tahun']);
+            }
 
             $this->entityManager->persist($komputer);
             $this->entityManager->flush();
@@ -137,6 +140,10 @@ class EditKomputerAction
 
         if (empty($params['lokasi'])) {
             $errorMessages[] = 'Lokasi harus diisi';
+        }
+
+        if (! empty($params['tahun']) && ! (! is_int($params['tahun']) || $params['tahun'] <= 0)) {
+            $errorMessages[] = 'Tahun harus berupa integer';
         }
 
         return $errorMessages;
