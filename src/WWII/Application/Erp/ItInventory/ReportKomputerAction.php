@@ -50,9 +50,11 @@ class ReportKomputerAction
             $query = $this->entityManager->createQueryBuilder()
                 ->select('komputer')
                 ->from('WWII\Domain\Erp\ItInventory\Komputer', 'komputer')
-                ->where('UPPER(komputer.nomorSeri) LIKE :nomorSeri')
+                ->where('UPPER(komputer.mac) LIKE :mac')
+                ->andWhere('UPPER(komputer.nomorSeri) LIKE :nomorSeri')
                 ->andWhere('UPPER(komputer.os) LIKE :os')
                 ->andWhere('UPPER(komputer.lokasi) LIKE :lokasi')
+                ->setParameter('mac', '%' . strtoupper(trim($params['mac'])) . '%')
                 ->setParameter('nomorSeri', '%' . strtoupper(trim($params['nomorSeri'])) . '%')
                 ->setParameter('os', '%' . strtoupper(trim($params['sistemOperasi'])) . '%')
                 ->setParameter('lokasi', '%' . strtoupper(trim($params['lokasi'])) . '%');
