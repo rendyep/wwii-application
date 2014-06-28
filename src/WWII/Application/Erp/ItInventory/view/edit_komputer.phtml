@@ -15,7 +15,21 @@
             </tr>
             <tr>
                 <td>Sistem Operasi</td>
-                <td><input type='text' size='30' name='sistemOperasi' value='<?php echo $data->getOs() ?>' /></td>
+                <td>
+                    <select name='sistemOperasi'>
+                        <option value=''>[ pilih satu ]</option>
+                        <option value='Windows 7 Home Basic 32-Bit'<?php echo $data->getOS() == 'Windows 7 Home Basic 32-Bit' ? ' selected' : '' ?>>Windows 7 Home Basic 32-Bit</option>
+                        <option value='Windows 7 Home Basic 62-Bit'<?php echo $data->getOS() == 'Windows 7 Home Basic 62-Bit' ? ' selected' : '' ?>>Windows 7 Home Basic 62-Bit</option>
+                        <option value='Windows 7 Home Premium 32-Bit'<?php echo $data->getOS() == 'Windows 7 Home Premium 32-Bit' ? ' selected' : '' ?>>Windows 7 Home Premium 32-Bit</option>
+                        <option value='Windows 7 Home Premium 64-Bit'<?php echo $data->getOS() == 'Windows 7 Home Premium 64-Bit' ? ' selected' : '' ?>>Windows 7 Home Premium 64-Bit</option>
+                        <option value='Windows 7 Profesional 32-Bit'<?php echo $data->getOS() == 'Windows 7 Profesional 32-Bit' ? ' selected' : '' ?>>Windows 7 Profesional 32-Bit</option>
+                        <option value='Windows 7 Profesional 64-Bit'<?php echo $data->getOS() == 'Windows 7 Profesional 64-Bit' ? ' selected' : '' ?>>Windows 7 Profesional 64-Bit</option>
+                        <option value='Windows 7 Ultimate 32-Bit'<?php echo $data->getOS() == 'Windows 7 Ultimate 32-Bit' ? ' selected' : '' ?>>Windows 7 Ultimate 32-Bit</option>
+                        <option value='Windows 7 Ultimate 64-Bit'<?php echo $data->getOS() == 'Windows 7 Ultimate 64-Bit' ? ' selected' : '' ?>>Windows 7 Ultimate 64-Bit</option>
+                        <option value='Windows Server 2012 64-bit'<?php echo $data->getOS() == 'Windows Server 2012 64-bit' ? ' selected' : '' ?>>Windows Server 2012 64-bit</option>
+                        <option value='Windows Storage Server 2012 64-bit'<?php echo $data->getOS() == 'Windows Storage Server 2012 64-bit' ? ' selected' : '' ?>>Windows Storage Server 2012 64-bit</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>IP Address</td>
@@ -39,7 +53,22 @@
             </tr>
             <tr>
                 <td>Lokasi</td>
-                <td><input type='text' size='30' name='lokasi' value='<?php echo $data->getLokasi() ?>' /></td>
+                <td>
+                    <select name='lokasi'>
+                        <option value=''>[ pilih satu ]</option>
+                        <option value='Dept. HRD/GA'<?php echo $data->getLokasi() == 'Dept. HRD/GA' ? ' selected' : '' ?>>Dept. HRD/GA</option>
+                        <option value='Dept. Accounting'<?php echo $data->getLokasi() == 'Dept. Accounting' ? ' selected' : '' ?>>Dept. Accounting</option>
+                        <option value='Dept. Marketing'<?php echo $data->getLokasi() == 'Dept. Marketing' ? ' selected' : '' ?>>Dept. Marketing</option>
+                        <option value='Dept. Shipping'<?php echo $data->getLokasi() == 'Dept. Shipping' ? ' selected' : '' ?>>Dept. Shipping</option>
+                        <option value='Dept. CMC'<?php echo $data->getLokasi() == 'Dept. CMC' ? ' selected' : '' ?>>Dept. CMC</option>
+                        <option value='Dept. PPIC'<?php echo $data->getLokasi() == 'Dept. PPIC' ? ' selected' : '' ?>>Dept. PPIC</option>
+                        <option value='Dept. Purchasing'<?php echo $data->getLokasi() == 'Dept. Purchasing' ? ' selected' : '' ?>>Dept. Purchasing</option>
+                        <option value='Dept. Warehouse'<?php echo $data->getLokasi() == 'Dept. Warehouse' ? ' selected' : '' ?>>Dept. Warehouse</option>
+                        <option value='Dept. IT'<?php echo $data->getLokasi() == 'Dept. IT' ? ' selected' : '' ?>>Dept. IT</option>
+                        <option value='Dept. R&D'<?php echo $data->getLokasi() == 'Dept. R&D' ? ' selected' : '' ?>>Dept. R&D</option>
+                        <option value='Dept. Finish Good'<?php echo $params['lokasi'] == 'Dept. Finish Good' ? ' selected' : '' ?>>Dept. Finish Good</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>Tahun</td>
@@ -52,23 +81,72 @@
         <tbody>
             <tr>
                 <td>CPU</td>
-                <td><input type='text' size='30' name='cpu' value='<?php echo $data->getCpu() ?>' /></td>
+                <td>
+                    <select name='cpu'>
+                        <option value=''>[ pilih satu ]</option>
+                        <option value='Intel Core i3'<?php echo $data->getCPU() == 'Intel Core i3' ? ' selected' : '' ?>>Intel Core i3</option>
+                        <option value='Intel Core i5'<?php echo $data->getCPU() == 'Intel Core i5' ? ' selected' : '' ?>>Intel Core i5</option>
+                        <option value='Intel Core 2 Duo'<?php echo $data->getCPU() == 'Intel Core 2 Duo' ? ' selected' : '' ?>>Intel Core 2 Duo</option>
+                        <option value='Intel Dual Core'<?php echo $data->getCPU() == 'Intel Dual Core' ? ' selected' : '' ?>>Intel Dual Core</option>
+                        <option value='Intel Xeon E5620 @ 2.40 GHz 2.39 Ghz'<?php echo $data->getCPU() == 'Intel Xeon E5620 @ 2.40 GHz 2.39 Ghz' ? ' selected' : '' ?>>Intel Xeon E5620 @ 2.40 GHz 2.39 Ghz</option>
+                        <option value='Intel Core i3-3220T @ 2.80 Ghz'<?php echo $data->getCPU() == 'Intel Core i3-3220T @ 2.80 Ghz' ? ' selected' : '' ?>>Intel Core i3-3220T @ 2.80 Ghz</option>
+                        <option value='Intel Celeron'<?php echo $data->getCPU() == 'Intel Celeron' ? ' selected' : '' ?>>Intel Celeron</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>Hard Disk</td>
-                <td><input type='text' size='30' name='hardDisk' value='<?php echo $data->getHardDisk() ?>' /></td>
+                <td>
+                    <select name='hardDisk'>
+                        <option value=''>[ pilih satu ]</option>
+                        <option value='250 GB'<?php echo $data->getHardDisk() == '250 GB' ? ' selected' : '' ?>>250 GB</option>
+                        <option value='320 GB'<?php echo $data->getHardDisk() == '320 GB' ? ' selected' : '' ?>>320 GB</option>
+                        <option value='500 GB'<?php echo $data->getHardDisk() == '500 GB' ? ' selected' : '' ?>>500 GB</option>
+                        <option value='1 TB'<?php echo $data->getHardDisk() == '1 TB' ? ' selected' : '' ?>>1 TB</option>
+                        <option value='2 TB'<?php echo $data->getHardDisk() == '2 TB' ? ' selected' : '' ?>>2 TB</option>
+                        <option value='3 TB'<?php echo $data->getHardDisk() == '3 TB' ? ' selected' : '' ?>>3 TB</option>
+                        <option value='4 TB'<?php echo $data->getHardDisk() == '4 TB' ? ' selected' : '' ?>>4 TB</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>RAM</td>
-                <td><input type='text' size='30' name='ram' value='<?php echo $data->getRam() ?>' /></td>
+                <td>
+                    <select name='ram'>
+                        <option value=''>[ pilih satu ]</option>
+                        <option value='2 GB'<?php echo $data->getRAM() == '2 GB' ? ' selected' : '' ?>>2 GB</option>
+                        <option value='3 GB'<?php echo $data->getRAM() == '3 GB' ? ' selected' : '' ?>>3 GB</option>
+                        <option value='4 GB'<?php echo $data->getRAM() == '4 GB' ? ' selected' : '' ?>>4 GB</option>
+                        <option value='6 GB'<?php echo $data->getRAM() == '6 GB' ? ' selected' : '' ?>>6 GB</option>
+                        <option value='8 GB'<?php echo $data->getRAM() == '8 GB' ? ' selected' : '' ?>>8 GB</option>
+                        <option value='16 GB'<?php echo $data->getRAM() == '16 GB' ? ' selected' : '' ?>>16 GB</option>
+                        <option value='32 GB'<?php echo $data->getRAM() == '32 GB' ? ' selected' : '' ?>>32 GB</option>
+                        <option value='64 GB'<?php echo $data->getRAM() == '64 GB' ? ' selected' : '' ?>>64 GB</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>LCD</td>
-                <td><input type='text' size='30' name='lcd' value='<?php echo $data->getLcd() ?>' /></td>
+                <td>
+                    <select name='lcd'>
+                        <option value=''>[ pilih satu ]</option>
+                        <option value='Samsung'<?php echo $data->getLCD() == 'Samsung' ? ' selected' : '' ?>>Samsung</option>
+                        <option value='Compaq'<?php echo $data->getLCD() == 'Compaq' ? ' selected' : '' ?>>Compaq</option>
+                        <option value='Acer'<?php echo $data->getLCD() == 'Acer' ? ' selected' : '' ?>>Acer</option>
+                        <option value='View Sonic'<?php echo $data->getLCD() == 'View Sonic' ? ' selected' : '' ?>>View Sonic</option>
+                        <option value='Dell'<?php echo $data->getLCD() == 'Dell' ? ' selected' : '' ?>>Dell</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>Optical Drive</td>
-                <td><input type='text' size='30' name='opticalDrive' value='<?php echo $data->getOpticalDrive() ?>' /></td>
+                <td>
+                    <select name='opticalDrive'>
+                        <option value=''>[ pilih satu ]</option>
+                        <option value='yes'<?php echo $data->getOpticalDrive() == 'yes' ? ' selected' : '' ?>>yes</option>
+                        <option value='no'<?php echo $data->getOpticalDrive() == 'no' ? ' selected' : '' ?>>no</option>
+                    </select>
+                </td>
             </tr>
         </tbody>
     </table>

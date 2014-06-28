@@ -15,7 +15,21 @@
             </tr>
             <tr>
                 <td>Sistem Operasi</td>
-                <td><input type='text' size='30' name='sistemOperasi' value='<?php echo $params['sistemOperasi'] ?>' /></td>
+                <td>
+                    <select name='sistemOperasi'>
+                        <option value=''>[ pilih satu ]</option>
+                        <option value='Windows 7 Home Basic 32-Bit'<?php echo $params['sistemOperasi'] == 'Windows 7 Home Basic 32-Bit' ? ' selected' : '' ?>>Windows 7 Home Basic 32-Bit</option>
+                        <option value='Windows 7 Home Basic 62-Bit'<?php echo $params['sistemOperasi'] == 'Windows 7 Home Basic 62-Bit' ? ' selected' : '' ?>>Windows 7 Home Basic 62-Bit</option>
+                        <option value='Windows 7 Home Premium 32-Bit'<?php echo $params['sistemOperasi'] == 'Windows 7 Home Premium 32-Bit' ? ' selected' : '' ?>>Windows 7 Home Premium 32-Bit</option>
+                        <option value='Windows 7 Home Premium 64-Bit'<?php echo $params['sistemOperasi'] == 'Windows 7 Home Premium 64-Bit' ? ' selected' : '' ?>>Windows 7 Home Premium 64-Bit</option>
+                        <option value='Windows 7 Profesional 32-Bit'<?php echo $params['sistemOperasi'] == 'Windows 7 Profesional 32-Bit' ? ' selected' : '' ?>>Windows 7 Profesional 32-Bit</option>
+                        <option value='Windows 7 Profesional 64-Bit'<?php echo $params['sistemOperasi'] == 'Windows 7 Profesional 64-Bit' ? ' selected' : '' ?>>Windows 7 Profesional 64-Bit</option>
+                        <option value='Windows 7 Ultimate 32-Bit'<?php echo $params['sistemOperasi'] == 'Windows 7 Ultimate 32-Bit' ? ' selected' : '' ?>>Windows 7 Ultimate 32-Bit</option>
+                        <option value='Windows 7 Ultimate 64-Bit'<?php echo $params['sistemOperasi'] == 'Windows 7 Ultimate 64-Bit' ? ' selected' : '' ?>>Windows 7 Ultimate 64-Bit</option>
+                        <option value='Windows Server 2012 64-bit'<?php echo $params['sistemOperasi'] == 'Windows Server 2012 64-bit' ? ' selected' : '' ?>>Windows Server 2012 64-bit</option>
+                        <option value='Windows Storage Server 2012 64-bit'<?php echo $params['sistemOperasi'] == 'Windows Storage Server 2012 64-bit' ? ' selected' : '' ?>>Windows Storage Server 2012 64-bit</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>IP Address</td>
@@ -39,7 +53,22 @@
             </tr>
             <tr>
                 <td>Lokasi</td>
-                <td><input type='text' size='30' name='lokasi' value='<?php echo $params['lokasi'] ?>' /></td>
+                <td>
+                    <select name='lokasi'>
+                        <option value=''>[ pilih satu ]</option>
+                        <option value='Dept. HRD/GA'<?php echo $params['lokasi'] == 'Dept. HRD/GA' ? ' selected' : '' ?>>Dept. HRD/GA</option>
+                        <option value='Dept. Accounting'<?php echo $params['lokasi'] == 'Dept. Accounting' ? ' selected' : '' ?>>Dept. Accounting</option>
+                        <option value='Dept. Marketing'<?php echo $params['lokasi'] == 'Dept. Marketing' ? ' selected' : '' ?>>Dept. Marketing</option>
+                        <option value='Dept. Shipping'<?php echo $params['lokasi'] == 'Dept. Shipping' ? ' selected' : '' ?>>Dept. Shipping</option>
+                        <option value='Dept. CMC'<?php echo $params['lokasi'] == 'Dept. CMC' ? ' selected' : '' ?>>Dept. CMC</option>
+                        <option value='Dept. PPIC'<?php echo $params['lokasi'] == 'Dept. PPIC' ? ' selected' : '' ?>>Dept. PPIC</option>
+                        <option value='Dept. Purchasing'<?php echo $params['lokasi'] == 'Dept. Purchasing' ? ' selected' : '' ?>>Dept. Purchasing</option>
+                        <option value='Dept. Warehouse'<?php echo $params['lokasi'] == 'Dept. Warehouse' ? ' selected' : '' ?>>Dept. Warehouse</option>
+                        <option value='Dept. IT'<?php echo $params['lokasi'] == 'Dept. IT' ? ' selected' : '' ?>>Dept. IT</option>
+                        <option value='Dept. R&D'<?php echo $params['lokasi'] == 'Dept. R&D' ? ' selected' : '' ?>>Dept. R&D</option>
+                        <option value='Dept. Finish Good'<?php echo $params['lokasi'] == 'Dept. Finish Good' ? ' selected' : '' ?>>Dept. Finish Good</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>Tahun</td>
@@ -52,23 +81,73 @@
         <tbody>
             <tr>
                 <td>CPU</td>
-                <td><input type='text' size='30' name='cpu' value='<?php echo $params['cpu'] ?>' /></td>
+                <td>
+                    <select name='cpu'>
+                        <option value=''>[ pilih satu ]</option>
+                        <option value='Intel Core i3'<?php echo $params['cpu'] == 'Intel Core i3' ? ' selected' : '' ?>>Intel Core i3</option>
+                        <option value='Intel Core i5'<?php echo $params['cpu'] == 'Intel Core i5' ? ' selected' : '' ?>>Intel Core i5</option>
+                        <option value='Intel Core 2 Duo'<?php echo $params['cpu'] == 'Intel Core 2 Duo' ? ' selected' : '' ?>>Intel Core 2 Duo</option>
+                        <option value='Intel Dual Core'<?php echo $params['cpu'] == 'Intel Dual Core' ? ' selected' : '' ?>>Intel Dual Core</option>
+                        <option value='Intel Xeon E5620 @ 2.40 GHz 2.39 Ghz'<?php echo $params['cpu'] == 'Intel Xeon E5620 @ 2.40 GHz 2.39 Ghz' ? ' selected' : '' ?>>Intel Xeon E5620 @ 2.40 GHz 2.39 Ghz</option>
+                        <option value='Intel Core i3-3220T @ 2.80 Ghz'<?php echo $params['cpu'] == 'Intel Core i3-3220T @ 2.80 Ghz' ? ' selected' : '' ?>>Intel Core i3-3220T @ 2.80 Ghz</option>
+                        <option value='Intel Celeron'<?php echo $params['cpu'] == 'Intel Celeron' ? ' selected' : '' ?>>Intel Celeron</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>Hard Disk</td>
-                <td><input type='text' size='30' name='hardDisk' value='<?php echo $params['hardDisk'] ?>' /></td>
+                <td>
+                    <select name='hardDisk'>
+                        <option value=''>[ pilih satu ]</option>
+                        <option value='250 GB'<?php echo $params['hardDisk'] == '250 GB' ? ' selected' : '' ?>>250 GB</option>
+                        <option value='320 GB'<?php echo $params['hardDisk'] == '320 GB' ? ' selected' : '' ?>>320 GB</option>
+                        <option value='500 GB'<?php echo $params['hardDisk'] == '500 GB' ? ' selected' : '' ?>>500 GB</option>
+                        <option value='1 TB'<?php echo $params['hardDisk'] == '1 TB' ? ' selected' : '' ?>>1 TB</option>
+                        <option value='2 TB'<?php echo $params['hardDisk'] == '2 TB' ? ' selected' : '' ?>>2 TB</option>
+                        <option value='3 TB'<?php echo $params['hardDisk'] == '3 TB' ? ' selected' : '' ?>>3 TB</option>
+                        <option value='4 TB'<?php echo $params['hardDisk'] == '4 TB' ? ' selected' : '' ?>>4 TB</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>RAM</td>
-                <td><input type='text' size='30' name='ram' value='<?php echo $params['ram'] ?>' /></td>
+                <td>
+                    <select name='ram'>
+                        <option value=''>[ pilih satu ]</option>
+                        <option value='2 GB'<?php echo $params['ram'] == '2 GB' ? ' selected' : '' ?>>2 GB</option>
+                        <option value='3 GB'<?php echo $params['ram'] == '3 GB' ? ' selected' : '' ?>>3 GB</option>
+                        <option value='4 GB'<?php echo $params['ram'] == '4 GB' ? ' selected' : '' ?>>4 GB</option>
+                        <option value='6 GB'<?php echo $params['ram'] == '6 GB' ? ' selected' : '' ?>>6 GB</option>
+                        <option value='8 GB'<?php echo $params['ram'] == '8 GB' ? ' selected' : '' ?>>8 GB</option>
+                        <option value='16 GB'<?php echo $params['ram'] == '16 GB' ? ' selected' : '' ?>>16 GB</option>
+                        <option value='32 GB'<?php echo $params['ram'] == '32 GB' ? ' selected' : '' ?>>32 GB</option>
+                        <option value='64 GB'<?php echo $params['ram'] == '64 GB' ? ' selected' : '' ?>>64 GB</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>LCD</td>
-                <td><input type='text' size='30' name='lcd' value='<?php echo $params['lcd'] ?>' /></td>
+                <td>
+                    <select name='lcd'>
+                        <option value=''>[ pilih satu ]</option>
+                        <option value='Samsung'<?php echo $params['lcd'] == 'Samsung' ? ' selected' : '' ?>>Samsung</option>
+                        <option value='Compaq'<?php echo $params['lcd'] == 'Compaq' ? ' selected' : '' ?>>Compaq</option>
+                        <option value='Acer'<?php echo $params['lcd'] == 'Acer' ? ' selected' : '' ?>>Acer</option>
+                        <option value='View Sonic'<?php echo $params['lcd'] == 'View Sonic' ? ' selected' : '' ?>>View Sonic</option>
+                        <option value='Dell'<?php echo $params['lcd'] == 'Dell' ? ' selected' : '' ?>>Dell</option>
+                        <option value='AOC'<?php echo $params['lcd'] == 'AOC' ? ' selected' : '' ?>>AOC</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>Optical Drive</td>
-                <td><input type='text' size='30' name='opticalDrive' value='<?php echo $params['opticalDrive'] ?>' /></td>
+                <td>
+                    <select name='opticalDrive'>
+                        <option value=''>[ pilih satu ]</option>
+                        <option value='yes'<?php echo $params['opticalDrive'] == 'yes' ? ' selected' : '' ?>>yes</option>
+                        <option value='no'<?php echo $params['opticalDrive'] == 'no' ? ' selected' : '' ?>>no</option>
+                    </select>
+                </td>
             </tr>
         </tbody>
     </table>
