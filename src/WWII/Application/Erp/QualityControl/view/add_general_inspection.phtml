@@ -40,11 +40,11 @@
                     foreach ($departmentList as $department) :
                         if (strtoupper($proses) !== 'PROSES') :
                 ?>
-                <option value="<?php echo $department ?>" <?php echo $params['group'] == $department ? 'selected="selected"' : 'disabled'  ?>>
+                <option value="<?php echo $department ?>" <?php echo $params['group'] == $department ? 'selected' : ' disabled'  ?>>
                     <?php echo $department ?>
                 </option>
                 <?php else : ?>
-                <option value="<?php echo $department ?>" <?php echo $params['group'] == $department ? 'selected="selected"' : ''  ?>>
+                <option value="<?php echo $department ?>"<?php echo $params['group'] == $department ? ' selected' : ''  ?>>
                     <?php echo $department ?>
                 </option>
                 <?php endif; endforeach; ?>
@@ -55,7 +55,18 @@
         </div>
         <div class="fieldset-kiri required">位置 Lokasi</div>
         <div class="fieldset-kanan">
-            <input type="text" required id="lokasi" class="medium" name="lokasi" value="<?php echo $params['lokasi'] ?>" />
+            <select id="lokasi" name="lokasi" required>
+                <option value=""<?php strtoupper($proses) !== 'PROSES' ? ' disabled' : '' ?>>[ 选一项 pilih satu ]</option>
+                <option value="Gudang 1" <?php echo $params['lokasi'] == 'Gudang 1' ? 'selected' : (strtoupper($proses) !== 'PROSES' ? 'disabled' : '') ?>>Gudang 1</option>
+                <option value="Gudang 2" <?php echo $params['lokasi'] == 'Gudang 2' ? 'selected' : (strtoupper($proses) !== 'PROSES' ? 'disabled' : '') ?>>Gudang 2</option>
+                <option value="Gudang 3" <?php echo $params['lokasi'] == 'Gudang 3' ? 'selected' : (strtoupper($proses) !== 'PROSES' ? 'disabled' : '') ?>>Gudang 3</option>
+                <option value="Gudang 4" <?php echo $params['lokasi'] == 'Gudang 4' ? 'selected' : (strtoupper($proses) !== 'PROSES' ? 'disabled' : '') ?>>Gudang 4</option>
+                <option value="Gudang 5" <?php echo $params['lokasi'] == 'Gudang 5' ? 'selected' : (strtoupper($proses) !== 'PROSES' ? 'disabled' : '') ?>>Gudang 5</option>
+                <option value="Gudang 6" <?php echo $params['lokasi'] == 'Gudang 6' ? 'selected' : (strtoupper($proses) !== 'PROSES' ? 'disabled' : '') ?>>Gudang 6</option>
+                <option value="Gudang 7" <?php echo $params['lokasi'] == 'Gudang 7' ? 'selected' : (strtoupper($proses) !== 'PROSES' ? 'disabled' : '') ?>>Gudang 7</option>
+                <option value="Gudang 8" <?php echo $params['lokasi'] == 'Gudang 8' ? 'selected' : (strtoupper($proses) !== 'PROSES' ? 'disabled' : '') ?>>Gudang 8</option>
+                <option value="Gudang 9" <?php echo $params['lokasi'] == 'Gudang 9' ? 'selected' : (strtoupper($proses) !== 'PROSES' ? 'disabled' : '') ?>>Gudang 9</option>
+            </select>
             <div class="error-container">
                 <?php echo isset($errorMessages['tanggalInspeksi']) ? $errorMessages['tanggalInspeksi'] : '' ?>
             </div>
