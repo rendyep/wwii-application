@@ -18,8 +18,6 @@ class ReportGeneralInspectionSingleRecordPrintAction
 
     protected $inspectionStatusHelper;
 
-    protected $result;
-
     protected $errorMessages = array();
 
     public function __construct(
@@ -40,26 +38,32 @@ class ReportGeneralInspectionSingleRecordPrintAction
 
     public function dispatch($params)
     {
-        $this->result = $this->dispatchOutput($params);
+        $result = $this->dispatchOutput($params);
 
-        $this->render($params);
+        $this->render($result);
     }
 
     public function dispatchOutput($params)
     {
-        $id = $this->routeManager->getKey();
+        $id = explode(':', $this->routeManager->getKey());
+        $domain = 'WWII\Domain\Erp\QualityControl\GeneralInspection\\' . $id[0] . 'Inspection';
+
         $result = $this->entityManager
-            ->getRepository('WWII\Domain\Erp\QualityControl\GeneralInspection\DailyInspection')
-            ->findOneById($id);
+            ->getRepository($domain)
+            ->findOneById($id[1]);
 
         return array(
+            'params' => $params,
             'data' => $result
         );
     }
 
-    public function render($params)
+    public function render(array $result = null)
     {
-        extract($this->result);
+        if (! empty($result)) {
+            extract($result);
+        }
+
         include('/view/report_general_inspection_single_record_print.phtml');
     }
 }

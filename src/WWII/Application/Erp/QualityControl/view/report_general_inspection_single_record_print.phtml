@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<?php
+    $groupId = explode(':', $params['key']);
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
@@ -10,8 +13,11 @@
             }
 
             body {
+                width: 25cm;
                 text-align: center;
-                font-size: 12px;
+                font-family: "segoe ui";
+                font-size: 10px;
+                margin: 0 auto;
             }
 
             #footer {
@@ -23,7 +29,7 @@
             }
 
             #content-head span {
-                margin-right: 50px;
+                margin-right: 40px;
             }
 
             #content-head span:last-child {
@@ -31,6 +37,7 @@
             }
 
             table.full-border {
+                width: 100%;
                 margin: 0 auto;
                 border-collapse: collapse;
                 border: 1px solid #000000;
@@ -38,6 +45,7 @@
 
             table.full-border th,
             table.full-border td {
+                font-weight: normal;
                 border: 1px solid #000000;
             }
 
@@ -54,7 +62,7 @@
             }
 
             table.full-border thead tr:last-child {
-                height: 120px;
+                height: 100px;
             }
 
             table.full-border thead tr th.rotate {
@@ -64,9 +72,9 @@
 
             table.full-border thead tr th.rotate > div {
                 transform:
-                    translate(0, 40px)
+                    translate(0, 30px)
                     rotate(270deg);
-                width: 30px;
+                width: 20px;
             }
 
             table.full-border tbody td {
@@ -79,34 +87,43 @@
             <h3>
                 品 管 全 檢 製 程 日 報 表
                 <br />
-                <strong>Laporan Harian Inspeksi Seluruh Proses QC</strong>
+                Laporan Harian Inspeksi Seluruh Proses QC
             </h3>
         </div>
         <div id="content" style="overflow:auto;">
             <div id="content-head">
-                <span>組別Group : <?php echo $data->getGroup(); ?></span>
-                <span>定位點Lokasi : <?php echo $data->getLokasi(); ?></span>
-                <span>品管員Staff  QC : <?php echo $data->getStaffQc(); ?></span>
-                <span><?php echo $data->getTanggalInspeksi()->format('Y'); ?> 年Thn</span>
-                <span><?php echo $data->getTanggalInspeksi()->format('m'); ?> 月Bln</span>
-                <span><?php echo $data->getTanggalInspeksi()->format('d'); ?> 日Tgl</span>
+                <div style="float:left;">
+                    <span>組別 Group : <?php echo $groupId[0] ?></span>
+                    <span>定位點 Lokasi : <?php echo $data->getLokasi(); ?></span>
+                    <span>品管員 Staff  QC : <?php echo $data->getStaffQc(); ?></span>
+                </div>
+                <div style="float:right;">
+                    <span><?php echo $data->getTanggalInspeksi()->format('Y'); ?> 年Thn</span>
+                    <span><?php echo $data->getTanggalInspeksi()->format('m'); ?> 月Bln</span>
+                    <span><?php echo $data->getTanggalInspeksi()->format('d'); ?> 日Tgl</span>
+                </div>
             </div>
             <table class="full-border">
+            <?php
+                switch (strtoupper($groupId[0])) :
+                    case 'ASSEMBLING':
+                $assemblingInspectionTime = $data->getAssemblingInspectionTime();
+            ?>
                 <thead>
                     <tr>
-                        <th rowspan=0>時 間<br />Waktu</th>
+                        <th rowspan=0 style="width: 40px;">時 間<br />Waktu</th>
                         <th rowspan=0>產 品<br />編 號<br />Kode Produk</th>
-                        <th rowspan=0 style="width: 100px;">產 品<br />名 稱<br />Nama Produk</th>
-                        <th rowspan=0>批<br />数<br />量<br />Jumlah<br />Lot</th>
-                        <th rowspan=0>檢<br />驗<br />數<br />Jumlah<br />Inspeksi</th>
+                        <th rowspan=0>產 品<br />名 稱<br />Nama Produk</th>
+                        <th rowspan=0 style="width:40px;">批<br />数<br />量<br />Jumlah Lot</th>
+                        <th rowspan=0 style="width:40px;">檢<br />驗<br />數<br />Jumlah Inspeksi</th>
                         <th colspan=28>不 良 內 容<br />Konten Kondisi Buruk</th>
                         <th colspan=3>生 產 狀 況<br />Kondisi Produksi</th>
-                        <th rowspan=0>Status</th>
+                        <th rowspan=0 style="width:40px;">狀<br />態<br />Status</th>
                     </tr>
                     <tr>
                         <th><div>絨<br />布<br />劃<br />傷</div></th>
                         <th class="rotate"><div>Kain Tergores</div></th>
-                        <th><div>抽<br >斗<br >配<br >套</div></th>
+                        <th><div>抽<br >斗<br >配<br />套</div></th>
                         <th class="rotate"><div>Tidak Presisi</div></th>
                         <th><div>孔<br />位<br />不<br />對</div></th>
                         <th class="rotate"><div>Salah Posisi Lubang</div></th>
@@ -134,60 +151,57 @@
                         <th class="rotate"><div>Lainnya</div></th>
                         <th><div>缺<br />點<br />數</div></th>
                         <th class="rotate"><div>Jumlah Kekurangan</div></th>
-                        <th>不<br />良<br />數<br /><strong>Jumlah<br />Kualitas<br />Buruk</strong></th>
+                        <th style="width: 40px;">不<br />良<br />數<br />Jumlah Kualitas Buruk</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                        if ($data !== null) :
-                            foreach ($data->getDailyInspectionTime() as $timeGroup) {
-                                foreach ($timeGroup->getDailyInspectionItem() as $item) {
-                                    $numberRowSpan++;
-                                }
-                            }
-
-                            foreach ($data->getDailyInspectionTime() as $timeGroup) :
-                                $timeGroupRowSpan = count($timeGroup->getDailyInspectionItem()) + 1;
+                    <?php if (count($assemblingInspectionTime) > 0) :
+                            foreach ($assemblingInspectionTime as $assemblingTimeGroup) :
+                                $assemblingTimeGroupRowSpan = count($assemblingTimeGroup->getAssemblingInspectionItem()) + 1;
                     ?>
                     <tr>
-                        <td rowspan=<?php echo $timeGroupRowSpan; ?>><?php echo $timeGroup->getWaktuInspeksi()->format('H:i:s'); ?></td>
+                        <td rowspan=<?php echo $assemblingTimeGroupRowSpan; ?>><?php echo $assemblingTimeGroup->getWaktuInspeksi()->format('H:i:s'); ?></td>
                     </tr>
                     <?php
-                        foreach ($timeGroup->getDailyInspectionItem() as $item) :
-                            $status = $this->inspectionStatusHelper->getInspectionStatus($item);
+                        foreach ($assemblingTimeGroup->getAssemblingInspectionItem() as $assemblingItem) :
+                            $status = $this->inspectionStatusHelper->getInspectionStatus($assemblingItem);
                     ?>
                     <tr>
-                        <td><?php echo $item->getKodeProduk() ?></td>
-                        <td><?php echo $item->getNamaProduk() ?></td>
-                        <td style="text-align:right;"><?php echo $item->getJumlahLot() ?></td>
-                        <td style="text-align:right;"><?php echo $item->getJumlahInspeksi() ?></td>
-                        <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemKainTergores() ?></td>
-                        <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemTidakPresisi() ?></td>
-                        <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemSalahPosisiLubang() ?></td>
-                        <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemSalahUkuran() ?></td>
-                        <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemTergores() ?></td>
-                        <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemKelebihanLem() ?></td>
-                        <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemStrukturLonggar() ?></td>
-                        <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemCoverTerpotong() ?></td>
-                        <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemRetak() ?></td>
-                        <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemSandingBuruk() ?></td>
-                        <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemPakuKeluar() ?></td>
-                        <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemLemDegumming() ?></td>
-                        <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemGap() ?></td>
-                        <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemBurukLainnya() ?></td>
-                        <td colspan=2 style="text-align:right;"><?php echo $item->getJumlahItemKekurangan() ?></td>
-                        <td style="text-align:right;"><?php echo $item->getJumlahTotalItemBuruk() ?></td>
+                        <td><?php echo $assemblingItem->getKodeProduk() ?></td>
+                        <td><?php echo $assemblingItem->getNamaProduk() ?></td>
+                        <td style="text-align:right;"><?php echo $assemblingItem->getJumlahLot() ?></td>
+                        <td style="text-align:right;"><?php echo $assemblingItem->getJumlahInspeksi() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $assemblingItem->getJumlahItemKainTergores() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $assemblingItem->getJumlahItemTidakPresisi() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $assemblingItem->getJumlahItemSalahPosisiLubang() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $assemblingItem->getJumlahItemSalahUkuran() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $assemblingItem->getJumlahItemTergores() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $assemblingItem->getJumlahItemKelebihanLem() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $assemblingItem->getJumlahItemStrukturLonggar() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $assemblingItem->getJumlahItemCoverTerpotong() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $assemblingItem->getJumlahItemRetak() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $assemblingItem->getJumlahItemSandingBuruk() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $assemblingItem->getJumlahItemPakuKeluar() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $assemblingItem->getJumlahItemLemDegumming() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $assemblingItem->getJumlahItemGap() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $assemblingItem->getJumlahItemBurukLainnya() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $assemblingItem->getJumlahItemKekurangan() ?></td>
+                        <td style="text-align:right;"><?php echo $assemblingItem->getJumlahTotalItemBuruk() ?></td>
                         <td style="text-align:center; color:<?php echo $status ? 'green' : 'red' ?>"><?php echo $status ? 'pass' : 'fail' ?></td>
                     </tr>
                     <?php
+                                    endforeach;
                                 endforeach;
-                            endforeach;
-                        else :
+                            else :
                     ?>
                     <tr>
-                        <td colspan=0 style="text-align:center;">Data kosong!</td>
+                        <td colspan=0 style="text-align: center;">Data kosong!</td>
                     </tr>
-                    <?php endif; ?>
+                    <?php
+                            endif;
+                            break;
+                        endswitch;
+                    ?>
                 </tbody>
             </table>
         </div>
@@ -195,13 +209,5 @@
             <button onclick="javascript: window.print()">Print</button>
             <button onclick="javascript: window.location.href = '<?php echo $this->routeManager->generateRoute(array('action' => 'report_general_inspection_single_record')) ?>'">Kembali</button>
         </div>
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $("#tanggal").datepicker({
-                    dateFormat: 'dd/mm/yy',
-                    yearRange: '-55:-0'
-                });
-            });
-        </script>
     </body>
 </html>
