@@ -35,10 +35,7 @@ class ReportGeneralInspectionGraphAction
         $this->flashMessenger = $serviceManager->get('FlashMessenger');
         $this->templateManager = $serviceManager->get('TemplateManager');
         $this->entityManager = $entityManager;
-        $this->departmentHelper = new \WWII\Common\Helper\Collection\MsSQL\Department(
-            $this->serviceManager,
-            $this->entityManager
-        );
+
         $this->inspectionStatusHelper = new \WWII\Common\Helper\Collection\QualityControl\InspectionStatus(
             $this->serviceManager,
             $this->entityManager
@@ -68,12 +65,15 @@ class ReportGeneralInspectionGraphAction
 
             if (empty($errorMessages)) {
                 $dailyInspection = $this->entityManager->createQueryBuilder()
-                    ->select('dailyInspection')
-                    ->from('WWII\Domain\Erp\QualityControl\GeneralInspection\DailyInspection', 'dailyInspection');
+                    ->select(lcfirst($params['group']) . 'Inspection')
+                    ->from(
+                        'WWII\Domain\Erp\QualityControl\GeneralInspection\\' . lcfirst($params['group']) . 'Inspection',
+                        lcfirst($params['group']) . 'Inspection'
+                    );
 
                 $arrayTanggal = explode('/', $params['tanggal']);
                 $tanggal = new \DateTime($arrayTanggal[2] . '-' . $arrayTanggal[1]. '-' . $arrayTanggal[0]);
-                $dailyInspection->andWhere('dailyInspection.tanggalInspeksi = :tanggal')
+                $dailyInspection->andWhere(lcfirst($params['group']) .'Inspection.tanggalInspeksi = :tanggal')
                     ->setParameter('tanggal', $tanggal->format('Y-m-d'));
 
                 $data = $dailyInspection
@@ -102,6 +102,10 @@ class ReportGeneralInspectionGraphAction
             } catch (\Exception $e) {
                 $errorMessages['tanggal'] = 'Format tanggal tidak valid (ex. 17/03/2014).';
             }
+        }
+
+        if (empty($params['group'])) {
+            $errorMessages['group'] = 'Harus dipilih';
         }
 
         return $errorMessages;
@@ -164,8 +168,6 @@ class ReportGeneralInspectionGraphAction
 
     protected function render(array $result = null)
     {
-        $departmentList = $this->departmentHelper->getDepartmentList();
-
         if (! empty($result)) {
             extract($result);
         }
