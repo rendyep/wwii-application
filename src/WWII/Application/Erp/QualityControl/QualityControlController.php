@@ -12,7 +12,7 @@ class QualityControlController extends \WWII\Controller\AbstractController
     public function reportGeneralInspectionSingleRecordAction()
     {
         $action = new ReportGeneralInspectionSingleRecordAction($this->serviceManager, $this->entityManager);
-        $action->dispatch($_GET);
+        $action->dispatch($_POST);
     }
 
     public function reportGeneralInspectionSingleRecordPrintAction()
@@ -24,7 +24,7 @@ class QualityControlController extends \WWII\Controller\AbstractController
     public function reportGeneralInspectionGraphAction()
     {
         $action = new ReportGeneralInspectionGraphAction($this->serviceManager, $this->entityManager);
-        $action->dispatch($_GET);
+        $action->dispatch($_POST);
     }
 
     public function addGeneralInspectionAction()
