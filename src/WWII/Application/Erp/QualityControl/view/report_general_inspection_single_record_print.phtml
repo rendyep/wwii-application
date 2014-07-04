@@ -13,7 +13,7 @@
             }
 
             body {
-                width: 25cm;
+                width: 26cm;
                 text-align: center;
                 font-family: "segoe ui";
                 font-size: 10px;
@@ -91,6 +91,7 @@
             </h3>
         </div>
         <div id="content" style="overflow:auto;">
+            <?php if ($data !== null) : ?>
             <div id="content-head">
                 <div style="float:left;">
                     <span>組別 Group : <?php echo $groupId[0] ?></span>
@@ -104,11 +105,11 @@
                 </div>
             </div>
             <table class="full-border">
-            <?php
-                switch (strtoupper($groupId[0])) :
-                    case 'ASSEMBLING':
-                $assemblingInspectionTime = $data->getAssemblingInspectionTime();
-            ?>
+                <?php
+                    switch (strtoupper($groupId[0])) :
+                        case 'ASSEMBLING':
+                            $assemblingInspectionTime = $data->getAssemblingInspectionTime();
+                ?>
                 <thead>
                     <tr>
                         <th rowspan=0 style="width: 40px;">時 間<br />Waktu</th>
@@ -155,9 +156,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (count($assemblingInspectionTime) > 0) :
-                            foreach ($assemblingInspectionTime as $assemblingTimeGroup) :
-                                $assemblingTimeGroupRowSpan = count($assemblingTimeGroup->getAssemblingInspectionItem()) + 1;
+                    <?php
+                        foreach ($assemblingInspectionTime as $assemblingTimeGroup) :
+                            $assemblingTimeGroupRowSpan = count($assemblingTimeGroup->getAssemblingInspectionItem()) + 1;
                     ?>
                     <tr>
                         <td rowspan=<?php echo $assemblingTimeGroupRowSpan; ?>><?php echo $assemblingTimeGroup->getWaktuInspeksi()->format('H:i:s'); ?></td>
@@ -189,21 +190,208 @@
                         <td style="text-align:right;"><?php echo $assemblingItem->getJumlahTotalItemBuruk() ?></td>
                         <td style="text-align:center; color:<?php echo $status ? 'green' : 'red' ?>"><?php echo $status ? 'pass' : 'fail' ?></td>
                     </tr>
+                    <?php endforeach; ?>
+                </tbody>
+                <?php
+                        endforeach;
+                        break;
+                    case 'FINISHING':
+                        $finishingInspectionTime = $data->getFinishingInspectionTime();
+                ?>
+                <thead>
+                    <tr>
+                        <th rowspan=0 style="width: 40px;">時 間<br />Waktu</th>
+                        <th rowspan=0>產 品<br />編 號<br />Kode Produk</th>
+                        <th rowspan=0>產 品<br />名 稱<br />Nama Produk</th>
+                        <th rowspan=0 style="width:40px;">批<br />数<br />量<br />Jumlah Lot</th>
+                        <th rowspan=0 style="width:40px;">檢<br />驗<br />數<br />Jumlah Inspeksi</th>
+                        <th colspan=30>不 良 內 容<br />Konten Kondisi Buruk</th>
+                        <th colspan=3>生 產 狀 況<br />Kondisi Produksi</th>
+                        <th rowspan=0 style="width:40px;">狀<br />態<br />Status</th>
+                    </tr>
+                    <tr>
+                        <th><div>劃<br />傷</div></th>
+                        <th class="rotate"><div>Tergores</div></th>
+                        <th><div>抽<br >[X]<br >[X]<br />染</div></th>
+                        <th class="rotate"><div>Terpolusi</div></th>
+                        <th><div>尺<br />寸<br />不<br />對</div></th>
+                        <th class="rotate"><div>Salah Ukuran</div></th>
+                        <th><div>溢<br />膠</div></th>
+                        <th class="rotate"><div>Kelebihan Lem</div></th>
+                        <th><div>[X]<br />[X]</div></th>
+                        <th class="rotate"><div>Kelebihan Cat</div></th>
+                        <th><div>[X]<br />色</div></th>
+                        <th class="rotate"><div>Warna</div></th>
+                        <th><div>[X]<br />泡</div></th>
+                        <th class="rotate"><div>Bergelembung</div></th>
+                        <th><div>結<br />構<br />鬆<br />動</div></th>
+                        <th class="rotate"><div>Struktur Longgar</div></th>
+                        <th><div>崩<br />缺</div></th>
+                        <th class="rotate"><div>Cover Terpotong</div></th>
+                        <th><div>[X]<br />砂<br />[X]</div></th>
+                        <th class="rotate"><div>Arah Horizontal</div></th>
+                        <th><div>砂<br />光<br />不<br />良</div></th>
+                        <th class="rotate"><div>Sanding Buruk</div></th>
+                        <th><div>出<br />釘</div></th>
+                        <th class="rotate"><div>Paku Keluar</div></th>
+                        <th><div>脫<br />膠</div></th>
+                        <th class="rotate"><div>Lem Degumming</div></th>
+                        <th><div>縫<br />隙</div></th>
+                        <th class="rotate"><div>Gap</div></th>
+                        <th><div>其<br />他</div></th>
+                        <th class="rotate"><div>Lainnya</div></th>
+                        <th><div>缺<br />點<br />數</div></th>
+                        <th class="rotate"><div>Jumlah Kekurangan</div></th>
+                        <th style="width: 40px;">不<br />良<br />數<br />Jumlah Kualitas Buruk</th>
+                    </tr>
+                </thead>
+                <tbody>
                     <?php
-                                    endforeach;
-                                endforeach;
-                            else :
+                        foreach ($finishingInspectionTime as $finishingTimeGroup) :
+                            $finishingTimeGroupRowSpan = count($finishingTimeGroup->getFinishingInspectionItem()) + 1;
                     ?>
                     <tr>
-                        <td colspan=0 style="text-align: center;">Data kosong!</td>
+                        <td rowspan=<?php echo $finishingTimeGroupRowSpan; ?>><?php echo $finishingTimeGroup->getWaktuInspeksi()->format('H:i:s'); ?></td>
                     </tr>
                     <?php
-                            endif;
-                            break;
-                        endswitch;
+                        foreach ($finishingTimeGroup->getFinishingInspectionItem() as $finishingItem) :
+                            $status = $this->inspectionStatusHelper->getInspectionStatus($finishingItem);
                     ?>
+                    <tr>
+                        <td><?php echo $finishingItem->getKodeProduk() ?></td>
+                        <td><?php echo $finishingItem->getNamaProduk() ?></td>
+                        <td style="text-align:right;"><?php echo $finishingItem->getJumlahLot() ?></td>
+                        <td style="text-align:right;"><?php echo $finishingItem->getJumlahInspeksi() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $finishingItem->getJumlahItemTergores() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $finishingItem->getJumlahItemTerpolusi() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $finishingItem->getJumlahItemSalahUkuran() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $finishingItem->getJumlahItemKelebihanLem() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $finishingItem->getJumlahItemKelebihanCat() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $finishingItem->getJumlahItemWarna() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $finishingItem->getJumlahItemBergelembung() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $finishingItem->getJumlahItemStrukturLonggar() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $finishingItem->getJumlahItemCoverTerpotong() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $finishingItem->getJumlahItemArahHorizontal() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $finishingItem->getJumlahItemSandingBuruk() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $finishingItem->getJumlahItemPakuKeluar() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $finishingItem->getJumlahItemLemDegumming() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $finishingItem->getJumlahItemGap() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $finishingItem->getJumlahItemBurukLainnya() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $finishingItem->getJumlahItemKekurangan() ?></td>
+                        <td style="text-align:right;"><?php echo $finishingItem->getJumlahTotalItemBuruk() ?></td>
+                        <td style="text-align:center; color:<?php echo $status ? 'green' : 'red' ?>"><?php echo $status ? 'pass' : 'fail' ?></td>
+                    </tr>
+                    <?php endforeach; ?>
                 </tbody>
+                <?php
+                        endforeach;
+                        break;
+                    case 'PACKAGING':
+                        $packagingInspectionTime = $data->getPackagingInspectionTime();
+                ?>
+                <thead>
+                    <tr>
+                        <th rowspan=0 style="width: 40px;">時 間<br />Waktu</th>
+                        <th rowspan=0>產 品<br />編 號<br />Kode Produk</th>
+                        <th rowspan=0>產 品<br />名 稱<br />Nama Produk</th>
+                        <th rowspan=0 style="width:40px;">批<br />数<br />量<br />Jumlah Lot</th>
+                        <th rowspan=0 style="width:40px;">檢<br />驗<br />數<br />Jumlah Inspeksi</th>
+                        <th colspan=36>不 良 內 容<br />Konten Kondisi Buruk</th>
+                        <th colspan=3>生 產 狀 況<br />Kondisi Produksi</th>
+                        <th rowspan=0 style="width:40px;">狀<br />態<br />Status</th>
+                    </tr>
+                    <tr>
+                        <th><div>流<br />程<br />错<br />[X]</div></th>
+                        <th class="rotate"><div>Salah Flow Proses</div></th>
+                        <th><div>材<br />质<br />不<br />良</div></th>
+                        <th class="rotate"><div>Kualitas Buruk</div></th>
+                        <th><div>材<br />质<br />不<br />對</div></th>
+                        <th class="rotate"><div>Salah Kualitas</div></th>
+                        <th><div>孔<br />位<br />不<br />對</div></th>
+                        <th class="rotate"><div>Salah Posisi Lubang</div></th>
+                        <th><div>尺<br />寸<br />不<br />對</div></th>
+                        <th class="rotate"><div>Salah Ukuran</div></th>
+                        <th><div>[X]<br />刀<br />[X]</div></th>
+                        <th class="rotate"><div>Bekas Goresan Pisau</div></th>
+                        <th><div>撕<br />裂</div></th>
+                        <th class="rotate"><div>Sobek</div></th>
+                        <th><div>開<br />裂</div></th>
+                        <th class="rotate"><div>Retak</div></th>
+                        <th><div>[X]<br />黑</div></th>
+                        <th class="rotate"><div>Hitam</div></th>
+                        <th><div>砂<br />光<br />不<br />良</div></th>
+                        <th class="rotate"><div>Sanding Buruk</div></th>
+                        <th><div>压<br />划<br />[X]</div></th>
+                        <th class="rotate"><div>Goresan Tekanan</div></th>
+                        <th><div>出<br />釘</div></th>
+                        <th class="rotate"><div>Paku Keluar</div></th>
+                        <th><div>[X]<br />立<br />不<br />良</div></th>
+                        <th class="rotate"><div>Berdiri Buruk</div></th>
+                        <th><div>[X]<br />[X]<br />不<br />良</div></th>
+                        <th class="rotate"><div>Perbaikan Buruk</div></th>
+                        <th><div>脫<br />膠</div></th>
+                        <th class="rotate"><div>Lem Degumming</div></th>
+                        <th><div>溢<br />膠</div></th>
+                        <th class="rotate"><div>Kelebihan Lem</div></th>
+                        <th><div>[X]<br />度<br />[X]<br />高</div></th>
+                        <th class="rotate"><div>Suhu Terlalu Tinggi</div></th>
+                        <th><div>其<br />他</div></th>
+                        <th class="rotate"><div>Lainnya</div></th>
+                        <th><div>缺<br />點<br />數</div></th>
+                        <th class="rotate"><div>Jumlah Kekurangan</div></th>
+                        <th style="width: 40px;">不<br />良<br />數<br />Jumlah Kualitas Buruk</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        foreach ($packagingInspectionTime as $packagingTimeGroup) :
+                            $packagingTimeGroupRowSpan = count($packagingTimeGroup->getPackagingInspectionItem()) + 1;
+                    ?>
+                    <tr>
+                        <td rowspan=<?php echo $packagingTimeGroupRowSpan; ?>><?php echo $packagingTimeGroup->getWaktuInspeksi()->format('H:i:s'); ?></td>
+                    </tr>
+                    <?php
+                        foreach ($packagingTimeGroup->getPackagingInspectionItem() as $packagingItem) :
+                            $status = $this->inspectionStatusHelper->getInspectionStatus($packagingItem);
+                    ?>
+                    <tr>
+                        <td><?php echo $packagingItem->getKodeProduk() ?></td>
+                        <td><?php echo $packagingItem->getNamaProduk() ?></td>
+                        <td style="text-align:right;"><?php echo $packagingItem->getJumlahLot() ?></td>
+                        <td style="text-align:right;"><?php echo $packagingItem->getJumlahInspeksi() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemSalahFlowProses() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemKualitasBuruk() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemSalahKualitas() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemSalahPosisiLubang() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemSalahUkuran() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemBekasGoresanPisau() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemSobek() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemRetak() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemHitam() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemSandingBuruk() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemGoresanTekanan() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemPakuKeluar() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemBerdiriBuruk() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemPerbaikanBuruk() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemLemDegumming() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemKelebihanLem() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemSuhuTerlaluTinggi() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemBurukLainnya() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemKekurangan() ?></td>
+                        <td style="text-align:right;"><?php echo $packagingItem->getJumlahTotalItemBuruk() ?></td>
+                        <td style="text-align:center; color:<?php echo $status ? 'green' : 'red' ?>"><?php echo $status ? 'pass' : 'fail' ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+                <?php
+                        endforeach;
+                        break;
+                    endswitch;
+                ?>
             </table>
+            <?php else: ?>
+            <div style="text-align:center;"><h3>Data tidak ditemukan!</h3></div>
+            <?php endif; ?>
         </div>
         <div id="footer">
             <button onclick="javascript: window.print()">Print</button>
