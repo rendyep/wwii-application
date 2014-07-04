@@ -17,6 +17,20 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td>组 Group</td>
+                <td>
+                    <select name="group">
+                        <option value="">[ 选一项 pilih satu ]</option>
+                        <option value="Assembling"<?php echo $params['group'] == 'Assembling' ? ' selected' : '' ?>>Assembling</option>
+                        <option value="Finishing"<?php echo $params['group'] == 'Finishing' ? ' selected' : '' ?>>Finishing</option>
+                        <option value="Packaging"<?php echo $params['group'] == 'Packaging' ? ' selected' : '' ?>>Packaging</option>
+                    </select>
+                    <div class="error-container">
+                        <?php echo isset($errorMessages['group']) ? $errorMessages['group'] : '' ?>
+                    </div>
+                </td>
+            </tr>
         </tbody>
     </table>
     <hr />
@@ -65,16 +79,19 @@
             $jsData[1]['dataPoints'] = array();
 
             if (!empty($data)) {
-                foreach ($data as $dailyInspection) {
-                    foreach ($dailyInspection->getDailyInspectionTime() as $dailyInspectionTime) {
-                        foreach ($dailyInspectionTime->getDailyInspectionItem() as $dailyInspectionItem) {
+                foreach ($data as $inspection) {
+                    $timeGetterMethod = 'get' . ucfirst($params['group']) . 'InspectionTime';
+                    $itemGetterMethod = 'get' . ucfirst($params['group']) . 'InspectionItem';
+
+                    foreach ($inspection->$timeGetterMethod() as $inspectionTime) {
+                        foreach ($inspectionTime->$itemGetterMethod() as $inspectionItem) {
                             $i = count($jsData[0]['dataPoints']);
                             $j = count($jsData[1]['dataPoints']);
 
-                            $jsData[0]['dataPoints'][$i]['label'] = $dailyInspectionItem->getNamaProduk();
-                            $jsData[0]['dataPoints'][$i]['y'] = $dailyInspectionItem->getJumlahInspeksi();
-                            $jsData[1]['dataPoints'][$j]['label'] = $dailyInspectionItem->getNamaProduk();
-                            $jsData[1]['dataPoints'][$j]['y'] = $dailyInspectionItem->getJumlahTotalItemBuruk();
+                            $jsData[0]['dataPoints'][$i]['label'] = $inspectionItem->getNamaProduk();
+                            $jsData[0]['dataPoints'][$i]['y'] = $inspectionItem->getJumlahInspeksi();
+                            $jsData[1]['dataPoints'][$j]['label'] = $inspectionItem->getNamaProduk();
+                            $jsData[1]['dataPoints'][$j]['y'] = $inspectionItem->getJumlahTotalItemBuruk();
                         }
                     }
                 }
@@ -105,7 +122,7 @@
                         var str2;
 
                         for (var i = 0; i < e.entries.length; i++){
-                            var  str1 = "<span style='color:" + e.entries[i].dataSeries.color + "'> " + e.entries[i].dataSeries.name + "</span>: <strong>" +  e.entries[i].dataPoint.y + "</strong> <br/>";
+                            var  str1 = "<span style='color:" + e.entries[i].dataSeries.color + "'> " + e.entries[i].dataSeries.name + "</span>: <strong>" +  e.entries[i].dataPoint.y + "</strong><br/>";
                             str = str.concat(str1);
                         }
 
