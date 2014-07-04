@@ -35,10 +35,7 @@ class ReportGeneralInspectionSingleRecordAction
         $this->flashMessenger = $serviceManager->get('FlashMessenger');
         $this->templateManager = $serviceManager->get('TemplateManager');
         $this->entityManager = $entityManager;
-        $this->departmentHelper = new \WWII\Common\Helper\Collection\MsSQL\Department(
-            $this->serviceManager,
-            $this->entityManager
-        );
+
         $this->inspectionStatusHelper = new \WWII\Common\Helper\Collection\QualityControl\InspectionStatus(
             $this->serviceManager,
             $this->entityManager
@@ -67,19 +64,22 @@ class ReportGeneralInspectionSingleRecordAction
             $errorMessages = $this->validateData($params);
 
             if (empty($errorMessages)) {
-                $dailyInspection = $this->entityManager->createQueryBuilder()
-                    ->select('dailyInspection')
-                    ->from('WWII\Domain\Erp\QualityControl\GeneralInspection\DailyInspection', 'dailyInspection');
+                $inspection = $this->entityManager->createQueryBuilder()
+                    ->select(lcfirst($params['group']) . 'Inspection')
+                    ->from(
+                        'WWII\Domain\Erp\QualityControl\GeneralInspection\\' . $params['group'] . 'Inspection',
+                        lcfirst($params['group']) . 'Inspection'
+                    )
+                    ->where(lcfirst($params['group']) . 'Inspection.lokasi = :lokasi')
+                        ->setParameter('lokasi', $params['lokasi'])
+                    ;
 
                 $arrayTanggal = explode('/', $params['tanggal']);
                 $tanggal = new \DateTime($arrayTanggal[2] . '-' . $arrayTanggal[1]. '-' . $arrayTanggal[0]);
-                $dailyInspection->andWhere('dailyInspection.tanggalInspeksi = :tanggal')
+                $inspection->andWhere(lcfirst($params['group']) . 'Inspection.tanggalInspeksi = :tanggal')
                     ->setParameter('tanggal', $tanggal->format('Y-m-d'));
 
-                $dailyInspection->andWhere('dailyInspection.group = :group')
-                    ->setParameter('group', $params['group']);
-
-                $data = $dailyInspection
+                $data = $inspection
                     ->getQuery()
                     ->setFirstResult(0)
                     ->setMaxResults(1)
@@ -177,8 +177,6 @@ class ReportGeneralInspectionSingleRecordAction
 
     protected function render(array $result = null)
     {
-        $departmentList = $this->departmentHelper->getDepartmentList();
-
         if (! empty($result)) {
             extract($result);
         }
