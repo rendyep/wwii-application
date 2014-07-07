@@ -28,6 +28,7 @@
                         <option value='Windows 7 Ultimate 64-Bit'<?php echo $data->getOS() == 'Windows 7 Ultimate 64-Bit' ? ' selected' : '' ?>>Windows 7 Ultimate 64-Bit</option>
                         <option value='Windows Server 2012 64-bit'<?php echo $data->getOS() == 'Windows Server 2012 64-bit' ? ' selected' : '' ?>>Windows Server 2012 64-bit</option>
                         <option value='Windows Storage Server 2012 64-bit'<?php echo $data->getOS() == 'Windows Storage Server 2012 64-bit' ? ' selected' : '' ?>>Windows Storage Server 2012 64-bit</option>
+                        <option value='Windows XP Professional 32-Bit'<?php echo $params['sistemOperasi'] == 'Windows XP Professional 32-Bit' ? ' selected' : '' ?>>Windows XP Professional 32-Bit</option>
                     </select>
                 </td>
             </tr>
@@ -67,6 +68,10 @@
                         <option value='Dept. IT'<?php echo $data->getLokasi() == 'Dept. IT' ? ' selected' : '' ?>>Dept. IT</option>
                         <option value='Dept. R&D'<?php echo $data->getLokasi() == 'Dept. R&D' ? ' selected' : '' ?>>Dept. R&D</option>
                         <option value='Dept. Finish Good'<?php echo $params['lokasi'] == 'Dept. Finish Good' ? ' selected' : '' ?>>Dept. Finish Good</option>
+                        <option value='Dept. CNC'<?php echo $data->getLokasi() == 'Dept. CNC' ? ' selected' : '' ?>>Dept. CNC</option>
+                        <option value='Dept. Maintenance'<?php echo $data->getLokasi() == 'Dept. Maintenance' ? ' selected' : '' ?>>Dept. Maintenance</option>
+                        <option value='Dept. IQC'<?php echo $data->getLokasi() == 'Dept. IQC' ? ' selected' : '' ?>>Dept. IQC</option>
+                        <option value='Dept. QC'<?php echo $data->getLokasi() == 'Dept. QC' ? ' selected' : '' ?>>Dept. QC</option>
                     </select>
                 </td>
             </tr>
@@ -114,6 +119,7 @@
                 <td>
                     <select name='ram'>
                         <option value=''>[ pilih satu ]</option>
+                        <option value='1 GB'<?php echo $data->getRAM() == '1 GB' ? ' selected' : '' ?>>2 GB</option>
                         <option value='2 GB'<?php echo $data->getRAM() == '2 GB' ? ' selected' : '' ?>>2 GB</option>
                         <option value='3 GB'<?php echo $data->getRAM() == '3 GB' ? ' selected' : '' ?>>3 GB</option>
                         <option value='4 GB'<?php echo $data->getRAM() == '4 GB' ? ' selected' : '' ?>>4 GB</option>
@@ -135,6 +141,7 @@
                         <option value='Acer'<?php echo $data->getLCD() == 'Acer' ? ' selected' : '' ?>>Acer</option>
                         <option value='View Sonic'<?php echo $data->getLCD() == 'View Sonic' ? ' selected' : '' ?>>View Sonic</option>
                         <option value='Dell'<?php echo $data->getLCD() == 'Dell' ? ' selected' : '' ?>>Dell</option>
+                        <option value='AOC'<?php echo $data->getLCD() == 'AOC' ? ' selected' : '' ?>>AOC</option>
                     </select>
                 </td>
             </tr>
