@@ -2,7 +2,7 @@
 
 namespace WWII\Application\Erp\QualityControl;
 
-class ReportGeneralInspectionSingleRecordAction
+class ReportGeneralInspectionAssemblingGraphAction
 {
     protected $serviceManager;
 
@@ -64,26 +64,21 @@ class ReportGeneralInspectionSingleRecordAction
             $errorMessages = $this->validateData($params);
 
             if (empty($errorMessages)) {
-                $inspection = $this->entityManager->createQueryBuilder()
-                    ->select(lcfirst($params['group']) . 'Inspection')
+                $dailyInspection = $this->entityManager->createQueryBuilder()
+                    ->select('assemblingInspection')
                     ->from(
-                        'WWII\Domain\Erp\QualityControl\GeneralInspection\\' . $params['group'] . 'Inspection',
-                        lcfirst($params['group']) . 'Inspection'
-                    )
-                    ->where(lcfirst($params['group']) . 'Inspection.lokasi = :lokasi')
-                        ->setParameter('lokasi', $params['lokasi'])
-                    ;
+                        'WWII\Domain\Erp\QualityControl\GeneralInspection\AssemblingInspection',
+                        'assemblingInspection'
+                    );
 
                 $arrayTanggal = explode('/', $params['tanggal']);
                 $tanggal = new \DateTime($arrayTanggal[2] . '-' . $arrayTanggal[1]. '-' . $arrayTanggal[0]);
-                $inspection->andWhere(lcfirst($params['group']) . 'Inspection.tanggalInspeksi = :tanggal')
+                $dailyInspection->andWhere('assemblingInspection.tanggalInspeksi = :tanggal')
                     ->setParameter('tanggal', $tanggal->format('Y-m-d'));
 
-                $data = $inspection
+                $data = $dailyInspection
                     ->getQuery()
-                    ->setFirstResult(0)
-                    ->setMaxResults(1)
-                    ->getOneOrNullResult();
+                    ->getResult();
             }
         }
 
@@ -107,14 +102,6 @@ class ReportGeneralInspectionSingleRecordAction
             } catch (\Exception $e) {
                 $errorMessages['tanggal'] = 'Format tanggal tidak valid (ex. 17/03/2014).';
             }
-        }
-
-        if (empty($params['group'])) {
-            $errorMessages['group'] = 'Harus dipilih';
-        }
-
-        if (empty($params['lokasi'])) {
-            $errorMessages['lokasi'] = 'Harus diisi';
         }
 
         return $errorMessages;
@@ -182,7 +169,7 @@ class ReportGeneralInspectionSingleRecordAction
         }
 
         $this->templateManager->renderHeader();
-        include('view/report_general_inspection_single_record.phtml');
+        include('view/report_general_inspection_assembling_graph.phtml');
         $this->templateManager->renderFooter();
     }
 }

@@ -1,0 +1,124 @@
+<h3>Report General Inspection - Whitewood Graphs</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<hr />
+<form action="" method="post">
+    <table border="0" width="100%">
+        <tbody>
+            <tr>
+                <td>日 期 Tanggal Inspeksi</td>
+                <td>
+                    <input type="text" required id="tanggal" class="medium" name="tanggal" value="<?php echo $params['tanggal'] ?>">
+                    <div class="error-container">
+                        <?php echo isset($errorMessages['tanggal']) ? $errorMessages['tanggal'] : '' ?>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type="submit" value="Proses" name="btx" />
+    <input type="submit" value="Reset" name="btx" />
+</form>
+<div id="chartContainer"></div>
+<style type="text/css">
+    #chartContainer {
+        width: 1000px;
+        height: 300px;
+        margin-top: 20px;
+    }
+</style>
+<script type="text/javascript" src="libs/canvasjs.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#tanggal").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-55:-0'
+        });
+
+        buildChart();
+    });
+
+    function buildChart()
+    {
+        var data = <?php
+            $jsData = array();
+
+            $jsData[0] = array(
+                'type' => 'bar',
+                'showInLegend' => true,
+                'name' => 'Jumlah Inspeksi',
+                'color' => 'blue'
+            );
+
+            $jsData[1] = array(
+                'type' => 'bar',
+                'showInLegend' => true,
+                'name' => 'Jumlah Kualitas Buruk',
+                'color' => 'red'
+            );
+
+            $jsData[0]['dataPoints'] = array();
+            $jsData[1]['dataPoints'] = array();
+
+            if (!empty($data)) {
+                foreach ($data as $whitewoodInspection) {
+
+                    foreach ($whitewoodInspection->getWhitewoodInspectionTime() as $whitewoodInspectionTime) {
+                        foreach ($whitewoodInspectionTime->getWhitewoodInspectionItem() as $whitewoodInspectionItem) {
+                            $i = count($jsData[0]['dataPoints']);
+                            $j = count($jsData[1]['dataPoints']);
+
+                            $jsData[0]['dataPoints'][$i]['label'] = $whitewoodInspectionItem->getNamaProduk();
+                            $jsData[0]['dataPoints'][$i]['y'] = $whitewoodInspectionItem->getJumlahInspeksi();
+                            $jsData[1]['dataPoints'][$j]['label'] = $whitewoodInspectionItem->getNamaProduk();
+                            $jsData[1]['dataPoints'][$j]['y'] = $whitewoodInspectionItem->getJumlahTotalItemBuruk();
+                        }
+                    }
+                }
+            }
+
+            echo json_encode($jsData);
+        ?>;
+
+        var chart = new CanvasJS.Chart(
+            "chartContainer",
+            {
+                legend: {
+                    cursor: "pointer",
+                    itemclick : function(e) {
+                        if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                            e.dataSeries.visible = false;
+                        } else {
+                            e.dataSeries.visible = true;
+                        }
+                        chart.render();
+                    }
+                },
+                toolTip: {
+                    shared: true,
+                    content: function(e) {
+                        var str = '';
+                        var total = 0 ;
+                        var str2;
+
+                        for (var i = 0; i < e.entries.length; i++){
+                            var  str1 = "<span style='color:" + e.entries[i].dataSeries.color + "'> " + e.entries[i].dataSeries.name + "</span>: <strong>" +  e.entries[i].dataPoint.y + "</strong><br/>";
+                            str = str.concat(str1);
+                        }
+
+                        str2 = "<span style='color:DodgerBlue;'><strong>" + e.entries[0].dataPoint.label + "</strong></span><br/>";
+
+                        return str2.concat(str);
+                    }
+                },
+                data: data
+            }
+        );
+
+        chart.render();
+    }
+</script>

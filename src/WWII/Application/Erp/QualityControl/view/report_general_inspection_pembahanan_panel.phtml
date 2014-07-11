@@ -1,0 +1,258 @@
+<h3>Report General Inspection - Pembahanan Panel</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+    }
+?>
+<hr />
+<form action="" method="post">
+    <table border="0" width="100%">
+        <tbody>
+            <tr>
+                <td>日期 Tanggal Inspeksi</td>
+                <td>
+                    <input type="text" required id="tanggal" class="medium" name="tanggal" value="<?php echo $params['tanggal'] ?>">
+                    <div class="error-container">
+                        <?php echo isset($errorMessages['tanggal']) ? $errorMessages['tanggal'] : '' ?>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>定位點 Lokasi</td>
+                <td>
+                    <select id="lokasi" name="lokasi">
+                        <option value="">[ 选一项 pilih satu ]</option>
+                        <option value="Line 1"<?php echo $params['lokasi'] == 'Line 1' ? ' selected' : '' ?>>Line 1</option>
+                        <option value="Line 2"<?php echo $params['lokasi'] == 'Line 2' ? ' selected' : '' ?>>Line 2</option>
+                        <option value="Line 3"<?php echo $params['lokasi'] == 'Line 3' ? ' selected' : '' ?>>Line 3</option>
+                        <option value="Line 4"<?php echo $params['lokasi'] == 'Line 4' ? ' selected' : '' ?>>Line 4</option>
+                        <option value="Line 5"<?php echo $params['lokasi'] == 'Line 5' ? ' selected' : '' ?>>Line 5</option>
+                        <option value="Line 6"<?php echo $params['lokasi'] == 'Line 6' ? ' selected' : '' ?>>Line 6</option>
+                        <option value="Line 7"<?php echo $params['lokasi'] == 'Line 7' ? ' selected' : '' ?>>Line 7</option>
+                        <option value="Line 8"<?php echo $params['lokasi'] == 'Line 8' ? ' selected' : '' ?>>Line 8</option>
+                        <option value="Line 9"<?php echo $params['lokasi'] == 'Line 9' ? ' selected' : '' ?>>Line 9</option>
+                    </select>
+                    <div class="error-container">
+                        <?php echo isset($errorMessages['lokasi']) ? $errorMessages['lokasi'] : '' ?>
+                    </td>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type="submit" value="Proses" name="btx" />
+    <input type="submit" value="Reset" name="btx" />
+</form>
+<?php
+    if ($data !== null) :
+        $pembahananPanelInspectionTime = $data->getPembahananPanelInspectionTime();
+?>
+<table class="content">
+    <thead>
+        <tr>
+            <th rowspan=0 style="width: 40px;">時 間<br />Waktu</th>
+            <th rowspan=0 style="width:40px;">客 戶<br />Customer</th>
+            <th rowspan=0 style="width:40px;">PO</th>
+            <th rowspan=0>產 品<br />編 號<br />Kode Produk</th>
+            <th rowspan=0>產 品<br />名 稱<br />Nama Produk</th>
+            <th rowspan=0 style="width:40px;">批<br />数<br />量<br />Jumlah Lot</th>
+            <th rowspan=0 style="width:40px;">檢<br />驗<br />數<br />Jumlah Inspeksi</th>
+            <th colspan=70>良 內 容<br />Konten Kondisi Buruk</th>
+            <th colspan=2>生 產 狀 況<br />Kondisi Produksi</th>
+            <th rowspan=0 style="width:40px;">狀<br />態<br />Status</th>
+        </tr>
+        <tr>
+            <th><div>组<br />立<br />錯<br />誤</div></th>
+            <th class="rotate"><div>Salah Perakitan</div></th>
+            <th><div>缺<br />肉<br />缺<br />块</div></th>
+            <th class="rotate"><div class="double">Material<br />Lubang / Rusak</div></th>
+            <th><div>材<br />料<br />不<br />对</div></th>
+            <th class="rotate"><div>Salah Material</div></th>
+            <th><div>木<br />纹<br />方<br />向<br />不<br />对</div></th>
+            <th class="rotate"><div class="double">Arah Bunga<br />Veneer Salah</div></th>
+            <th><div>尺<br />寸<br />不<br />对</div></th>
+            <th class="rotate"><div>Salah Ukuran</div></th>
+            <th><div>拼<br />缝</div></th>
+            <th class="rotate"><div>Rongga/Gap</div></th>
+            <th><div>跳<br />刀<br />痕</div></th>
+            <th class="rotate"><div>Goresan Pisau</div></th>
+            <th><div>弧<br />度<br />不<br />一<br />致</div></th>
+            <th class="rotate"><div class="double">Lengkungan<br />Tidak Sama</div></th>
+            <th><div>撕<br />裂</div></th>
+            <th class="rotate"><div>Retak</div></th>
+            <th><div>發<br />黑</div></th>
+            <th class="rotate"><div>Menjadi Hitam</div></th>
+            <th><div>砂<br />光<br />不<br />良</div></th>
+            <th class="rotate"><div>Sanding Buruk</div></th>
+            <th><div>压<br />力<br />不<br />够</div></th>
+            <th class="rotate"><div class="double">Tekanan<br />Tidak Maksimal</div></th>
+            <th><div>端<br />头<br />撕<br />裂</div></th>
+            <th class="rotate"><div>Potongan Cuwil</div></th>
+            <th><div>組<br />立<br />不<br />良</div></th>
+            <th class="rotate"><div>Assembly Buruk</div></th>
+            <th><div>角<br />度<br />不<br />一<br />致</div></th>
+            <th class="rotate"><div>Kesikuan/Sudut</div></th>
+            <th><div>脫<br />膠</div></th>
+            <th class="rotate"><div>Degumming</div></th>
+            <th><div>溢<br />膠</div></th>
+            <th class="rotate"><div>Kelebihan Lem</div></th>
+            <th><div>胶<br />水<br />不<br />够</div></th>
+            <th class="rotate"><div>Kurang Lem</div></th>
+            <th><div>其<br />它</div></th>
+            <th class="rotate"><div>Lainnya</div></th>
+            <th><div>&nbsp;-&nbsp;</div></th>
+            <th class="rotate"><div>Kurang Panjang</div></th>
+            <th><div>&nbsp;-&nbsp;</div></th>
+            <th class="rotate"><div>Kurang Lebar</div></th>
+            <th><div>&nbsp;-&nbsp;</div></th>
+            <th class="rotate"><div>Panjang Lebih</div></th>
+            <th><div>&nbsp;-&nbsp;</div></th>
+            <th class="rotate"><div>Lebar Lebih</div></th>
+            <th><div>&nbsp;-&nbsp;</div></th>
+            <th class="rotate"><div>Cutter Mark</div></th>
+            <th><div>&nbsp;-&nbsp;</div></th>
+            <th class="rotate"><div>Potongan Tidak Siku</div></th>
+            <th><div>&nbsp;-&nbsp;</div></th>
+            <th class="rotate"><div>Letak Alur Salah</div></th>
+            <th><div>&nbsp;-&nbsp;</div></th>
+            <th class="rotate"><div>Kurang Tebal</div></th>
+            <th><div>&nbsp;-&nbsp;</div></th>
+            <th class="rotate"><div>Kurang Tipis</div></th>
+            <th><div>&nbsp;-&nbsp;</div></th>
+            <th class="rotate"><div>Material Gelombang</div></th>
+            <th><div>&nbsp;-&nbsp;</div></th>
+            <th class="rotate"><div>List Tidak Sama</div></th>
+            <th><div>&nbsp;-&nbsp;</div></th>
+            <th class="rotate"><div class="double">Tekanan<br />Tidak Maksimal</div></th>
+            <th><div>&nbsp;-&nbsp;</div></th>
+            <th class="rotate"><div>Gelombang</div></th>
+            <th><div>&nbsp;-&nbsp;</div></th>
+            <th class="rotate"><div>Rakitan Terbalik</div></th>
+            <th><div>&nbsp;-&nbsp;</div></th>
+            <th class="rotate"><div>Over Sending</div></th>
+            <th><div>&nbsp;-&nbsp;</div></th>
+            <th class="rotate"><div>Kurang Sending</div></th>
+            <th>不<br />良<br />數<br /><strong>Jumlah Kualitas Buruk</strong></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+            foreach ($pembahananPanelInspectionTime as $pembahananPanelTimeGroup) :
+                $pembahananPanelTimeGroupRowSpan = count($pembahananPanelTimeGroup->getPembahananPanelInspectionItem()) + 1;
+        ?>
+        <tr>
+            <td rowspan=<?php echo $pembahananPanelTimeGroupRowSpan; ?>><?php echo $pembahananPanelTimeGroup->getWaktuInspeksi()->format('H:i:s'); ?></td>
+        </tr>
+        <?php
+            foreach ($pembahananPanelTimeGroup->getPembahananPanelInspectionItem() as $pembahananPanelItem) :
+                $status = $this->inspectionStatusHelper->getInspectionStatus($pembahananPanelItem);
+        ?>
+        <tr>
+            <td><?php echo $pembahananPanelItem->getCustomer() ?></td>
+            <td><?php echo $pembahananPanelItem->getPO() ?></td>
+            <td><?php echo $pembahananPanelItem->getKodeProduk() ?></td>
+            <td><?php echo $pembahananPanelItem->getNamaProduk() ?></td>
+            <td style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahLot() ?></td>
+            <td style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahInspeksi() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemSalahPerakitan() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemMaterial() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemSalahMaterial() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemArahBungaVeneerSalah() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemSalahUkuran() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemRonggaGap() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemGoresanPisau() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemLengkunganTidakSama() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemRetak() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemMenjadiHitam() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemSandingBuruk() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemTekananTidak() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemPotonganCuwil() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemAssemblyBuruk() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemKesikuanSudut() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemDegumming() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemKelebihanLem() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemKurangLem() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemBurukLainnya() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemKurangPanjang() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemKurangLebar() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemPanjangLebih() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemLebarLebih() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemCutterMark() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemPotonganTidakSiku() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemLetakAlurSalah() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemKurangTebal() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemKurangTipis() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemMaterialGelombang() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemListTidakSama() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemTekananTidakMaksimal() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemGelombang() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemRakitanTerbalik() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemOverSeding() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemKurangSending() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahTotalItemBuruk() ?></td>
+            <td style="text-align:center; color:<?php echo $status ? 'green' : 'red' ?>"><?php echo $status ? 'pass' : 'fail' ?></td>
+        </tr>
+        <?php
+                endforeach;
+            endforeach;
+         ?>
+    </tbody>
+</table>
+<input
+    type="button"
+    value="Print"
+    onclick="javascript:window.location.href='<?php
+        echo $this->routeManager->generateRoute(array(
+            'action' => 'report_general_inspection_pembahanan_panel_print',
+            'key' => $data->getId(),
+            'print' => true
+        ));
+    ?>'">
+<?php else: ?>
+<div style="text-align:center;"><h3>Data tidak ditemukan!</h3></div>
+<?php endif; ?>
+<style type="text/css">
+    fieldset {
+        border: 1px solid;
+    }
+
+    table.content thead tr:first-child {
+        height: 30px;
+    }
+
+    table.content thead tr:last-child {
+        height: 120px;
+    }
+
+    table.content thead tr th.rotate {
+        padding: 0;
+        white-space: nowrap;
+    }
+
+    table.content thead tr th.rotate > div {
+        transform:
+            translate(0, 40px)
+            rotate(270deg);
+        width: 30px;
+    }
+
+    table.content thead tr th.rotate > div.double {
+        transform:
+            translate(0, 34px)
+            rotate(270deg);
+        width: 40px;
+    }
+
+    table.content tbody td {
+        vertical-align: top;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#tanggal").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-55:-0'
+        });
+    });
+</script>

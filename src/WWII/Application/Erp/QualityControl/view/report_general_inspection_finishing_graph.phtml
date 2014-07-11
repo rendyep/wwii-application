@@ -1,4 +1,4 @@
-<h3>Report General Inspection</h3>
+<h3>Report General Inspection - Finishing Graphs</h3>
 <?php
     if (!empty($errorMessages)) {
         echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
@@ -14,20 +14,6 @@
                     <input type="text" required id="tanggal" class="medium" name="tanggal" value="<?php echo $params['tanggal'] ?>">
                     <div class="error-container">
                         <?php echo isset($errorMessages['tanggal']) ? $errorMessages['tanggal'] : '' ?>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>组 Group</td>
-                <td>
-                    <select name="group">
-                        <option value="">[ 选一项 pilih satu ]</option>
-                        <option value="Assembling"<?php echo $params['group'] == 'Assembling' ? ' selected' : '' ?>>Assembling</option>
-                        <option value="Finishing"<?php echo $params['group'] == 'Finishing' ? ' selected' : '' ?>>Finishing</option>
-                        <option value="Packaging"<?php echo $params['group'] == 'Packaging' ? ' selected' : '' ?>>Packaging</option>
-                    </select>
-                    <div class="error-container">
-                        <?php echo isset($errorMessages['group']) ? $errorMessages['group'] : '' ?>
                     </div>
                 </td>
             </tr>
@@ -79,19 +65,17 @@
             $jsData[1]['dataPoints'] = array();
 
             if (!empty($data)) {
-                foreach ($data as $inspection) {
-                    $timeGetterMethod = 'get' . ucfirst($params['group']) . 'InspectionTime';
-                    $itemGetterMethod = 'get' . ucfirst($params['group']) . 'InspectionItem';
+                foreach ($data as $finishingInspection) {
 
-                    foreach ($inspection->$timeGetterMethod() as $inspectionTime) {
-                        foreach ($inspectionTime->$itemGetterMethod() as $inspectionItem) {
+                    foreach ($finishingInspection->getFinishingInspectionTime() as $finishingInspectionTime) {
+                        foreach ($finishingInspectionTime->getFinishingInspectionItem() as $finishingInspectionItem) {
                             $i = count($jsData[0]['dataPoints']);
                             $j = count($jsData[1]['dataPoints']);
 
-                            $jsData[0]['dataPoints'][$i]['label'] = $inspectionItem->getNamaProduk();
-                            $jsData[0]['dataPoints'][$i]['y'] = $inspectionItem->getJumlahInspeksi();
-                            $jsData[1]['dataPoints'][$j]['label'] = $inspectionItem->getNamaProduk();
-                            $jsData[1]['dataPoints'][$j]['y'] = $inspectionItem->getJumlahTotalItemBuruk();
+                            $jsData[0]['dataPoints'][$i]['label'] = $finishingInspectionItem->getNamaProduk();
+                            $jsData[0]['dataPoints'][$i]['y'] = $finishingInspectionItem->getJumlahInspeksi();
+                            $jsData[1]['dataPoints'][$j]['label'] = $finishingInspectionItem->getNamaProduk();
+                            $jsData[1]['dataPoints'][$j]['y'] = $finishingInspectionItem->getJumlahTotalItemBuruk();
                         }
                     }
                 }

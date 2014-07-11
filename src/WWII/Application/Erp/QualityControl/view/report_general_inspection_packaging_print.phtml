@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+        <style type="text/css">
+            @media print {
+                button {
+                    display: none !important;
+                }
+            }
+
+            body {
+                width: 26cm;
+                text-align: center;
+                font-family: "segoe ui";
+                font-size: 10px;
+                margin: 0 auto;
+            }
+
+            #footer {
+                margin-top: 20px;
+            }
+
+            #content-head {
+                margin-bottom: 5px;
+            }
+
+            #content-head span {
+                margin-right: 40px;
+            }
+
+            #content-head span:last-child {
+                margin-right: 0px;
+            }
+
+            table.full-border {
+                width: 100%;
+                margin: 0 auto;
+                border-collapse: collapse;
+                border: 1px solid #000000;
+            }
+
+            table.full-border th,
+            table.full-border td {
+                font-weight: normal;
+                border: 1px solid #000000;
+            }
+
+            table.full-border td {
+                text-align: left;
+            }
+
+            fieldset {
+                border: 1px solid;
+            }
+
+            table.full-border thead tr:first-child {
+                height: 30px;
+            }
+
+            table.full-border thead tr:last-child {
+                height: 100px;
+            }
+
+            table.full-border thead tr th.rotate {
+                padding: 0;
+                white-space: nowrap;
+            }
+
+            table.full-border thead tr th.rotate > div {
+                transform:
+                    translate(0, 30px)
+                    rotate(270deg);
+                width: 20px;
+            }
+
+            table.full-border tbody td {
+                vertical-align: top;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="head">
+            <h3>
+                品 管 全 檢 製 程 日 報 表
+                <br />
+                Laporan Harian Inspeksi Seluruh Proses QC
+            </h3>
+        </div>
+        <div id="content" style="overflow:auto;">
+            <?php if ($data !== null) : ?>
+            <div id="content-head">
+                <div style="float:left;">
+                    <span>組 別 Group : Packaging</span>
+                    <span>定 位 點 Lokasi : <?php echo $data->getLokasi(); ?></span>
+                    <span>品 管 员 Staff  QC : <?php echo $data->getStaffQc(); ?></span>
+                </div>
+                <div style="float:right;">
+                    <span><?php echo $data->getTanggalInspeksi()->format('Y'); ?> 年Thn</span>
+                    <span><?php echo $data->getTanggalInspeksi()->format('m'); ?> 月Bln</span>
+                    <span><?php echo $data->getTanggalInspeksi()->format('d'); ?> 日Tgl</span>
+                </div>
+            </div>
+            <table class="full-border">
+                <?php
+                    $packagingInspectionTime = $data->getPackagingInspectionTime();
+                ?>
+                <thead>
+                    <tr>
+                        <th rowspan=0 style="width: 40px;">時 間<br />Waktu</th>
+                        <th rowspan=0>產 品<br />編 號<br />Kode Produk</th>
+                        <th rowspan=0>產 品<br />名 稱<br />Nama Produk</th>
+                        <th rowspan=0 style="width:40px;">批<br />数<br />量<br />Jumlah Lot</th>
+                        <th rowspan=0 style="width:40px;">檢<br />驗<br />數<br />Jumlah Inspeksi</th>
+                        <th colspan=36>不 良 內 容<br />Konten Kondisi Buruk</th>
+                        <th colspan=3>生 產 狀 況<br />Kondisi Produksi</th>
+                        <th rowspan=0 style="width:40px;">狀<br />態<br />Status</th>
+                    </tr>
+                    <tr>
+                        <th><div>流<br />程<br />错<br />误</div></th>
+                        <th class="rotate"><div>Salah Flow Proses</div></th>
+                        <th><div>材<br />质<br />不<br />良</div></th>
+                        <th class="rotate"><div>Kualitas Buruk</div></th>
+                        <th><div>材<br />质<br />不<br />對</div></th>
+                        <th class="rotate"><div>Salah Kualitas</div></th>
+                        <th><div>孔<br />位<br />不<br />對</div></th>
+                        <th class="rotate"><div>Salah Posisi Lubang</div></th>
+                        <th><div>角<br />度<br />不<br />一<br />致</div></th>
+                        <th class="rotate"><div>Salah Ukuran</div></th>
+                        <th><div>跳<br />刀<br />痕</div></th>
+                        <th class="rotate"><div>Bekas Goresan Pisau</div></th>
+                        <th><div>撕<br />裂</div></th>
+                        <th class="rotate"><div>Sobek</div></th>
+                        <th><div>開<br />裂</div></th>
+                        <th class="rotate"><div>Retak</div></th>
+                        <th><div>发<br />黑</div></th>
+                        <th class="rotate"><div>Hitam</div></th>
+                        <th><div>砂<br />光<br />不<br />良</div></th>
+                        <th class="rotate"><div>Sanding Buruk</div></th>
+                        <th><div>压<br />划<br />伤</div></th>
+                        <th class="rotate"><div>Goresan Tekanan</div></th>
+                        <th><div>冒<br />钉</div></th>
+                        <th class="rotate"><div>Paku Keluar</div></th>
+                        <th><div>组<br />立<br />不<br />良</div></th>
+                        <th class="rotate"><div>Berdiri Buruk</div></th>
+                        <th><div>修<br />补<br />不<br />良</div></th>
+                        <th class="rotate"><div>Perbaikan Buruk</div></th>
+                        <th><div>脫<br />膠</div></th>
+                        <th class="rotate"><div>Lem Degumming</div></th>
+                        <th><div>溢<br />膠</div></th>
+                        <th class="rotate"><div>Kelebihan Lem</div></th>
+                        <th><div>湿<br />度<br />太<br />高</div></th>
+                        <th class="rotate"><div>Suhu Terlalu Tinggi</div></th>
+                        <th><div>其<br />他</div></th>
+                        <th class="rotate"><div>Lainnya</div></th>
+                        <th><div>缺<br />點<br />數</div></th>
+                        <th class="rotate"><div>Jumlah Kekurangan</div></th>
+                        <th>不<br />良<br />數<br /><strong>Jumlah Kualitas Buruk</strong></th>
+                </thead>
+                <tbody>
+                    <?php
+                        foreach ($packagingInspectionTime as $packagingTimeGroup) :
+                            $packagingTimeGroupRowSpan = count($packagingTimeGroup->getPackagingInspectionItem()) + 1;
+                    ?>
+                    <tr>
+                        <td rowspan=<?php echo $packagingTimeGroupRowSpan; ?>><?php echo $packagingTimeGroup->getWaktuInspeksi()->format('H:i:s'); ?></td>
+                    </tr>
+                    <?php
+                        foreach ($packagingTimeGroup->getPackagingInspectionItem() as $packagingItem) :
+                            $status = $this->inspectionStatusHelper->getInspectionStatus($packagingItem);
+                    ?>
+                    <tr>
+                        <td><?php echo $packagingItem->getKodeProduk() ?></td>
+                        <td><?php echo $packagingItem->getNamaProduk() ?></td>
+                        <td style="text-align:right;"><?php echo $packagingItem->getJumlahLot() ?></td>
+                        <td style="text-align:right;"><?php echo $packagingItem->getJumlahInspeksi() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemSalahFlowProses() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemKualitasBuruk() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemSalahKualitas() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemSalahPosisiLubang() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemSalahUkuran() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemBekasGoresanPisau() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemSobek() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemRetak() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemHitam() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemSandingBuruk() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemGoresanTekanan() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemPakuKeluar() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemBerdiriBuruk() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemPerbaikanBuruk() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemLemDegumming() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemKelebihanLem() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemSuhuTerlaluTinggi() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemBurukLainnya() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $packagingItem->getJumlahItemKekurangan() ?></td>
+                        <td style="text-align:right;"><?php echo $packagingItem->getJumlahTotalItemBuruk() ?></td>
+                        <td style="text-align:center; color:<?php echo $status ? 'green' : 'red' ?>"><?php echo $status ? 'pass' : 'fail' ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+                <?php endforeach; ?>
+            </table>
+            <?php else: ?>
+            <div style="text-align:center;"><h3>Data tidak ditemukan!</h3></div>
+            <?php endif; ?>
+        </div>
+        <div id="footer">
+            <button onclick="javascript: window.print()">Print</button>
+            <button onclick="javascript: window.location.href = '<?php echo $this->routeManager->generateRoute(array('action' => 'report_general_inspection_packaging')) ?>'">Kembali</button>
+        </div>
+    </body>
+</html>

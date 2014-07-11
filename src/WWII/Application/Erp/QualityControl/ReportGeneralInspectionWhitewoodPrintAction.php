@@ -2,7 +2,7 @@
 
 namespace WWII\Application\Erp\QualityControl;
 
-class ReportGeneralInspectionSingleRecordPrintAction
+class ReportGeneralInspectionWhitewoodPrintAction
 {
     protected $serviceManager;
 
@@ -45,12 +45,11 @@ class ReportGeneralInspectionSingleRecordPrintAction
 
     public function dispatchOutput($params)
     {
-        $id = explode(':', $this->routeManager->getKey());
-        $domain = 'WWII\Domain\Erp\QualityControl\GeneralInspection\\' . $id[0] . 'Inspection';
+        $domain = 'WWII\Domain\Erp\QualityControl\GeneralInspection\WhitewoodInspection';
 
         $result = $this->entityManager
-            ->getRepository($domain)
-            ->findOneById($id[1]);
+            ->getRepository('WWII\Domain\Erp\QualityControl\GeneralInspection\WhitewoodInspection')
+            ->findOneById($this->routeManager->getKey());
 
         return array(
             'params' => $params,
@@ -64,6 +63,6 @@ class ReportGeneralInspectionSingleRecordPrintAction
             extract($result);
         }
 
-        include('/view/report_general_inspection_single_record_print.phtml');
+        include('/view/report_general_inspection_whitewood_print.phtml');
     }
 }

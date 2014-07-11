@@ -2,7 +2,7 @@
 
 namespace WWII\Application\Erp\QualityControl;
 
-class ReportGeneralInspectionGraphAction
+class ReportGeneralInspectionFinishingAction
 {
     protected $serviceManager;
 
@@ -64,21 +64,25 @@ class ReportGeneralInspectionGraphAction
             $errorMessages = $this->validateData($params);
 
             if (empty($errorMessages)) {
-                $dailyInspection = $this->entityManager->createQueryBuilder()
-                    ->select(lcfirst($params['group']) . 'Inspection')
+                $finishingInspection = $this->entityManager->createQueryBuilder()
+                    ->select('finishingInspection')
                     ->from(
-                        'WWII\Domain\Erp\QualityControl\GeneralInspection\\' . lcfirst($params['group']) . 'Inspection',
-                        lcfirst($params['group']) . 'Inspection'
-                    );
+                        'WWII\Domain\Erp\QualityControl\GeneralInspection\FinishingInspection',
+                        'finishingInspection'
+                    )
+                    ->where('finishingInspection.lokasi = :lokasi')
+                    ->setParameter('lokasi', $params['lokasi']);
 
                 $arrayTanggal = explode('/', $params['tanggal']);
                 $tanggal = new \DateTime($arrayTanggal[2] . '-' . $arrayTanggal[1]. '-' . $arrayTanggal[0]);
-                $dailyInspection->andWhere(lcfirst($params['group']) .'Inspection.tanggalInspeksi = :tanggal')
+                $finishingInspection->andWhere('finishingInspection.tanggalInspeksi = :tanggal')
                     ->setParameter('tanggal', $tanggal->format('Y-m-d'));
 
-                $data = $dailyInspection
+                $data = $finishingInspection
                     ->getQuery()
-                    ->getResult();
+                    ->setFirstResult(0)
+                    ->setMaxResults(1)
+                    ->getOneOrNullResult();
             }
         }
 
@@ -104,8 +108,8 @@ class ReportGeneralInspectionGraphAction
             }
         }
 
-        if (empty($params['group'])) {
-            $errorMessages['group'] = 'Harus dipilih';
+        if (empty($params['lokasi'])) {
+            $errorMessages['lokasi'] = 'Harus diisi';
         }
 
         return $errorMessages;
@@ -173,7 +177,7 @@ class ReportGeneralInspectionGraphAction
         }
 
         $this->templateManager->renderHeader();
-        include('view/report_general_inspection_graph.phtml');
+        include('view/report_general_inspection_finishing.phtml');
         $this->templateManager->renderFooter();
     }
 }
