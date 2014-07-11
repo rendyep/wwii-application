@@ -43,6 +43,8 @@
                 <td>
                     <select name='lokasi'>
                         <option value=''>[ semua ]</option>
+                        <option value='President'<?php echo $params['lokasi'] == 'President' ? ' selected' : '' ?>>President</option>
+                        <option value='General Manager'<?php echo $params['lokasi'] == 'General Manager' ? ' selected' : '' ?>>General Manager</option>
                         <option value='Dept. HRD/GA'<?php echo $params['lokasi'] == 'Dept. HRD/GA' ? ' selected' : '' ?>>Dept. HRD/GA</option>
                         <option value='Dept. Accounting'<?php echo $params['lokasi'] == 'Dept. Accounting' ? ' selected' : '' ?>>Dept. Accounting</option>
                         <option value='Dept. Marketing'<?php echo $params['lokasi'] == 'Dept. Marketing' ? ' selected' : '' ?>>Dept. Marketing</option>

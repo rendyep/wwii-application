@@ -59,6 +59,8 @@
                 <td>
                     <select name='lokasi'>
                         <option value=''>[ pilih satu ]</option>
+                        <option value='President'<?php echo $params['lokasi'] == 'President' ? ' selected' : '' ?>>President</option>
+                        <option value='General Manager'<?php echo $params['lokasi'] == 'General Manager' ? ' selected' : '' ?>>General Manager</option>
                         <option value='Dept. HRD/GA'<?php echo $params['lokasi'] == 'Dept. HRD/GA' ? ' selected' : '' ?>>Dept. HRD/GA</option>
                         <option value='Dept. Accounting'<?php echo $params['lokasi'] == 'Dept. Accounting' ? ' selected' : '' ?>>Dept. Accounting</option>
                         <option value='Dept. Marketing'<?php echo $params['lokasi'] == 'Dept. Marketing' ? ' selected' : '' ?>>Dept. Marketing</option>
@@ -91,12 +93,13 @@
                 <td>
                     <select name='cpu'>
                         <option value=''>[ pilih satu ]</option>
-                        <option value='Intel Core i3'<?php echo $params['cpu'] == 'Intel Core i3' ? ' selected' : '' ?>>Intel Core i3</option>
+                        <option value='Intel Core i7'<?php echo $params['cpu'] == 'Intel Core i7' ? ' selected' : '' ?>>Intel Core i7</option>
                         <option value='Intel Core i5'<?php echo $params['cpu'] == 'Intel Core i5' ? ' selected' : '' ?>>Intel Core i5</option>
+                        <option value='Intel Core i3-3220T @ 2.80 Ghz'<?php echo $params['cpu'] == 'Intel Core i3-3220T @ 2.80 Ghz' ? ' selected' : '' ?>>Intel Core i3-3220T @ 2.80 Ghz</option>
+                        <option value='Intel Core i3'<?php echo $params['cpu'] == 'Intel Core i3' ? ' selected' : '' ?>>Intel Core i3</option>
                         <option value='Intel Core 2 Duo'<?php echo $params['cpu'] == 'Intel Core 2 Duo' ? ' selected' : '' ?>>Intel Core 2 Duo</option>
                         <option value='Intel Dual Core'<?php echo $params['cpu'] == 'Intel Dual Core' ? ' selected' : '' ?>>Intel Dual Core</option>
                         <option value='Intel Xeon E5620 @ 2.40 GHz 2.39 Ghz'<?php echo $params['cpu'] == 'Intel Xeon E5620 @ 2.40 GHz 2.39 Ghz' ? ' selected' : '' ?>>Intel Xeon E5620 @ 2.40 GHz 2.39 Ghz</option>
-                        <option value='Intel Core i3-3220T @ 2.80 Ghz'<?php echo $params['cpu'] == 'Intel Core i3-3220T @ 2.80 Ghz' ? ' selected' : '' ?>>Intel Core i3-3220T @ 2.80 Ghz</option>
                         <option value='Intel Celeron'<?php echo $params['cpu'] == 'Intel Celeron' ? ' selected' : '' ?>>Intel Celeron</option>
                     </select>
                 </td>
@@ -139,6 +142,7 @@
                     <select name='lcd'>
                         <option value=''>[ pilih satu ]</option>
                         <option value='Samsung'<?php echo $params['lcd'] == 'Samsung' ? ' selected' : '' ?>>Samsung</option>
+                        <option value='LG'<?php echo $data->getLCD() == 'LG' ? ' selected' : '' ?>>LG</option>
                         <option value='Compaq'<?php echo $params['lcd'] == 'Compaq' ? ' selected' : '' ?>>Compaq</option>
                         <option value='Acer'<?php echo $params['lcd'] == 'Acer' ? ' selected' : '' ?>>Acer</option>
                         <option value='View Sonic'<?php echo $params['lcd'] == 'View Sonic' ? ' selected' : '' ?>>View Sonic</option>
