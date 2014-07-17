@@ -93,14 +93,14 @@
                 <td>
                     <select name='cpu'>
                         <option value=''>[ pilih satu ]</option>
-                        <option value='Intel Core i7'<?php echo $params['cpu'] == 'Intel Core i7' ? ' selected' : '' ?>>Intel Core i7</option>
-                        <option value='Intel Core i5'<?php echo $params['cpu'] == 'Intel Core i5' ? ' selected' : '' ?>>Intel Core i5</option>
-                        <option value='Intel Core i3-3220T @ 2.80 Ghz'<?php echo $params['cpu'] == 'Intel Core i3-3220T @ 2.80 Ghz' ? ' selected' : '' ?>>Intel Core i3-3220T @ 2.80 Ghz</option>
-                        <option value='Intel Core i3'<?php echo $params['cpu'] == 'Intel Core i3' ? ' selected' : '' ?>>Intel Core i3</option>
-                        <option value='Intel Core 2 Duo'<?php echo $params['cpu'] == 'Intel Core 2 Duo' ? ' selected' : '' ?>>Intel Core 2 Duo</option>
-                        <option value='Intel Dual Core'<?php echo $params['cpu'] == 'Intel Dual Core' ? ' selected' : '' ?>>Intel Dual Core</option>
-                        <option value='Intel Xeon E5620 @ 2.40 GHz 2.39 Ghz'<?php echo $params['cpu'] == 'Intel Xeon E5620 @ 2.40 GHz 2.39 Ghz' ? ' selected' : '' ?>>Intel Xeon E5620 @ 2.40 GHz 2.39 Ghz</option>
-                        <option value='Intel Celeron'<?php echo $params['cpu'] == 'Intel Celeron' ? ' selected' : '' ?>>Intel Celeron</option>
+                        <option value='Intel Core i7'<?php echo $data->getCpu() == 'Intel Core i7' ? ' selected' : '' ?>>Intel Core i7</option>
+                        <option value='Intel Core i5'<?php echo $data->getCpu() == 'Intel Core i5' ? ' selected' : '' ?>>Intel Core i5</option>
+                        <option value='Intel Core i3-3220T @ 2.80 Ghz'<?php echo $data->getCpu() == 'Intel Core i3-3220T @ 2.80 Ghz' ? ' selected' : '' ?>>Intel Core i3-3220T @ 2.80 Ghz</option>
+                        <option value='Intel Core i3'<?php echo $data->getCpu() == 'Intel Core i3' ? ' selected' : '' ?>>Intel Core i3</option>
+                        <option value='Intel Core 2 Duo'<?php echo $data->getCpu() == 'Intel Core 2 Duo' ? ' selected' : '' ?>>Intel Core 2 Duo</option>
+                        <option value='Intel Dual Core'<?php echo $data->getCpu() == 'Intel Dual Core' ? ' selected' : '' ?>>Intel Dual Core</option>
+                        <option value='Intel Xeon E5620 @ 2.40 GHz 2.39 Ghz'<?php echo $data->getCpu() == 'Intel Xeon E5620 @ 2.40 GHz 2.39 Ghz' ? ' selected' : '' ?>>Intel Xeon E5620 @ 2.40 GHz 2.39 Ghz</option>
+                        <option value='Intel Celeron'<?php echo $data->getCpu() == 'Intel Celeron' ? ' selected' : '' ?>>Intel Celeron</option>
                     </select>
                 </td>
             </tr>
