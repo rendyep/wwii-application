@@ -137,6 +137,32 @@ class AddGeneralInspectionPackagingAction
                     }
                 }
             }
+
+            $params['waktu'] = '';
+            $params['kodeProduk'] = '';
+            $params['namaProduk'] = '';
+            $params['level'] = '';
+            $params['acceptanceIndex'] = '';
+            $params['jumlahInspeksi'] = 0;
+            $params['jumlahItemSalahFlowProses'] = 0;
+            $params['jumlahItemKualitasBuruk'] = 0;
+            $params['jumlahItemSalahKualitas'] = 0;
+            $params['jumlahItemSalahPosisiLubang'] = 0;
+            $params['jumlahItemSalahUkuran'] = 0;
+            $params['jumlahItemBekasGoresanPisau'] = 0;
+            $params['jumlahItemSobek'] = 0;
+            $params['jumlahItemRetak'] = 0;
+            $params['jumlahItemHitam'] = 0;
+            $params['jumlahItemSandingBuruk'] = 0;
+            $params['jumlahItemGoresanTekanan'] = 0;
+            $params['jumlahItemPakuKeluar'] = 0;
+            $params['jumlahItemBerdiriBuruk'] = 0;
+            $params['jumlahItemPerbaikanBuruk'] = 0;
+            $params['jumlahItemLemDegumming'] = 0;
+            $params['jumlahItemKelebihanLem'] = 0;
+            $params['jumlahItemSuhuTerlaluTinggi'] = 0;
+            $params['jumlahItemBurukLainnya'] = 0;
+            $params['jumlahItemKekurangan'] = 0;
         }
 
         return array(

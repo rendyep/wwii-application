@@ -57,7 +57,7 @@
             <th rowspan=0>產 品<br />名 稱<br />Nama Produk</th>
             <th rowspan=0 style="width:40px;">批<br />数<br />量<br />Jumlah Lot</th>
             <th rowspan=0 style="width:40px;">檢<br />驗<br />數<br />Jumlah Inspeksi</th>
-            <th colspan=70>良 內 容<br />Konten Kondisi Buruk</th>
+            <th colspan=68>良 內 容<br />Konten Kondisi Buruk</th>
             <th colspan=2>生 產 狀 況<br />Kondisi Produksi</th>
             <th rowspan=0 style="width:40px;">狀<br />態<br />Status</th>
         </tr>
@@ -123,8 +123,6 @@
             <th><div>&nbsp;-&nbsp;</div></th>
             <th class="rotate"><div>List Tidak Sama</div></th>
             <th><div>&nbsp;-&nbsp;</div></th>
-            <th class="rotate"><div class="double">Tekanan<br />Tidak Maksimal</div></th>
-            <th><div>&nbsp;-&nbsp;</div></th>
             <th class="rotate"><div>Gelombang</div></th>
             <th><div>&nbsp;-&nbsp;</div></th>
             <th class="rotate"><div>Rakitan Terbalik</div></th>
@@ -155,7 +153,7 @@
             <td style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahLot() ?></td>
             <td style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahInspeksi() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemSalahPerakitan() ?></td>
-            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemMaterial() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemMaterialLubangRusak() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemSalahMaterial() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemArahBungaVeneerSalah() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemSalahUkuran() ?></td>
@@ -165,10 +163,10 @@
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemRetak() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemMenjadiHitam() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemSandingBuruk() ?></td>
-            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemTekananTidak() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemTekananTidakMaksimal() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemPotonganCuwil() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemAssemblyBuruk() ?></td>
-            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemKesikuanSudut() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemKesikuanSudutTidakSama() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemDegumming() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemKelebihanLem() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemKurangLem() ?></td>
@@ -184,7 +182,6 @@
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemKurangTipis() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemMaterialGelombang() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemListTidakSama() ?></td>
-            <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemTekananTidakMaksimal() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemGelombang() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemRakitanTerbalik() ?></td>
             <td colspan=2 style="text-align:right;"><?php echo $pembahananPanelItem->getJumlahItemOverSeding() ?></td>

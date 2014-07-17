@@ -139,6 +139,34 @@ class AddGeneralInspectionWhitewoodAction
                     }
                 }
             }
+
+            $params['waktu'] = '';
+            $params['customer'] = '';
+            $params['po'] = '';
+            $params['kodeProduk'] = '';
+            $params['namaProduk'] = '';
+            $params['level'] = '';
+            $params['acceptanceIndex'] = '';
+            $params['jumlahInspeksi'] = 0;
+            $params['jumlahItemSalahProses'] = 0;
+            $params['jumlahItemKualitasBuruk'] = 0;
+            $params['jumlahItemKualitasTidakBenar'] = 0;
+            $params['jumlahItemPosisiLubangSalah'] = 0;
+            $params['jumlahItemSalahUkuran'] = 0;
+            $params['jumlahItemSalahJenisPisau'] = 0;
+            $params['jumlahItemGoresanPisau'] = 0;
+            $params['jumlahItemRobek'] = 0;
+            $params['jumlahItemRetak'] = 0;
+            $params['jumlahItemMenjadiHitam'] = 0;
+            $params['jumlahItemSandingBuruk'] = 0;
+            $params['jumlahItemGoresanTekanan'] = 0;
+            $params['jumlahItemPakuKeluar'] = 0;
+            $params['jumlahItemAssemblyBuruk'] = 0;
+            $params['jumlahItemPerbaikanBuruk'] = 0;
+            $params['jumlahItemDegumming'] = 0;
+            $params['jumlahItemKelebihanLem'] = 0;
+            $params['jumlahItemSuhuTerlaluTinggi'] = 0;
+            $params['jumlahItemBurukLainnya'] = 0;
         }
 
         return array(

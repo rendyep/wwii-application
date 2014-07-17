@@ -133,6 +133,29 @@ class AddGeneralInspectionAssemblingAction
                     }
                 }
             }
+
+            $params['waktu'] = '';
+            $params['kodeProduk'] = '';
+            $params['namaProduk'] = '';
+            $params['level'] = '';
+            $params['acceptanceIndex'] = '';
+            $params['jumlahInspeksi'] = 0;
+            $params['jumlahItemKainTergores'] = 0;
+            $params['jumlahItemTidakPresisi'] = 0;
+            $params['jumlahItemSalahPosisiLubang'] = 0;
+            $params['jumlahItemSalahUkuran'] = 0;
+            $params['jumlahItemTergores'] = 0;
+            $params['jumlahItemKelebihanLem'] = 0;
+            $params['jumlahItemStrukturLonggar'] = 0;
+            $params['jumlahItemCoverTerpotong'] = 0;
+            $params['jumlahItemRetak'] = 0;
+            $params['jumlahItemSandingBuruk'] = 0;
+            $params['jumlahItemPakuKeluar'] = 0;
+            $params['jumlahItemLemDegumming'] = 0;
+            $params['jumlahItemGap'] = 0;
+            $params['jumlahItemBurukLainnya'] = 0;
+            $params['jumlahItemKekurangan'] = 0;
+
         }
 
         return array(

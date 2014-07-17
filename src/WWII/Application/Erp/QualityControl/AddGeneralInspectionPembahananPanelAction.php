@@ -88,7 +88,7 @@ class AddGeneralInspectionPembahananPanelAction
             $pembahananPanelItem->setJumlahLot($params['jumlahLot']);
             $pembahananPanelItem->setJumlahInspeksi($params['jumlahInspeksi']);
             $pembahananPanelItem->setJumlahItemSalahPerakitan($params['jumlahItemSalahPerakitan']);
-            $pembahananPanelItem->setJumlahItemMaterial($params['jumlahItemMaterial']);
+            $pembahananPanelItem->setJumlahItemMaterialLubangRusak($params['jumlahItemMaterialLubangRusak']);
             $pembahananPanelItem->setJumlahItemSalahMaterial($params['jumlahItemSalahMaterial']);
             $pembahananPanelItem->setJumlahItemArahBungaVeneerSalah($params['jumlahItemArahBungaVeneerSalah']);
             $pembahananPanelItem->setJumlahItemSalahUkuran($params['jumlahItemSalahUkuran']);
@@ -98,10 +98,10 @@ class AddGeneralInspectionPembahananPanelAction
             $pembahananPanelItem->setJumlahItemRetak($params['jumlahItemRetak']);
             $pembahananPanelItem->setJumlahItemMenjadiHitam($params['jumlahItemMenjadiHitam']);
             $pembahananPanelItem->setJumlahItemSandingBuruk($params['jumlahItemSandingBuruk']);
-            $pembahananPanelItem->setJumlahItemTekananTidak($params['jumlahItemTekananTidak']);
+            $pembahananPanelItem->setJumlahItemTekananTidakMaksimal($params['jumlahItemTekananTidakMaksimal']);
             $pembahananPanelItem->setJumlahItemPotonganCuwil($params['jumlahItemPotonganCuwil']);
             $pembahananPanelItem->setJumlahItemAssemblyBuruk($params['jumlahItemAssemblyBuruk']);
-            $pembahananPanelItem->setJumlahItemKesikuanSudut($params['jumlahItemKesikuanSudut']);
+            $pembahananPanelItem->setJumlahItemKesikuanSudutTidakSama($params['jumlahItemKesikuanSudutTidakSama']);
             $pembahananPanelItem->setJumlahItemDegumming($params['jumlahItemDegumming']);
             $pembahananPanelItem->setJumlahItemKelebihanLem($params['jumlahItemKelebihanLem']);
             $pembahananPanelItem->setJumlahItemKurangLem($params['jumlahItemKurangLem']);
@@ -117,15 +117,12 @@ class AddGeneralInspectionPembahananPanelAction
             $pembahananPanelItem->setJumlahItemKurangTipis($params['jumlahItemKurangTipis']);
             $pembahananPanelItem->setJumlahItemMaterialGelombang($params['jumlahItemMaterialGelombang']);
             $pembahananPanelItem->setJumlahItemListTidakSama($params['jumlahItemListTidakSama']);
-            $pembahananPanelItem->setJumlahItemTekananTidakMaksimal($params['jumlahItemTekananTidakMaksimal']);
             $pembahananPanelItem->setJumlahItemGelombang($params['jumlahItemGelombang']);
             $pembahananPanelItem->setJumlahItemRakitanTerbalik($params['jumlahItemRakitanTerbalik']);
             $pembahananPanelItem->setJumlahItemOverSending($params['jumlahItemOverSending']);
             $pembahananPanelItem->setJumlahItemKurangSending($params['jumlahItemKurangSending']);
 
             $pembahananPanelInspection = $this->getSessionData('pembahananPanelInspection');
-var_dump($pembahananPanelItem->getJumlahItemListTidakSama());
-var_dump($params['jumlahItemListTidakSama']);
 
             $arrayTanggalInspeksi = explode('/', $params['tanggalInspeksi']);
             $waktuInspeksi = new \DateTime(
@@ -157,6 +154,49 @@ var_dump($params['jumlahItemListTidakSama']);
                     }
                 }
             }
+
+            $params['waktu'] = '';
+            $params['customer'] = '';
+            $params['po'] = '';
+            $params['kodeProduk'] = '';
+            $params['namaProduk'] = '';
+            $params['level'] = '';
+            $params['acceptanceIndex'] = '';
+            $params['jumlahInspeksi'] = 0;
+            $params['jumlahItemSalahPerakitan'] = 0;
+            $params['jumlahItemMaterialLubangRusak'] = 0;
+            $params['jumlahItemSalahMaterial'] = 0;
+            $params['jumlahItemArahBungaVeneerSalah'] = 0;
+            $params['jumlahItemSalahUkuran'] = 0;
+            $params['jumlahItemRonggaGap'] = 0;
+            $params['jumlahItemGoresanPisau'] = 0;
+            $params['jumlahItemLengkunganTidakSama'] = 0;
+            $params['jumlahItemRetak'] = 0;
+            $params['jumlahItemMenjadiHitam'] = 0;
+            $params['jumlahItemSandingBuruk'] = 0;
+            $params['jumlahItemTekananTidakMaksimal'] = 0;
+            $params['jumlahItemPotonganCuwil'] = 0;
+            $params['jumlahItemAssemblyBuruk'] = 0;
+            $params['jumlahItemKesikuanSudutTidakSama'] = 0;
+            $params['jumlahItemDegumming'] = 0;
+            $params['jumlahItemKelebihanLem'] = 0;
+            $params['jumlahItemKurangLem'] = 0;
+            $params['jumlahItemBurukLainnya'] = 0;
+            $params['jumlahItemKurangPanjang'] = 0;
+            $params['jumlahItemKurangLebar'] = 0;
+            $params['jumlahItemPanjangLebih'] = 0;
+            $params['jumlahItemLebarLebih'] = 0;
+            $params['jumlahItemCutterMark'] = 0;
+            $params['jumlahItemPotonganTidakSiku'] = 0;
+            $params['jumlahItemLetakAlurSalah'] = 0;
+            $params['jumlahItemKurangTebal'] = 0;
+            $params['jumlahItemKurangTipis'] = 0;
+            $params['jumlahItemMaterialGelombang'] = 0;
+            $params['jumlahItemListTidakSama'] = 0;
+            $params['jumlahItemGelombang'] = 0;
+            $params['jumlahItemRakitanTerbalik'] = 0;
+            $params['jumlahItemOverSending'] = 0;
+            $params['jumlahItemKurangSending'] = 0;
         }
 
         return array(
@@ -222,7 +262,7 @@ var_dump($params['jumlahItemListTidakSama']);
             $this->routeManager->redirect(array(
                 'action' => 'report_general_inspection_pembahanan_panel_print',
                 'group' => lcfirst($params['group']),
-                'key' => $params['group'] . ':' . $pembahananPanelInspection->getId(),
+                'key' => $pembahananPanelInspection->getId(),
                 'print' => 1
             ));
         }
@@ -299,8 +339,8 @@ var_dump($params['jumlahItemListTidakSama']);
                     $errorMessages['jumlahItemSalahPerakitan'] = 'harus berupa angka';
                 }
 
-                if ($params['jumlahItemMaterial'] == '') {
-                    $errorMessages['jumlahItemMaterial'] = 'harus berupa angka';
+                if ($params['jumlahItemMaterialLubangRusak'] == '') {
+                    $errorMessages['jumlahItemMaterialLubangRusak'] = 'harus berupa angka';
                 }
 
                 if ($params['jumlahItemSalahMaterial'] == '') {
@@ -339,8 +379,8 @@ var_dump($params['jumlahItemListTidakSama']);
                     $errorMessages['jumlahItemSandingBuruk'] = 'harus berupa angka';
                 }
 
-                if ($params['jumlahItemTekananTidak'] == '') {
-                    $errorMessages['jumlahItemTekananTidak'] = 'harus berupa angka';
+                if ($params['jumlahItemTekananTidakMaksimal'] == '') {
+                    $errorMessages['jumlahItemTekananTidakMaksimal'] = 'harus berupa angka';
                 }
 
                 if ($params['jumlahItemPotonganCuwil'] == '') {
@@ -351,8 +391,8 @@ var_dump($params['jumlahItemListTidakSama']);
                     $errorMessages['jumlahItemAssemblyBuruk'] = 'harus berupa angka';
                 }
 
-                if ($params['jumlahItemKesikuanSudut'] == '') {
-                    $errorMessages['jumlahItemKesikuanSudut'] = 'harus berupa angka';
+                if ($params['jumlahItemKesikuanSudutTidakSama'] == '') {
+                    $errorMessages['jumlahItemKesikuanSudutTidakSama'] = 'harus berupa angka';
                 }
 
                 if ($params['jumlahItemDegumming'] == '') {
@@ -413,10 +453,6 @@ var_dump($params['jumlahItemListTidakSama']);
 
                 if ($params['jumlahItemListTidakSama'] == '') {
                     $errorMessages['jumlahItemListTidakSama'] = 'harus berupa angka';
-                }
-
-                if ($params['jumlahItemTekananTidakMaksimal'] == '') {
-                    $errorMessages['jumlahItemTekananTidakMaksimal'] = 'harus berupa angka';
                 }
 
                 if ($params['jumlahItemGelombang'] == '') {
