@@ -1,0 +1,509 @@
+<style type="text/css">
+    html, body, div, span, applet, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    a, abbr, acronym, address, big, cite, code,
+    del, dfn, em, img, ins, kbd, q, s, samp,
+    small, strike, strong, sub, sup, tt, var,
+    b, u, i, center,
+    dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend,
+    table, caption, tbody, tfoot, thead, tr, th, td,
+    article, aside, canvas, details, embed,
+    figure, figcaption, footer, header, hgroup,
+    menu, nav, output, ruby, section, summary,
+    time, mark, audio, video {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+    }
+
+    article, aside, details, figcaption, figure,
+    footer, header, hgroup, menu, nav, section {
+        display: block;
+    }
+
+    body {
+        font: 13px/20px 'Lucida Grande', Tahoma, Verdana, sans-serif;
+        line-height: 1;
+    }
+
+    .container {
+        position: relative;
+        margin: 50px auto;
+        width: 800px;
+    }
+
+    .content {
+        position: relative;
+        margin: 0 auto;
+        padding: 20px 20px 20px;
+        width: 600px;
+        background: #fff;
+        border-radius: 3px;
+        -webkit-box-shadow: 0 0 200px rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 0 200px rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .content:before {
+        content: '';
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        bottom: -8px;
+        left: -8px;
+        z-index: -1;
+        background: rgba(0, 0, 0, 0.08);
+        border-radius: 4px;
+    }
+
+    .content h1 {
+        margin: -20px -20px 21px;
+        line-height: 40px;
+        font-size: 15px;
+        font-weight: bold;
+        color: #555;
+        text-align: center;
+        text-shadow: 0 1px #fff;
+        background: #f3f3f3;
+        border-bottom: 1px solid #cfcfcf;
+        border-radius: 3px 3px 0 0;
+        background-image: -webkit-linear-gradient(top, whiteffd, #eef2f5);
+        background-image: -moz-linear-gradient(top, whiteffd, #eef2f5);
+        background-image: -o-linear-gradient(top, whiteffd, #eef2f5);
+        background-image: linear-gradient(to bottom, whiteffd, #eef2f5);
+        -webkit-box-shadow: 0 1px whitesmoke;
+        box-shadow: 0 1px whitesmoke;
+    }
+
+    .content p {
+        margin: 20px 0 0;
+    }
+
+    .content p:first-child {
+        margin-top: 0;
+    }
+
+    .content input[type=text],
+    .content input[type=password] {
+        width: 570px;
+    }
+
+    :-moz-placeholder {
+        color: #c9c9c9 !important;
+        font-size: 13px;
+    }
+
+    ::-webkit-input-placeholder {
+        color: #ccc;
+        font-size: 13px;
+    }
+
+    input {
+        font-family: 'Lucida Grande', Tahoma, Verdana, sans-serif;
+    }
+
+    input:required:valid,
+    input:focus:valid {
+        background-image: none;
+    }
+
+    input[type=text] {
+        margin: 5px;
+        padding: 0 10px;
+        width: 200px;
+        height: 34px;
+        color: #404040;
+        background: white;
+        border: 1px solid;
+        border-color: #c4c4c4 #d1d1d1 #d4d4d4;
+        border-radius: 2px;
+        outline: 5px solid #eff4f7;
+        -moz-outline-radius: 3px;
+        -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+
+    input[type=text]:focus,
+    input[type=password]:focus {
+        border-color: #7dc9e2;
+        outline-color: #dceefc;
+        outline-offset: 0;
+    }
+
+    .lt-ie9 input[type=text],
+    .lt-ie9 input[type=password] {
+        line-height: 34px;
+    }
+
+    .fieldset-left {
+        width: 150px;
+        float: left;
+        margin-bottom: 10px;
+        clear: left;
+        vertical-align: top;
+    }
+
+    .fieldset-right {
+        margin-left: 150px;
+        margin-bottom: 10px;
+        vertical-align: top;
+    }
+
+    .fieldset-right:before {
+        content: ': ';
+        vertical-align: top;
+    }
+
+    .fieldset-empty:before {
+        content: ' ';
+    }
+
+    .fieldset-button {
+        margin-left: 157px;
+        margin-bottom: 10px;
+    }
+
+    .required:after {
+        content: ' *';
+        color: red;
+    }
+
+    #modalWindow {
+        display: none;
+        z-index: 200;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        width: 600px;
+        padding: 20px 20px;
+        background: #fff;
+        border-radius: 3px;
+        -webkit-box-shadow: 0 0 200px rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 0 200px rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    #modalWindow:before {
+        content: '';
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        bottom: -8px;
+        left: -8px;
+        z-index: -1;
+        border-radius: 4px;
+    }
+
+    #modalWindow h1 {
+        margin: -20px -20px 21px;
+        line-height: 40px;
+        font-size: 15px;
+        font-weight: bold;
+        color: #555;
+        text-align: center;
+        text-shadow: 0 1px #fff;
+        background: #f3f3f3;
+        border-bottom: 1px solid #cfcfcf;
+        border-radius: 3px 3px 0 0;
+        background-image: -webkit-linear-gradient(top, whiteffd, #eef2f5);
+        background-image: -moz-linear-gradient(top, whiteffd, #eef2f5);
+        background-image: -o-linear-gradient(top, whiteffd, #eef2f5);
+        background-image: linear-gradient(to bottom, whiteffd, #eef2f5);
+        -webkit-box-shadow: 0 1px whitesmoke;
+        box-shadow: 0 1px whitesmoke;
+    }
+
+    #modalWindow p {
+        margin: 20px 0 0;
+    }
+
+    #modalWindow p:first-child {
+        margin-top: 0;
+    }
+
+    #modalWindow input[type=text],
+    #modalWindow input[type=password] {
+        width: 570px;
+    }
+
+    #modalWrapper.overlay:before {
+        content: " ";
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        z-index: 100;
+        top: 0;
+        left: 0;
+        background: #000;
+        background: rgba(0,0,0,0.7);
+    }
+
+    #modalWrapper.overlay #modalWindow {
+        display: block;
+    }
+
+    #modalClose {
+        background: #606061;
+        color: #FFFFFF;
+        line-height: 25px;
+        position: absolute;
+        right: -12px;
+        text-align: center;
+        top: -10px;
+        width: 24px;
+        text-decoration: none;
+        font-weight: bold;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        border-radius: 12px;
+        -moz-box-shadow: 1px 1px 3px #000;
+        -webkit-box-shadow: 1px 1px 3px #000;
+        box-shadow: 1px 1px 3px #000;
+    }
+
+    #modalClose:hover {
+        background: #00d9ff;
+    }
+
+    #modalWindow fieldset {
+        padding: 10px;
+    }
+</style>
+<section class="container">
+    <div class="content">
+        <h1>Barcode Komputer</h1>
+        <p>
+            <input id="keyword" type="text" name="keyword" value="" placeholder="Nomor Seri">
+        </p>
+    </div>
+</section>
+<div id="modalWrapper">
+    <div id="modalWindow">
+        <div style="text-align: right;">
+            <a href="#" id="modalClose"><b>X</b></a>
+        </div>
+        <h1>Barcode Komputer</h1>
+        <p>
+            <div class="fieldset-left">Nomor Seri</div>
+            <div id="nomorSeri" class="fieldset-right"></div>
+            <div class="fieldset-left">IP Address</div>
+            <div id="ipAddress" class="fieldset-right"></div>
+            <div class="fieldset-left">Mac Address</div>
+            <div id="macAddress" class="fieldset-right"></div>
+            <div class="fieldset-left">CPU</div>
+            <div id="cpu" class="fieldset-right"></div>
+            <div class="fieldset-left">Hard Disk</div>
+            <div id="hardDisk" class="fieldset-right"></div>
+            <div class="fieldset-left">RAM</div>
+            <div id="ram" class="fieldset-right"></div>
+            <div class="fieldset-left">LCD</div>
+            <div id="lcd" class="fieldset-right"></div>
+            <div class="fieldset-left">Optical Drive</div>
+            <div id="opticalDrive" class="fieldset-right"></div>
+            <div class="fieldset-left">Sistem Operasi</div>
+            <div id="sistemOperasi" class="fieldset-right"></div>
+            <div class="fieldset-left">Email</div>
+            <div id="email" class="fieldset-right"></div>
+            <div class="fieldset-left">Tahun</div>
+            <div id="tahun" class="fieldset-right"></div>
+            <div class="fieldset-left">User</div>
+            <div id="user" class="fieldset-right"></div>
+            <div class="fieldset-left">User Account</div>
+            <div id="userAccount" class="fieldset-right"></div>
+            <div class="fieldset-left">Lokasi</div>
+            <div id="lokasi" class="fieldset-right"></div>
+        </p>
+    </div>
+</div>
+</div>
+
+<script type="text/javascript">
+    if (document.addEventListener) {
+        document.addEventListener("DOMContentLoaded", modalInit, false);
+    } else {
+        window.attachEvent("onload", modalInit);
+    }
+
+    function modalInit() {
+        var modalWrapper = document.getElementById("modalWrapper");
+        var modalWindow  = document.getElementById("modalWindow");
+        var modalClose   = document.getElementById("modalClose");
+        var keyword      = document.getElementById("keyword");
+
+        var xhr;
+
+        var nomorSeri     = document.getElementById("nomorSeri");
+        var ipAddress     = document.getElementById("ipAddress");
+        var macAddress    = document.getElementById("macAddress");
+        var cpu           = document.getElementById("cpu");
+        var hardDisk      = document.getElementById("hardDisk");
+        var ram           = document.getElementById("ram");
+        var lcd           = document.getElementById("lcd");
+        var opticalDrive  = document.getElementById("opticalDrive");
+        var sistemOperasi = document.getElementById("sistemOperasi");
+        var email         = document.getElementById("email");
+        var tahun         = document.getElementById("tahun");
+        var user          = document.getElementById("user");
+        var userAccount   = document.getElementById("userAccount");
+        var lokasi        = document.getElementById("lokasi");
+
+        var signLoading = "<img src='/wwii/images/loader.gif' height='10px'>";
+        var signError   = "<img src='/wwii/images/error.png' height='10px'>";
+
+        if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+        } else {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        nomorSeri.innerHTML     = signLoading;
+        ipAddress.innerHTML     = signLoading;
+        macAddress.innerHTML    = signLoading;
+        cpu.innerHTML           = signLoading;
+        hardDisk.innerHTML      = signLoading;
+        ram.innerHTML           = signLoading;
+        lcd.innerHTML           = signLoading;
+        opticalDrive.innerHTML  = signLoading;
+        sistemOperasi.innerHTML = signLoading;
+        email.innerHTML         = signLoading;
+        tahun.innerHTML         = signLoading;
+        user.innerHTML          = signLoading;
+        userAccount.innerHTML   = signLoading;
+        lokasi.innerHTML        = signLoading;
+
+        var openModal = function(e) {
+            modalWindow.style.marginTop = (-modalWindow.offsetHeight)/2 + "px";
+            modalWindow.style.marginLeft = (-modalWindow.offsetWidth)/2 + "px";
+
+            modalWrapper.className = "overlay";
+            keyword.value = "";
+            keyword.focus();
+
+            e.preventDefault ? e.preventDefault() : e.returnValue = false;
+        }
+
+        var closeModal = function(e) {
+            modalWrapper.className = "";
+            keyword.value = "";
+            keyword.focus();
+
+            e.preventDefault ? e.preventDefault() : e.returnValue = false;
+        }
+
+        var requestData = function(reference) {
+            xhr.open("GET", "<?php echo $this->routeManager->generateRoute(array('bypass' => true)) ?>&key=" + reference, true);
+            xhr.send();
+        }
+
+        var keyHandler = function(e) {
+            if (e.keyCode == 13) {
+                if (keyword.value.length < 3) {
+                    return;
+                }
+
+                requestData(keyword.value);
+                openModal(e);
+            } else if (e.keyCode == 27) {
+                closeModal(e);
+            }
+        }
+
+        var loadData = function(jsonData) {
+            var data;
+
+            if (jsonData) {
+                try {
+                    data = JSON.parse(jsonData);
+
+                    nomorSeri.innerHTML     = data.nomorSeri;
+                    ipAddress.innerHTML     = data.ipAddress;
+                    macAddress.innerHTML    = data.macAddress;
+                    cpu.innerHTML           = data.cpu;
+                    hardDisk.innerHTML      = data.hardDisk;
+                    ram.innerHTML           = data.ram;
+                    lcd.innerHTML           = data.lcd;
+                    opticalDrive.innerHTML  = data.opticalDrive;
+                    sistemOperasi.innerHTML = data.sistemOperasi;
+                    email.innerHTML         = data.email;
+                    tahun.innerHTML         = data.tahun;
+                    user.innerHTML          = data.user;
+                    userAccount.innerHTML   = data.userAccount;
+                    lokasi.innerHTML        = data.lokasi;
+                } catch (e) {
+                    handleRequestError();
+                    return;
+                }
+            } else {
+                handleRequestError();
+            }
+        }
+
+        var handleRequestError = function(errorCode) {
+            nomorSeri.innerHTML     = signError;
+            ipAddress.innerHTML     = signError;
+            macAddress.innerHTML    = signError;
+            cpu.innerHTML           = signError;
+            hardDisk.innerHTML      = signError;
+            ram.innerHTML           = signError;
+            lcd.innerHTML           = signError;
+            opticalDrive.innerHTML  = signError;
+            sistemOperasi.innerHTML = signError;
+            email.innerHTML         = signError;
+            tahun.innerHTML         = signError;
+            user.innerHTML          = signError;
+            userAccount.innerHTML   = signError;
+            lokasi.innerHTML        = signError;
+        }
+
+        xhr.onreadystatechange = function() {
+            modalWrapper.className = "overlay";
+
+            switch (xhr.readyState) {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                    nomorSeri.innerHTML     = signLoading;
+                    ipAddress.innerHTML     = signLoading;
+                    macAddress.innerHTML    = signLoading;
+                    cpu.innerHTML           = signLoading;
+                    hardDisk.innerHTML      = signLoading;
+                    ram.innerHTML           = signLoading;
+                    lcd.innerHTML           = signLoading;
+                    opticalDrive.innerHTML  = signLoading;
+                    sistemOperasi.innerHTML = signLoading;
+                    email.innerHTML         = signLoading;
+                    tahun.innerHTML         = signLoading;
+                    user.innerHTML          = signLoading;
+                    userAccount.innerHTML   = signLoading;
+                    lokasi.innerHTML        = signLoading;
+
+                    break;
+                case 4:
+                    if (xhr.status !== 200) {
+                        handleRequestError(xhr.status);
+                    } else {
+                        loadData(xhr.responseText);
+                    }
+
+                    break;
+            }
+        }
+
+        if (document.addEventListener) {
+            keyword.addEventListener("keydown", keyHandler, false);
+            modalClose.addEventListener("click", closeModal, false);
+        } else {
+            keyword.attachEvent("onkeydown", keyHandler);
+            modalClose.attachEvent("onclick", closeModal);
+        }
+
+        var attrAutocomplete = document.createAttribute("autocomplete");
+        attrAutocomplete.nodeValue = "off";
+
+        keyword.attributes.setNamedItem(attrAutocomplete);
+        keyword.focus();
+    }
+</script>

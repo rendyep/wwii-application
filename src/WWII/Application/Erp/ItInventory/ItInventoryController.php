@@ -32,6 +32,12 @@ class ItInventoryController extends \WWII\Controller\AbstractController
         $action->dispatch($_GET);
     }
 
+    public function scanBarcodeKomputerAction()
+    {
+        $action = new ScanBarcodeKomputerAction($this->serviceManager, $this->entityManager);
+        $action->dispatch($_GET);
+    }
+
     public function deleteKomputerAction()
     {
         $action = new DeleteKomputerAction($this->serviceManager, $this->entityManager);
