@@ -1,0 +1,149 @@
+<h3>Report Monthly Payroll</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">'
+            . 'Form yang anda kirim tidak valid.<br />Mohon dicek kembali.';
+
+        if (!empty($errorMessages['global'])) {
+            echo '<ul>';
+            foreach ($errorMessages['global'] as $globalError) {
+                echo '<li>' . $globalError . '</li>';
+            }
+            echo '</ul>';
+        }
+
+        echo '</div>';
+    }
+?>
+<hr />
+<form action="" method="post">
+    <table border="0" width="100%">
+        <tbody>
+            <tr>
+                <td>Bulan</td>
+                <td>
+                    <select name="month">
+                        <?php
+                            $monthList = array(
+                                '[ pilih satu ]',
+                                'Januari',
+                                'Februari',
+                                'Maret',
+                                'April',
+                                'Mei',
+                                'Juni',
+                                'Juli',
+                                'Agustus',
+                                'September',
+                                'Oktober',
+                                'November',
+                                'Desember'
+                            );
+
+                            foreach ($monthList as $key => $value) {
+                                if ($key == 0) {
+                                    $key = '';
+                                } elseif ($key > 0 && $key <= 9) {
+                                    $key = '0' . $key;
+                                }
+
+                                echo '<option value="' . $key . '"' . ($params['month'] == $key ? ' selected' : '') . '>' . $value . '</option>';
+                            }
+                        ?>
+                    </select>
+                    <div class="error-container">
+                        <?php echo isset($errorMessages['month']) ? $errorMessages['month'] : '' ?>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Tahun</td>
+                <td>
+                    <select name="year">
+                        <?php
+                            $now = new \DateTime();
+                            $thisYear = $now->format('Y');
+
+                            echo '<option value="">[ pilih satu ]</option>';
+                            for ($i = 10; $i > 0; $i--) {
+                                echo '<option value="' . $thisYear . '"' . ($params['year'] == $thisYear ? ' selected' : '') . '>' . $thisYear . '</option>';
+                                $thisYear--;
+                            }
+                        ?>
+                    </select>
+                    <div class="error-container">
+                        <?php echo isset($errorMessages['year']) ? $errorMessages['year'] : '' ?>
+                    </td>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type="submit" value="Proses" name="btx" />
+    <input type="submit" value="Reset" name="btx" />
+</form>
+<table class="content">
+    <tr>
+        <th rowspan=2>NIK</th>
+        <th rowspan=2>Nama</th>
+        <th rowspan=2>Departemen</th>
+        <th rowspan=2>Status</th>
+        <th rowspan=2>PTKP</th>
+        <th rowspan=2>PKP</th>
+        <th rowspan=2>Total Pajak</th>
+        <th rowspan=2>Potongan<br />PPH 21</th>
+        <th rowspan=2>Deduction</th>
+        <th rowspan=2>Total<br />Potongan</th>
+        <th rowspan=2>Total Dibayar</th>
+        <th colspan=5>Detail Hari Kerja</th>
+        <th rowspan=2>Rincian</th>
+    </tr>
+    <tr>
+        <th>Hadir</th>
+        <th>Total<br />Jam Kerja</th>
+        <th>Ijin /<br />Mangkir</th>
+        <th>Cuti</th>
+        <th>Sakit</th>
+    </tr>
+    <?php
+        if (! empty($data)) :
+            foreach ($data as $report) :
+    ?>
+    <tr>
+        <td><?php echo $report['fCode'] ?></td>
+        <td class="nowrap"><?php echo $report['fName'] ?></td>
+        <td class="nowrap"><?php echo $report['fDeptName'] ?></td>
+        <td><?php echo $report['fStatus'] ?></td>
+        <td style="text-align:right;">[ptkp]</td>
+        <td style="text-align:right;">[pkp]</td>
+        <td style="text-align:right;">[total_pajak]</td>
+        <td style="text-align:right;">[potongan_pph_21]</td>
+        <td style="text-align:right;">[deduction]</td>
+        <td style="text-align:right;">[total_potongan]</td>
+        <td style="text-align:right;">[total_dibayar]</td>
+        <td style="text-align:right;"><?php echo $report['fJumlahHariKerja'] ?></td>
+        <td style="text-align:right;"><?php echo $report['fJamKerja'] ?></td>
+        <td style="text-align:right;"><?php echo $report['fJumlahAbsen'] ?></td>
+        <td style="text-align:right;"><?php echo $report['fJumlahCuti'] ?></td>
+        <td style="text-align:right;"><?php echo $report['fJumlahSakit'] ?></td>
+        <td class="nowrap">
+            <a href="<?php echo $this->routeManager->generateRoute(array(
+                'action' => 'detail_jam_kerja_karyawan',
+                'key' => "fCode:{$report['fCode']};date:{$params['year']}-{$params['month']}-01"
+            )) ?>">detail jam kerja</a>
+        </td>
+    </tr>
+    <?php
+            endforeach;
+        else :
+    ?>
+    <tr>
+        <td colspan=0 style="text-align:center;">Data tidak ditemukan!</td>
+    </tr>
+    <?php endif; ?>
+</table>
+<style type="text/css">
+    .nowrap {
+        white-space:nowrap;
+    }
+</style>

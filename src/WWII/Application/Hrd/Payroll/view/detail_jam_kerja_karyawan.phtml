@@ -1,0 +1,351 @@
+<h3>Detail Jam Kerja Karyawan</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">'
+            . 'Form yang anda kirim tidak valid.<br />Mohon dicek kembali.';
+
+        if (!empty($errorMessages['global'])) {
+            echo '<ul>';
+            foreach ($errorMessages['global'] as $globalError) {
+                echo '<li>' . $globalError . '</li>';
+            }
+            echo '</ul>';
+        }
+
+        echo '</div>';
+    }
+?>
+<hr />
+<form action="" method="post">
+    <fieldset>
+        <legend>Detail Jam Kerja Karyawan</legend>
+        <div class="fieldset-kiri">NIK</div>
+        <div class="fieldset-kanan"><?php echo $data['fCode'] ?></div>
+        <div class="fieldset-kiri">Nama Lengkap</div>
+        <div class="fieldset-kanan"><?php echo $data['fName'] ?></div>
+        <div class="fieldset-kiri">Departemen</div>
+        <div class="fieldset-kanan"><?php echo $data['fDeptName'] ?></div>
+        <div class="fieldset-kiri">Jumlah Hari Kerja</div>
+        <div class="fieldset-kanan"><?php echo $data['fJumlahHariKerja'] ?> hari</div>
+        <div class="fieldset-kiri">Jumlah Jam Kerja</div>
+        <div class="fieldset-kanan"><?php echo $data['fTotalJamKerja'] ?></div>
+        <div class="fieldset-kiri">Jumlah Ijin/Mangkir</div>
+        <div class="fieldset-kanan"><?php echo $data['fJumlahAbsen'] ?> hari</div>
+        <div class="fieldset-kiri">Jumlah Cuti</div>
+        <div class="fieldset-kanan"><?php echo $data['fJumlahCuti'] ?> hari</div>
+        <div class="fieldset-kiri">Jumlah Sakit</div>
+        <div class="fieldset-kanan"><?php echo $data['fJumlahSakit'] ?> hari</div>
+        <hr />
+        <div class="fieldset-kiri"></div>
+        <div class="fieldset-button">
+            <input
+                type="submit"
+                name="btx"
+                value="Simpan" />
+            <input
+                type="button"
+                onclick="javascript:window.location.href='<?php echo $this->routeManager->generateRoute(array(
+                    'action' => 'generate_monthly_payroll'
+                )) ?>'"
+                value="Kembali" />
+        </div>
+        <div id="modalWrapper">
+            <div id="modalWindow">
+                <div style="text-align: right;"><a id="modalClose" href="#"><b>X</b></a></div>
+                <fieldset>
+                    <legend>产 品 Items</legend>
+                    <div>
+                        <div class="grid">
+                            <div class="fieldset-kiri required">Id</div>
+                            <div class="fieldset-kanan">
+                                <input id="id" class="medium" type="text" name="id" value="" readonly />
+                            </div>
+                            <div class="fieldset-kiri required">Tanggal</div>
+                            <div class="fieldset-kanan">
+                                <input id="tanggal" class="medium" type="text" name="tanggal" value="" readonly />
+                            </div>
+                            <div class="fieldset-kiri required">Jadwal Masuk</div>
+                            <div class="fieldset-kanan">
+                                <input id="jadwalMasuk" class="medium" type="text" name="jadwalMasuk" value="" />
+                            </div>
+                            <div class="fieldset-kiri required">Jadwal Keluar</div>
+                            <div class="fieldset-kanan">
+                                <input id="jadwalKeluar" class="medium" type="text" name="jadwalKeluar" value="" />
+                            </div>
+                            <div class="fieldset-kiri required">Masuk</div>
+                            <div class="fieldset-kanan">
+                                <input id="masuk" class="medium" type="text" name="masuk" value="" />
+                            </div>
+                            <div class="fieldset-kiri required">Keluar</div>
+                            <div class="fieldset-kanan">
+                                <input id="keluar" class="medium" type="text" name="keluar" value="" />
+                            </div>
+                            <div class="fieldset-kiri required">Status</div>
+                            <div class="fieldset-kanan">
+                                <select id="status" class="medium" name="status" value="" />
+                                    <option value="P">Hadir</option>
+                                    <option value="H">Libur</option>
+                                    <option value="C">Cuti</option>
+                                    <option value="S">Sakit</option>
+                                    <option value="A">Ijin/Mangkir</option>
+                                </select>
+                            </div>
+                            <div class="fieldset-kiri">Catatan</div>
+                            <div class="fieldset-kanan">
+                                <textarea id="catatan" name="catatan"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear:both;">
+                        <hr />
+                        <div class="fieldset-kiri"></div>
+                        <div class="fieldset-button">
+                            <input type="submit" name="btx" value="Proses" />
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<table class="content">
+    <tr>
+        <th>Tanggal</th>
+        <th>Jadwal Masuk</th>
+        <th>Jadwal Keluar</th>
+        <th>Masuk</th>
+        <th>Keluar</th>
+        <th>Status</th>
+        <th style="width: 300px;">Catatan</th>
+        <th>Action</th>
+    </tr>
+    <?php foreach ($data['cardRecord'] as $detail) : ?>
+    <tr>
+        <td><?php
+            if (! empty($detail['fDateTime'])) {
+                $fDateTime = new \DateTime($detail['fDateTime']);
+                echo $fDateTime->format('d-M-Y');
+            }  else {
+                echo '-';
+            }
+        ?></td>
+        <td><?php
+            if (! empty($detail['fDateTimeScheduledIn'])) {
+                $fDateTimeScheduledIn = new \DateTime($detail['fDateTimeScheduledIn']);
+                echo $fDateTimeScheduledIn->format('H:i:s');
+            } else {
+                echo '-';
+            }
+        ?></td>
+        <td><?php
+            if (! empty($detail['fDateTimeScheduledOut'])) {
+                $fDateTimeScheduledOut = new \DateTime($detail['fDateTimeScheduledOut']);
+                echo $fDateTimeScheduledOut->format('H:i:s');
+            } else {
+                echo '-';
+            }
+        ?></td>
+        <td><?php
+            if (! empty($detail['fDateTimeUserIn'])) {
+                $fDateTimeUserIn = new \DateTime($detail['fDateTimeUserIn']);
+                echo $fDateTimeUserIn->format('H:i:s');
+            } else {
+                echo '-';
+            }
+        ?></td>
+        <td><?php
+            if (! empty($detail['fDateTimeUserOut'])) {
+                $fDateTimeUserOut = new \DateTime($detail['fDateTimeUserOut']);
+                echo $fDateTimeUserOut->format('H:i:s');
+            } else {
+                echo '-';
+            }
+        ?></td>
+        <td><?php
+            switch($detail['fStatus']) {
+                case 'H':
+                    echo 'Libur';
+                    break;
+                case 'P':
+                    echo 'Hadir';
+                    break;
+                case 'A':
+                    echo 'Ijin/Mangkir';
+                    break;
+                case 'C':
+                    echo 'Cuti';
+                    break;
+                case 'S':
+                    echo 'Sakit';
+                    break;
+            }
+        ?></td>
+        <td><?php echo $detail['fNote'] ?></td>
+        <td style="text-align: center;">
+            <input
+                class="modalOpen"
+                data-options='{"id":"<?php echo $detail['fId'] ?>",
+                    "tanggal":"<?php
+                        if (! empty($detail['fDateTime'])) {
+                            $fDateTime = new \DateTime($detail['fDateTime']);
+                            echo $fDateTime->format('d-M-Y');
+                        } else {
+                            echo '-';
+                        } ?>",
+                    "jadwalMasuk":"<?php
+                        if (! empty($detail['fDateTimeScheduledIn'])) {
+                            $fDateTimeScheduledIn = new \DateTime($detail['fDateTimeScheduledIn']);
+                            echo $fDateTimeScheduledIn->format('H:i:s');
+                        } else {
+                            echo '-';
+                        } ?>",
+                    "jadwalKeluar":"<?php
+                        if (! empty($detail['fDateTimeScheduledOut'])) {
+                            $fDateTimeScheduledOut = new \DateTime($detail['fDateTimeScheduledOut']);
+                            echo $fDateTimeScheduledOut->format('H:i:s');
+                        } else {
+                            echo '-';
+                        } ?>",
+                    "masuk":"<?php
+                        if (! empty($detail['fDateTimeUserIn'])) {
+                            $fDateTimeUserIn = new \DateTime($detail['fDateTimeUserIn']);
+                            echo $fDateTimeUserIn->format('H:i:s');
+                        } else {
+                            echo '-';
+                        } ?>",
+                    "keluar":"<?php
+                        if (! empty($detail['fDateTimeUserOut'])) {
+                            $fDateTimeUserOut = new \DateTime($detail['fDateTimeUserOut']);
+                            echo $fDateTimeUserOut->format('H:i:s');
+                        } else {
+                            echo '-';
+                        } ?>",
+                    "status":"<?php echo $detail['fStatus'] ?>",
+                    "catatan":"<?php echo $detail['fNote'] ?>"
+                }'
+                type="button"
+                value="Revisi" />
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</table>
+<style type="text/css">
+    #modalWindow {
+        display: none;
+        z-index: 200;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        width: 800px;
+        padding: 10px 20px;
+        background: #fff;
+        border: 5px solid #999;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    #modalWrapper.overlay:before {
+        content: " ";
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        z-index: 100;
+        top: 0;
+        left: 0;
+        background: #000;
+        background: rgba(0,0,0,0.7);
+    }
+
+    #modalWrapper.overlay #modalWindow {
+        display: block;
+    }
+
+    #modalClose {
+        background: #606061;
+        color: #FFFFFF;
+        line-height: 25px;
+        position: absolute;
+        right: -12px;
+        text-align: center;
+        top: -10px;
+        width: 24px;
+        text-decoration: none;
+        font-weight: bold;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        border-radius: 12px;
+        -moz-box-shadow: 1px 1px 3px #000;
+        -webkit-box-shadow: 1px 1px 3px #000;
+        box-shadow: 1px 1px 3px #000;
+    }
+
+    #modalClose:hover {
+        background: #00d9ff;
+    }
+
+    #modalWindow fieldset {
+        padding: 10px !important;
+    }
+
+    .ui-autocomplete {
+        z-index: 201;
+    }
+</style>
+
+<script type="text/javascript">
+    // Original JavaScript code by Chirp Internet: www.chirp.com.au
+    // Please acknowledge use of this code by including this header.
+    if(document.addEventListener) {
+        document.addEventListener("DOMContentLoaded", modalInit, false);
+    } else {
+        window.attachEvent("onload", modalInit);
+    }
+
+    function modalInit() {
+
+        $(".modalOpen").click(function(e){
+            $("#id").val($(this).data("options").id);
+            $("#tanggal").val($(this).data("options").tanggal);
+            $("#jadwalMasuk").val($(this).data("options").jadwalMasuk);
+            $("#jadwalKeluar").val($(this).data("options").jadwalKeluar);
+            $("#masuk").val($(this).data("options").masuk);
+            $("#keluar").val($(this).data("options").keluar);
+            $("#status").val($(this).data("options").status);
+            $("#catatan").val($(this).data("options").catatan);
+
+            $("#detail").show();
+            $("#modalWrapper").addClass("overlay");
+            $("#modalWindow").css("margin-top", (-$("#modalWindow").outerHeight())/2);
+            $("#modalWindow").css("margin-left", (-$("#modalWindow").outerWidth())/2);
+            e.preventDefault ? e.preventDefault() : e.returnValue = false;
+        });
+
+        $("#modalClose").click(function(e){
+            $("#modalWrapper").removeClass("overlay");
+            e.preventDefault ? e.preventDefault() : e.returnValue = false;
+        });
+        $(document).keydown(function(e){
+            if (e.keyCode == 27) {
+                $("#modalWrapper").removeClass("overlay");
+                e.preventDefault ? e.preventDefault() : e.returnValue = false;
+            }
+        });
+
+        $("#status").change(function(){
+            switch ($(this).val()){
+                case 'A':
+                case 'C':
+                case 'S':
+                    $("#masuk").val('-');
+                    $("#keluar").val('-');
+                    break;
+                case 'H':
+                    $("#jadwalMasuk").val('-');
+                    $("#jadwalKeluar").val('-');
+                    $("#masuk").val('-');
+                    $("#keluar").val('-');
+                    break;
+            }
+        });
+    }
+</script>

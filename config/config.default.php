@@ -44,6 +44,9 @@ $config = array(
                 "Cuti" => array(
                     "class" => "\\Cuti\\CutiController",
                 ),
+                "Payroll" => array(
+                    "class" => "\\Payroll\\PayrollController",
+                ),
             ),
         ),
     ),
