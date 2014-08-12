@@ -44,7 +44,7 @@ class AddGeneralInspectionAssemblingAction
                 $result = $this->dispatchSimpan($params);
                 break;
             case 'BATAL':
-                $this->routeManager->redirect(array('action' => 'report_general_$assemblingInspection_assembling'));
+                $this->routeManager->redirect(array('action' => 'report_general_inspection_assembling'));
                 break;
             default:
                 $this->clearSessionData();
@@ -62,8 +62,8 @@ class AddGeneralInspectionAssemblingAction
             $tanggalInspeksi = new \DateTime(
                 $arrayTanggalInspeksi[2] . '-' . $arrayTanggalInspeksi[1] . '-' . $arrayTanggalInspeksi[0]
             );
-            $$assemblingInspection = $this->findAssemblingInspection($tanggalInspeksi, $params['lokasi']);
-            $this->addSessionData('assemblingInspection', $$assemblingInspection);
+            $assemblingInspection = $this->findAssemblingInspection($tanggalInspeksi, $params['lokasi']);
+            $this->addSessionData('assemblingInspection', $assemblingInspection);
         }
 
         return array(
