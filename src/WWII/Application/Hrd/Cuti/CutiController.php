@@ -21,10 +21,14 @@ class CutiController extends \WWII\Controller\AbstractController
         $action->dispatch($_POST);
     }
 
-    public function printDetailMasterCutiAction()
+    public function requestCutiAction()
     {
-        $action = new PrintDetailMasterCutiAction($this->serviceManager, $this->entityManager);
+        $action = new RequestCutiAction($this->serviceManager, $this->entityManager);
         $action->dispatch($_POST);
+    }
+
+    public function approvisasiCutiAction()
+    {
     }
 
     public function reportCutiAction()
@@ -33,39 +37,15 @@ class CutiController extends \WWII\Controller\AbstractController
         $action->dispatch($_POST);
     }
 
-    public function inputCutiAction()
+    public function dataCutiAction()
     {
-        $action = new InputCutiAction($this->serviceManager, $this->entityManager);
-        $action->dispatch($_POST);
+        $action = new DataCutiAction($this->serviceManager, $this->entityManager);
+        $action->dispatch($_GET);
     }
 
-    public function printInputCutiAction()
+    public function autocompleteKaryawanAction()
     {
-        $action = new PrintInputCutiAction($this->serviceManager, $this->entityManager);
-        $action->dispatch($_POST);
-    }
-
-    public function editCutiAction()
-    {
-        $action = new EditCutiAction($this->serviceManager, $this->entityManager);
-        $action->dispatch($_POST);
-    }
-
-    public function viewCutiAction()
-    {
-        $action = new ViewCutiAction($this->serviceManager, $this->entityManager);
-        $action->dispatch($_POST);
-    }
-
-    public function deleteCutiAction()
-    {
-        $action = new DeleteCutiAction($this->serviceManager, $this->entityManager);
-        $action->dispatch($_POST);
-    }
-
-    public function approvisasiCutiAction()
-    {
-        $action = new ApprovisasiCutiAction($this->serviceManager, $this->entityManager);
-        $action->dispatch($_POST);
+        $action = new AutocompleteKaryawanAction($this->serviceManager, $this->entityManager);
+        $action->dispatch($_GET);
     }
 }

@@ -1,32 +1,45 @@
-<h3>Master Cuti</h3>
+<h3>Detail Master Cuti</h3>
 <?php
     if (!empty($errorMessages)) {
-        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+        echo '<div class="error-head">'
+            . 'Form yang anda kirim tidak valid.<br />Mohon dicek kembali.';
+
+        if (!empty($errorMessages['global'])) {
+            echo '<ul>';
+            foreach ($errorMessages['global'] as $globalError) {
+                echo '<li>' . $globalError . '</li>';
+            }
+            echo '</ul>';
+        }
+
+        echo '</div>';
     }
 ?>
 <hr />
 <form action="" method="post" enctype="multipart/form-data">
     <fieldset>
         <div class="fieldset-kiri">NIK</div>
-        <div class="fieldset-kanan"><?php echo $data->getNik() ?></div>
+        <div class="fieldset-kanan"><?php echo $data['fCode'] ?></div>
         <div class="fieldset-kiri">Nama Karyawan</div>
-        <div class="fieldset-kanan"><?php echo $data->getNamaKaryawan() ?></div>
+        <div class="fieldset-kanan"><?php echo $data['fName'] ?></div>
         <div class="fieldset-kiri">Departemen</div>
-        <div class="fieldset-kanan"><?php echo $data->getDepartemen() ?></div>
+        <div class="fieldset-kanan"><?php echo $data['fDeptName'] ?></div>
+        <?php
+            $tanggalMasuk = new \DateTime($data['fInDate']);
+        ?>
+        <div class="fieldset-kiri">Tanggal Masuk</div>
+        <div class="fieldset-kanan"><?php echo $tanggalMasuk->format('d-M-Y') ?></div>
         <hr />
-
         <div><h3>Detail Cuti Periode Aktif</h3></div>
         <?php
-            $tanggalKadaluarsa = $data->getTanggalKadaluarsa()->format('d/m/Y');
-
-            if ($data->getPerpanjanganCuti() !== null) {
-                $tanggalKadaluarsa = $data->getPerpanjanganCuti()->getTanggalKadaluarsa()->format('d/m/Y');
-            }
+            $tanggalKadaluarsaAktif = empty($data['fTanggalKadaluarsaAktif'])
+                ? null
+                : new \DateTime($data['fTanggalKadaluarsaAktif']);
         ?>
         <div class="fieldset-kiri">Sisa</div>
-        <div class="fieldset-kanan"><?php echo $data->getSisaLimit() ?></div>
+        <div class="fieldset-kanan"><?php echo $data['fSisaAktif'] ?> hari</div>
         <div class="fieldset-kiri">Tanggal Kadaluarsa</div>
-        <div class="fieldset-kanan"><?php echo $tanggalKadaluarsa ?></div>
+        <div class="fieldset-kanan"><?php echo empty($tanggalKadaluarsaAktif) ? '-' : $tanggalKadaluarsaAktif->format('d-M-Y') ?></div>
         <div>
             <table>
                 <tr>
@@ -35,7 +48,6 @@
                     <th colspan=2>Date</th>
                     <th rowspan=2>Days</th>
                     <th rowspan=2>Remarks</th>
-                    <th rowspan=2>Employee</th>
                     <th colspan=3>Approved</th>
                     <th rowspan=2>Status</th>
                 </tr>
@@ -47,57 +59,52 @@
                     <th>HRD</th>
                 </tr>
                 <?php
-                    if (count($data->getPengambilanCuti()) > 0) :
+                    if (count($data['items']['aktif']) > 0) :
                         $number = 1;
-                        foreach ($data->getPengambilanCuti() as $pengambilanCuti) :
-                            $tanggalAwal  = $pengambilanCuti->getTanggalAwal();
-                            $tanggalAkhir = $pengambilanCuti->getTanggalAkhir();
-                            $jumlahHari   = $tanggalAwal->diff($tanggalAkhir)->format('%d') + 1;
+                        foreach ($data['items']['aktif'] as $item) :
+                            $tanggalAwal = new \DateTime($item['fDateStart']);
+                            $tanggalAkhir = new \DateTime($item['fDateEnd']);
                 ?>
                 <tr>
                     <td><?php echo $number++ ?>.</td>
-                    <td style='text-align: center;'><?php echo $tanggalAwal->format('Y') ?></td>
-                    <td style='text-align: center;'><?php echo $tanggalAwal->format('d/m/Y') ?></td>
-                    <td style='text-align: center;'><?php echo $tanggalAkhir->format('d/m/Y') ?></td>
-                    <td style='text-align: center;'><?php echo $jumlahHari; ?></td>
-                    <td><?php echo nl2br($pengambilanCuti->getKeterangan()) ?></td>
+                    <td style="text-align:center;"><?php echo $tanggalAwal->format('Y') ?></td>
+                    <td style="text-align:center;"><?php echo $tanggalAwal->format('d-M-Y') ?></td>
+                    <td style="text-align:center;"><?php echo $tanggalAkhir->format('d-M-Y') ?></td>
+                    <td style="text-align:center;"><?php echo $item['fDays'] ?></td>
+                    <td style="text-align:center;"><?php echo empty($item['fNote']) ? '-' : $item['fNote'] ?></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td style='text-align: center'><?php echo $pengambilanCuti->isDisetujui() ? 'disetujui' : 'pending' ?></td>
+                    <td style='text-align: center'><?php echo $item['fApproved'] == 1 ? 'disetujui' : 'pending' ?></td>
                 </tr>
                 <?php
-                            $limit -= $jumlahHari;
-                        endforeach;
+                        $limit -= $jumlahHari;
+                    endforeach;
+                ?>
+                <tr>
+                        <td colspan=4 style="text-align:right;font-weight:bold;"?>Jumlah</td>
+                        <td style="text-align:center;"><?php echo $data['fSisaAktif'] ?></php>
+                </tr>
+                <?php
                     else :
                 ?>
                 <tr>
-                    <td colspan=0 style='text-align: center;'>Data Kosong</td>
+                    <td colspan=0 style="text-align:center;">Data Kosong</td>
                 </tr>
                 <?php endif; ?>
             </table>
         </div>
         <hr />
-
         <div><h3>Detail Cuti Periode Lalu</h3></div>
         <?php
-            $sisaLimit = '0';
-            $tanggalKadaluarsa = '-';
-
-            if ($data->getParent() !== null) {
-                $sisaLimit = $data->getParent()->getSisaLimit();
-                $tanggalKadaluarsa = $data->getParent()->getTanggalKadaluarsa()->format('d/m/Y');
-
-                if ($data->getParent()->getPerpanjanganCuti() !== null) {
-                    $tanggalKadaluarsa = $data->getParent()->getPerpanjanganCuti()->getTanggalKadaluarsa()->format('d/m/Y');
-                }
-            }
+            $tanggalKadaluarsaPasif = empty($data['fTanggalKadaluarsaPasif'])
+                ? null
+                : new \DateTime($data['fTanggalKadaluarsaPasif']);
         ?>
         <div class="fieldset-kiri">Sisa</div>
-        <div class="fieldset-kanan"><?php echo $sisaLimit ?></div>
+        <div class="fieldset-kanan"><?php echo $data['fSisaPasif'] ?> hari</div>
         <div class="fieldset-kiri">Tanggal Kadaluarsa</div>
-        <div class="fieldset-kanan"><?php echo $tanggalKadaluarsa ?></div>
+        <div class="fieldset-kanan"><?php echo empty($tanggalKadaluarsaPasif) ? '-' : $tanggalKadaluarsaPasif->format('d-M-Y') ?></div>
         <div>
             <table>
                 <tr>
@@ -106,7 +113,6 @@
                     <th colspan=2>Date</th>
                     <th rowspan=2>Days</th>
                     <th rowspan=2>Remarks</th>
-                    <th rowspan=2>Employee</th>
                     <th colspan=3>Approved</th>
                     <th rowspan=2>Status</th>
                 </tr>
@@ -118,39 +124,41 @@
                     <th>HRD</th>
                 </tr>
                 <?php
-                    if ($data->getParent() !== null && count($data->getParent()->getPengambilanCuti()) > 0) :
+                    if (count($data['items']['pasif']) > 0) :
                         $number = 1;
-                        foreach ($data->getParent()->getPengambilanCuti() as $pengambilanCuti) :
-                            $tanggalAwal  = $pengambilanCuti->getTanggalAwal();
-                            $tanggalAkhir = $pengambilanCuti->getTanggalAkhir();
-                            $jumlahHari   = $tanggalAwal->diff($tanggalAkhir)->format('%d') + 1;
+                        foreach ($data['items']['pasif'] as $item) :
+                            $tanggalAwal = new \DateTime($item['fDateStart']);
+                            $tanggalAkhir = new \DateTime($item['fDateEnd']);
                 ?>
                 <tr>
                     <td><?php echo $number++ ?>.</td>
-                    <td style='text-align: center;'><?php echo $tanggalAwal->format('Y') ?></td>
-                    <td style='text-align: center;'><?php echo $tanggalAwal->format('d/m/Y') ?></td>
-                    <td style='text-align: center;'><?php echo $tanggalAkhir->format('d/m/Y') ?></td>
-                    <td style='text-align: center;'><?php echo $jumlahHari; ?></td>
-                    <td><?php echo nl2br($pengambilanCuti->getKeterangan()) ?></td>
+                    <td style="text-align:center;"><?php echo $tanggalAwal->format('Y') ?></td>
+                    <td style="text-align:center;"><?php echo $tanggalAwal->format('d-M-Y') ?></td>
+                    <td style="text-align:center;"><?php echo $tanggalAkhir->format('d-M-Y') ?></td>
+                    <td style="text-align:center;"><?php echo $item['fDays'] ?></td>
+                    <td style="text-align:center;"><?php echo empty($item['fNote']) ? '-' : $item['fNote'] ?></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td style='text-align: center'><?php echo $pengambilanCuti->isDisetujui() ? 'disetujui' : 'pending' ?></td>
+                    <td style='text-align: center'><?php echo $item['fApproved'] == 1 ? 'disetujui' : 'pending' ?></td>
                 </tr>
                 <?php
                             $limit -= $jumlahHari;
-                        endforeach;
+                    endforeach;
+                ?>
+                <tr>
+                    <td colspan=4 style="text-align:right;font-weight:bold">Jumlah</td>
+                    <td style="text-align:center;"><?php echo $data['fApprovedPasif'] ?></td>
+                </tr>
+                <?php
                     else :
                 ?>
                 <tr>
-                    <td colspan=0 style='text-align: center;'>Data Kosong</td>
+                    <td colspan=0 style="text-align:center;">Data Kosong</td>
                 </tr>
                 <?php endif; ?>
             </table>
         </div>
-        <hr />
-
         <div class="fieldset-kiri"></div>
         <div class="fieldset-button">
             <input type="submit" name="btx" value="Kembali" />

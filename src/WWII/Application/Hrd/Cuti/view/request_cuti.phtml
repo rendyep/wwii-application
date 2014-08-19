@@ -1,0 +1,145 @@
+<h3>Request Cuti</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">'
+            . 'Form yang anda kirim tidak valid.<br />Mohon dicek kembali.';
+
+        if (!empty($errorMessages['global'])) {
+            echo '<ul>';
+            foreach ($errorMessages['global'] as $globalError) {
+                echo '<li>' . $globalError . '</li>';
+            }
+            echo '</ul>';
+        }
+
+        echo '</div>';
+    }
+?>
+<hr />
+<form action="" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <div class="fieldset-kiri required">NIK</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="fCode" value="<?php echo $data['fCode'] ?>" required <?php echo empty($data) ? "" : "readonly " ?>/>
+        </div>
+        <div class="error-container">
+            <?php echo isset($errorMessages['fCode']) ? $errorMessages['fCode'] : '' ?>
+        </div>
+        <div class="fieldset-kiri">Nama Karyawan</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="fName" value="<?php echo $data['fName'] ?>" readonly />
+        </div>
+        <div class="fieldset-kiri">Departemen</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="medium" name="fDeptName" value="<?php echo $data['fDeptName'] ?>" readonly />
+        </div>
+        <?php if (! empty($data)) : ?>
+        <?php
+            $tanggalMasuk = new \DateTime($data['fInDate']);
+        ?>
+        <div class="fieldset-kiri">Tanggal Masuk</div>
+        <div class="fieldset-kanan">
+            <input type="text" class="small" name="fInDate" value="<?php echo $tanggalMasuk->format('d-M-Y') ?>" readonly />
+        </div>
+        <div class="fieldset-kiri">Tanggal Awal Cuti</div>
+        <div class="fieldset-kanan">
+            <input type="date" id="tanggalAwal" class="medium" name="tanggalAwal" value="<?php echo $params['tanggalAwal'] ?>" required />
+        </div>
+        <div class="error-container">
+            <?php echo isset($errorMessages['tanggalAwal']) ? $errorMessages['tanggalAwal'] : '' ?>
+        </div>
+        <div class="fieldset-kiri">Tanggal Akhir Cuti</div>
+        <div class="fieldset-kanan">
+            <input type="date" id="tanggalAkhir" class="medium" name="tanggalAkhir" value="<?php echo $params['tanggalAkhir'] ?>" required />
+        </div>
+        <div class="error-container">
+            <?php echo isset($errorMessages['tanggalAkhir']) ? $errorMessages['tanggalAkhir'] : '' ?>
+        </div>
+        <div class="fieldset-kiri">Keterangan</div>
+        <div class="fieldset-kanan">
+            <textarea name="fNote"><?php echo $params['fNote'] ?></textarea>
+        </div>
+        <hr />
+        <div class="fieldset-kiri"></div>
+        <div id="dataCuti">
+        </div>
+        <div class="fieldset-button">
+            <input type="submit" name="btx" value="Simpan" />
+            <input type="submit" name="btx" value="Reset" />
+        </div>
+        <?php else: ?>
+        <div class="fieldset-button">
+            <input type="submit" name="btx" value="Proses" />
+            <input type="submit" name="btx" value="Batal" />
+        </div>
+        <?php endif; ?>
+    </fieldset>
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#tanggalAwal, #tanggalAkhir").datepicker({
+            dateFormat: 'mm/dd/yy',
+            yearRange: '-55:-0'
+        });
+
+        <?php if (!empty ($params['tanggalAwal'])) : ?>
+            checkDataCuti();
+        <?php endif; ?>
+    });
+
+    $("#tanggalAwal, #tanggalAkhir").change(function(){
+        checkDataCuti();
+    });
+
+    $("input[name=fCode]").autocomplete({
+        minLength: 1,
+        source: function(request, response) {
+            $.getJSON(
+                "<?php echo $this->routeManager->generateRoute(array(
+                    'action' => 'autocomplete_karyawan',
+                    'bypass' => 'true')) ?>",
+                {
+                    key: request.term
+                },
+                response
+            );
+        },
+        select: function(event, ui) {
+            $("input[name=fCode]").val(ui.item.fCode);
+            $("input[name=fName]").val(ui.item.fName);
+            $("input[name=fDeptName]").val(ui.item.fDeptName);
+
+            return false;
+        },
+        change: function(event, ui) {
+            if (! ui.item) {
+                $("input[name=fCode]").val('');
+                $("input[name=fName]").val('');
+                $("input[name=fDeptName]").val('');
+            }
+
+            return false
+        }
+    }).data("ui-autocomplete")._renderItem = function(ul, item) {
+        return $("<li>")
+            .append("<a><strong>[" + item.fCode + "]</strong> " + item.fName + "</a>")
+            .appendTo(ul);
+    };
+
+    function checkDataCuti()
+    {
+        var tanggalAwal = $("#tanggalAwal").val();
+        var tanggalAkhir = $("#tanggalAkhir").val();
+
+        $.get("<?php echo $this->routeManager->generateRoute(array(
+                'action' => 'data_cuti',
+                'bypass' => 1
+            )) ?>&key=fCode:<?php echo $params['fCode'] ?>"
+            + ";tanggalAwal:" + tanggalAwal
+            + ";tanggalAkhir:" + tanggalAkhir,
+            function(data){
+                $("#dataCuti").html(data);
+        });
+    }
+</script>

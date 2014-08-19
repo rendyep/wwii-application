@@ -1,12 +1,23 @@
 <h3>Master Cuti</h3>
 <?php
     if (!empty($errorMessages)) {
-        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+        echo '<div class="error-head">'
+            . 'Form yang anda kirim tidak valid.<br />Mohon dicek kembali.';
+
+        if (!empty($errorMessages['global'])) {
+            echo '<ul>';
+            foreach ($errorMessages['global'] as $globalError) {
+                echo '<li>' . $globalError . '</li>';
+            }
+            echo '</ul>';
+        }
+
+        echo '</div>';
     }
 ?>
 <hr />
-<form action='<?php echo $this->routeManager->generateRoute(array()) ?>' method='post'>
-    <table border='0' width='100%'>
+<form action="" method="post">
+    <table border="0" width="100%">
         <tbody>
             <tr>
                 <td>Departemen</td>
@@ -24,93 +35,69 @@
         </tbody>
     </table>
     <hr />
-    <input type='submit' name='btx' value='Proses' />
-    <input type='reset' value='Reset' />
-    <?php
-        if ($data !== null) {
-            echo $data->getControl();
-        }
-    ?>
-    <table>
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>NIK</th>
-                <th>Nama Karyawan</th>
-                <th>Departemen</th>
-                <th>Sisa (periode sebelumnya)</th>
-                <th>Tanggal Kadaluarsa (periode sebelumnya)</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-                if (count($data) > 0) :
-                    $now = new \DateTime();
-                    $page = $this->routeManager->getPage();
-                    $maxItemPerPage = $data->getMaxItemPerPage();
-                    $number = ($page * $maxItemPerPage) - ($maxItemPerPage - 1);
-                    foreach ($data as $row) :
-            ?>
-            <tr>
-                <td style='vertical-align: top;'><?php echo $number++ ?></td>
-                <td style='vertical-align: top;'><?php echo $row->getNik() ?></td>
-                <td style='vertical-align: top;'><?php echo $row->getNamaKaryawan() ?></td>
-                <td style='vertical-align: top;'><?php echo $row->getDepartemen() ?></td>
-                <td style='vertical-align: top; text-align: center;'>
-                    <?php
-                        echo $row->getSisaLimit();
-                        echo ' (';
-                        if ($row->getParent() !== null) {
-                            if ($row->getParent()->isExpired() === false) {
-                                echo $row->getParent()->getSisaLimit();
-                            } else {
-                                echo '0';
-                            }
-                        } else {
-                            echo '0';
-                        }
-                        echo ')';
-                    ?>
-                </td>
-                <td style='vertical-align: top; text-align: center;'>
-                    <?php
-                        if (!$row->isExpired()) {
-                            echo $row->getTanggalKadaluarsa()->format('d/m/Y');
-                        } elseif ($row->getPerpanjanganCuti() !== null) {
-                            echo $row->getPerpanjanganCuti()->getTanggalKadaluarsa()->format('d/m/Y');
-                        } else {
-                            echo '-';
-                        }
-
-                        echo ' (';
-                        if ($row->getParent() !== null) {
-                            if (!$row->getParent()->isExpired()) {
-                                echo $row->getParent()->getTanggalKadaluarsa()->format('d/m/Y');
-                            } elseif ($row->getParent()->getPerpanjanganCuti() !== null) {
-                                echo $row->getParent()->getPerpanjanganCuti()->getTanggalKadaluarsa()->format('d/m/Y');
-                            } else {
-                                echo '-';
-                            }
-                        } else {
-                            echo '-';
-                        }
-                        echo ')';
-                    ?>
-                </td>
-                <td style='vertical-align: top; white-space: nowrap;'>
-                    <a href='<?php echo $this->routeManager->generateRoute(array(
-                        'action' => 'detail_master_cuti',
-                        'key' => $row->getId()
-                    )) ?>'>lihat detail</a>
-                </td>
-            </tr>
-            <?php endforeach;
-                else : ?>
-            <tr>
-                <td colspan='0' style='text-align: center;'>Data kosong</td>
-            </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+    <input type="submit" value="Proses" name="btx" />
+    <input type="submit" value="Reset" name="btx" />
 </form>
+<table class="content">
+    <tr>
+        <th rowspan=3>NIK</th>
+        <th rowspan=3>Nama</th>
+        <th rowspan=3>Departemen</th>
+        <th rowspan=3>Hak Cuti</th>
+        <th colspan=8>Detail Cuti</th>
+        <th rowspan=3>Sisa Kumulatif</th>
+        <th rowspan=3>Action</th>
+    </tr>
+    <tr>
+        <th colspan=4>Aktif</th>
+        <th colspan=4>Pasif</th>
+    </tr>
+    <tr>
+        <th>Limit</th>
+        <th>Diambil</th>
+        <th>Pending</th>
+        <th>Sisa</th>
+        <th>Limit</th>
+        <th>Diambil</th>
+        <th>Pending</th>
+        <th>Sisa</th>
+    </tr>
+    <?php
+        if (! empty($data)) :
+            foreach ($data as $report) :
+    ?>
+    <tr>
+        <td><?php echo $report['fCode'] ?></td>
+        <td class="nowrap"><?php echo $report['fName'] ?></td>
+        <td class="nowrap"><?php echo $report['fDeptName'] ?></td>
+        <td class="nowrap" style="text-align:center;"><?php echo $report['fHakCuti'] ?></td>
+        <td class="nowrap" style="text-align:center;"><?php echo $report['fLimitAktif'] ?></td>
+        <td class="nowrap" style="text-align:center;"><?php echo $report['fApprovedAktif'] ?></td>
+        <td class="nowrap" style="text-align:center;"><?php echo $report['fPendingAktif'] ?></td>
+        <td class="nowrap" style="text-align:center;"><?php echo $report['fSisaAktif'] ?></td>
+        <td class="nowrap" style="text-align:center;"><?php echo $report['fLimitPasif'] ?></td>
+        <td class="nowrap" style="text-align:center;"><?php echo $report['fApprovedPasif'] ?></td>
+        <td class="nowrap" style="text-align:center;"><?php echo $report['fPendingPasif'] ?></td>
+        <td class="nowrap" style="text-align:center;"><?php echo $report['fSisaPasif'] ?></td>
+        <td class="nowrap" style="text-align:center;"><?php echo $report['fSisaKumulatif'] ?></td>
+        <td class="nowrap" style="text-align:center;">
+            <a href="<?php echo $this->routeManager->generateRoute(array(
+                'action' => 'detail_master_cuti',
+                'key' => $report['fCode']
+            )) ?>">detail cuti</a>
+        </td>
+    </tr>
+    <?php
+            endforeach;
+        else :
+    ?>
+    <tr>
+        <td colspan=0 style="text-align:center;">Data tidak ditemukan!</td>
+    </tr>
+    <?php endif; ?>
+</table>
+<style type="text/css">
+    .nowrap {
+        white-space:nowrap;
+    }
+</style>

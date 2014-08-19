@@ -1,0 +1,129 @@
+<div><h3>Detail Cuti Periode Aktif</h3></div>
+<?php
+    $tanggalKadaluarsaAktif = empty($data['fTanggalKadaluarsaAktif'])
+        ? null
+        : new \DateTime($data['fTanggalKadaluarsaAktif']);
+?>
+<div class="fieldset-kiri">Sisa</div>
+<div class="fieldset-kanan"><?php echo $data['fSisaAktif'] ?> hari</div>
+<div class="fieldset-kiri">Tanggal Kadaluarsa</div>
+<div class="fieldset-kanan"><?php echo empty($tanggalKadaluarsaAktif) ? '-' : $tanggalKadaluarsaAktif->format('d-M-Y') ?></div>
+<div>
+    <table>
+        <tr>
+            <th rowspan=2>No.</th>
+            <th rowspan=2>Year</th>
+            <th colspan=2>Date</th>
+            <th rowspan=2>Days</th>
+            <th rowspan=2>Remarks</th>
+            <th colspan=3>Approved</th>
+            <th rowspan=2>Status</th>
+        </tr>
+        <tr>
+            <th>Start</th>
+            <th>End</th>
+            <th>SPV</th>
+            <th>MGR</th>
+            <th>HRD</th>
+        </tr>
+        <?php
+            if (count($data['items']['aktif']) > 0) :
+                $number = 1;
+                foreach ($data['items']['aktif'] as $item) :
+                    $tanggalAwal = new \DateTime($item['fDateStart']);
+                    $tanggalAkhir = new \DateTime($item['fDateEnd']);
+        ?>
+        <tr>
+            <td><?php echo $number++ ?>.</td>
+            <td style="text-align:center;"><?php echo $tanggalAwal->format('Y') ?></td>
+            <td style="text-align:center;"><?php echo $tanggalAwal->format('d-M-Y') ?></td>
+            <td style="text-align:center;"><?php echo $tanggalAkhir->format('d-M-Y') ?></td>
+            <td style="text-align:center;"><?php echo $item['fDays'] ?></td>
+            <td style="text-align:center;"><?php echo empty($item['fNote']) ? '-' : $item['fNote'] ?></td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td style='text-align: center'><?php echo $item['fApproved'] == 1 ? 'disetujui' : 'pending' ?></td>
+        </tr>
+        <?php
+                $limit -= $jumlahHari;
+            endforeach;
+        ?>
+        <tr>
+                <td colspan=4 style="text-align:right;font-weight:bold;"?>Jumlah</td>
+                <td style="text-align:center;"><?php echo $data['fSisaAktif'] ?></php>
+        </tr>
+        <?php
+            else :
+        ?>
+        <tr>
+            <td colspan=0 style="text-align:center;">Data Kosong</td>
+        </tr>
+        <?php endif; ?>
+    </table>
+</div>
+<hr />
+<div><h3>Detail Cuti Periode Lalu</h3></div>
+<?php
+    $tanggalKadaluarsaPasif = empty($data['fTanggalKadaluarsaPasif'])
+        ? null
+        : new \DateTime($data['fTanggalKadaluarsaPasif']);
+?>
+<div class="fieldset-kiri">Sisa</div>
+<div class="fieldset-kanan"><?php echo $data['fSisaPasif'] ?> hari</div>
+<div class="fieldset-kiri">Tanggal Kadaluarsa</div>
+<div class="fieldset-kanan"><?php echo empty($tanggalKadaluarsaPasif) ? '-' : $tanggalKadaluarsaPasif->format('d-M-Y') ?></div>
+<div>
+    <table>
+        <tr>
+            <th rowspan=2>No.</th>
+            <th rowspan=2>Year</th>
+            <th colspan=2>Date</th>
+            <th rowspan=2>Days</th>
+            <th rowspan=2>Remarks</th>
+            <th colspan=3>Approved</th>
+            <th rowspan=2>Status</th>
+        </tr>
+        <tr>
+            <th>Start</th>
+            <th>End</th>
+            <th>SPV</th>
+            <th>MGR</th>
+            <th>HRD</th>
+        </tr>
+        <?php
+            if (count($data['items']['pasif']) > 0) :
+                $number = 1;
+                foreach ($data['items']['pasif'] as $item) :
+                    $tanggalAwal = new \DateTime($item['fDateStart']);
+                    $tanggalAkhir = new \DateTime($item['fDateEnd']);
+        ?>
+        <tr>
+            <td><?php echo $number++ ?>.</td>
+            <td style="text-align:center;"><?php echo $tanggalAwal->format('Y') ?></td>
+            <td style="text-align:center;"><?php echo $tanggalAwal->format('d-M-Y') ?></td>
+            <td style="text-align:center;"><?php echo $tanggalAkhir->format('d-M-Y') ?></td>
+            <td style="text-align:center;"><?php echo $item['fDays'] ?></td>
+            <td style="text-align:center;"><?php echo empty($item['fNote']) ? '-' : $item['fNote'] ?></td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td style='text-align: center'><?php echo $item['fApproved'] == 1 ? 'disetujui' : 'pending' ?></td>
+        </tr>
+        <?php
+                    $limit -= $jumlahHari;
+            endforeach;
+        ?>
+        <tr>
+            <td colspan=4 style="text-align:right;font-weight:bold">Jumlah</td>
+            <td style="text-align:center;"><?php echo $data['fApprovedPasif'] ?></td>
+        </tr>
+        <?php
+            else :
+        ?>
+        <tr>
+            <td colspan=0 style="text-align:center;">Data Kosong</td>
+        </tr>
+        <?php endif; ?>
+    </table>
+</div>
