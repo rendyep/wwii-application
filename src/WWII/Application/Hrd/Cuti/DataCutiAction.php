@@ -164,7 +164,7 @@ class DataCutiAction
                 groupCardRecord.fCode,
                 fDateStart = MIN(groupCardRecord.fDateTime),
                 fDateEnd = MAX(groupCardRecord.fDateTime),
-                fDays = DATEDIFF(DD, MIN(groupCardRecord.fDateTime), MAX(groupCardRecord.fDateTime)),
+                fDays = DATEDIFF(DD, MIN(groupCardRecord.fDateTime), MAX(groupCardRecord.fDateTime)) + 1,
                 groupCardRecord.fStatus,
                 groupCardRecord.fApproved,
                 groupCardRecord.fPeriode,
