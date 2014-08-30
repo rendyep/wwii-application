@@ -62,6 +62,56 @@ class ReportMonthlyPayrollAction
                 SELECT
                     *
                 FROM
+                    a_Personnel_PayrollMst
+                WHERE
+                    fDateTime = '{$selectedDate->format('Y-m-d')}'
+            ");
+            $query->execute();
+
+            $data = $query->fetch(\PDO::FETCH_ASSOC);
+
+            $optionalFilter = '';
+
+            switch (strtoupper($params['company'])) {
+                case 'WWII':
+                    $optionalFilter .= " AND SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 1) = '0' ";
+                    break;
+                case 'SMK':
+                    $optionalFilter .= " AND (SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 1) IN ('3', '8')"
+                        . " OR UPPER(SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 2)) = 'SM') ";
+                    break;
+                case 'ICS':
+                    $optionalFilter .= " AND (SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 1) IN ('4', '9')"
+                        . " OR UPPER(SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 2)) = 'IC') ";
+                    break;
+                case 'SKCM':
+                    $optionalFilter .= " AND (SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 1) IN ('5', '6')"
+                        . " OR UPPER(SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 2)) = 'SK') ";
+                    break;
+                case 'PPC':
+                    $optionalFilter .= " AND (SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 1) = '7'"
+                        . " OR UPPER(SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 2)) = 'PP') ";
+            }
+
+            $query = $this->databaseManager->prepare("
+                SELECT
+                    t_PALM_PersonnelFileMst.fCode,
+                    t_PALM_PersonnelFileMst.fName,
+                    t_BMSM_DeptMst.fDeptName,
+                    a_Personnel_PayrollItem.fStatus,
+                    a_Personnel_PayrollItem.fTanggalPeriodeAwal,
+                    a_Personnel_PayrollItem.fTanggalPeriodeAkhir,
+                    a_Personnel_PayrollItem.fBasicWage,
+                    a_Personnel_PayrollItem.fTunjanganTetap,
+                    a_Personnel_PayrollItem.fTunjanganSkill,
+                    a_Personnel_PayrollItem.fTunjanganInsentif,
+                    a_Personnel_PayrollItem.fJumlahKehadiran,
+                    a_Personnel_PayrollItem.fJumlahIjin,
+                    a_Personnel_PayrollItem.fJumlahCuti,
+                    a_Personnel_PayrollItem.fJumlahSakit,
+                    a_Personnel_PayrollItem.fJumlahHariLibur,
+                    a_Personnel_PayrollItem.fJamKerjaUser
+                FROM
                     a_Personnel_PayrollItem
                 LEFT JOIN
                     a_Personnel_PayrollMst ON a_Personnel_PayrollMst.fId = a_Personnel_PayrollItem.fPayrollMstId
@@ -70,11 +120,24 @@ class ReportMonthlyPayrollAction
                 LEFT JOIN
                     t_BMSM_DeptMst ON t_BMSM_DeptMst.fDeptCode = t_PALM_PersonnelFileMst.fDeptCode
                 WHERE
-                    a_Personnel_PayrollMst.fDateTime = '{$selectedDate->format('Y-m-01')}'
+                    a_Personnel_PayrollMst.fDateTime >= '{$selectedDate->format('Y-m-01')}'
+                    AND a_Personnel_PayrollMst.fDateTime <= '{$selectedDate->format('Y-m-t')}'
+                    {$optionalFilter}
+                ORDER BY
+                    a_Personnel_PayrollItem.fCode ASC
             ");
             $query->execute();
 
-            $data = $query->fetchAll(\PDO::FETCH_ASSOC);
+            $periode = new \DateTime($item['fDateTime']);
+
+            $data['items'] = array();
+            while($item = $query->fetch(\PDO::FETCH_ASSOC)) {
+                $item['fTanggalPeriodeAwal'] = new \DateTime($item['fTanggalPeriodeAwal']);
+                $item['fTanggalPeriodeAkhir'] = new \DateTime($item['fTanggalPeriodeAkhir']);
+
+                $i = count($data['items']);
+                $data['items'][$i] = $item;
+            }
         }
 
         return array(

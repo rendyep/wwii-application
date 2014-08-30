@@ -1,0 +1,123 @@
+<h3>Report Jam Kerja Karyawan</h3>
+<?php
+    if (!empty($errorMessages)) {
+        echo '<div class="error-head">'
+            . 'Form yang anda kirim tidak valid.<br />Mohon dicek kembali.';
+
+        if (!empty($errorMessages['global'])) {
+            echo '<ul>';
+            foreach ($errorMessages['global'] as $globalError) {
+                echo '<li>' . $globalError . '</li>';
+            }
+            echo '</ul>';
+        }
+
+        echo '</div>';
+    }
+?>
+<hr />
+<form action="" method="post">
+    <fieldset>
+        <div class="fieldset-kiri">NIK</div>
+        <div class="fieldset-kanan"><?php echo $data['fCode'] ?></div>
+        <div class="fieldset-kiri">Nama Lengkap</div>
+        <div class="fieldset-kanan"><?php echo $data['fName'] ?></div>
+        <div class="fieldset-kiri">Departemen</div>
+        <div class="fieldset-kanan"><?php echo $data['fDeptName'] ?></div>
+        <div class="fieldset-kiri">Jumlah Hari Kerja</div>
+        <div class="fieldset-kanan"><?php echo $data['fJumlahHariKerja'] ?> hari</div>
+        <div class="fieldset-kiri">Jumlah Jam Kerja</div>
+        <div class="fieldset-kanan"><?php echo $data['fTotalJamKerja'] ?></div>
+        <div class="fieldset-kiri">Jumlah Ijin/Mangkir</div>
+        <div class="fieldset-kanan"><?php echo $data['fJumlahAbsen'] ?> hari</div>
+        <div class="fieldset-kiri">Jumlah Cuti</div>
+        <div class="fieldset-kanan"><?php echo $data['fJumlahCuti'] ?> hari</div>
+        <div class="fieldset-kiri">Jumlah Sakit</div>
+        <div class="fieldset-kanan"><?php echo $data['fJumlahSakit'] ?> hari</div>
+        <hr />
+        <div class="fieldset-kiri"></div>
+        <div class="fieldset-button">
+            <input
+                type="button"
+                onclick="javascript:window.location.href='<?php echo $this->routeManager->generateRoute(array(
+                    'action' => 'report_monthly_payroll'
+                )) ?>'"
+                value="Kembali" />
+        </div>
+    </fieldset>
+</form>
+<table class="content">
+    <tr>
+        <th>Tanggal</th>
+        <th>Jadwal Masuk</th>
+        <th>Jadwal Keluar</th>
+        <th>Masuk</th>
+        <th>Keluar</th>
+        <th>Status</th>
+        <th style="width: 300px;">Catatan</th>
+    </tr>
+    <?php foreach ($data['cardRecord'] as $detail) : ?>
+    <tr>
+        <td><?php
+            if (! empty($detail['fDateTime'])) {
+                $fDateTime = new \DateTime($detail['fDateTime']);
+                echo $fDateTime->format('d-M-Y');
+            }  else {
+                echo '-';
+            }
+        ?></td>
+        <td><?php
+            if (! empty($detail['fDateTimeScheduledIn'])) {
+                $fDateTimeScheduledIn = new \DateTime($detail['fDateTimeScheduledIn']);
+                echo $fDateTimeScheduledIn->format('H:i:s');
+            } else {
+                echo '-';
+            }
+        ?></td>
+        <td><?php
+            if (! empty($detail['fDateTimeScheduledOut'])) {
+                $fDateTimeScheduledOut = new \DateTime($detail['fDateTimeScheduledOut']);
+                echo $fDateTimeScheduledOut->format('H:i:s');
+            } else {
+                echo '-';
+            }
+        ?></td>
+        <td><?php
+            if (! empty($detail['fDateTimeUserIn'])) {
+                $fDateTimeUserIn = new \DateTime($detail['fDateTimeUserIn']);
+                echo $fDateTimeUserIn->format('H:i:s');
+            } else {
+                echo '-';
+            }
+        ?></td>
+        <td><?php
+            if (! empty($detail['fDateTimeUserOut'])) {
+                $fDateTimeUserOut = new \DateTime($detail['fDateTimeUserOut']);
+                echo $fDateTimeUserOut->format('H:i:s');
+            } else {
+                echo '-';
+            }
+        ?></td>
+        <td><?php
+            switch($detail['fStatus']) {
+                case 'H':
+                    echo 'Libur';
+                    break;
+                case 'P':
+                    echo 'Hadir';
+                    break;
+                case 'A':
+                    echo 'Ijin/Mangkir';
+                    break;
+                case 'C':
+                    echo 'Cuti';
+                    break;
+                case 'S':
+                    echo 'Sakit';
+                    break;
+            }
+        ?></td>
+        <td><?php echo $detail['fNote'] ?></td>
+    </tr>
+    <?php endforeach; ?>
+</table>

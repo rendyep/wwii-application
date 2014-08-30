@@ -2,7 +2,7 @@
 
 namespace WWII\Application\Hrd\Payroll;
 
-class DetailJamKerjaKaryawanAction
+class ReportJamKerjaKaryawanAction
 {
     protected $serviceManager;
 
@@ -348,7 +348,7 @@ class DetailJamKerjaKaryawanAction
         }
 
         $this->templateManager->renderHeader();
-        include('view/detail_jam_kerja_karyawan.phtml');
+        include('view/report_jam_kerja_karyawan.phtml');
         $this->templateManager->renderFooter();
     }
 }

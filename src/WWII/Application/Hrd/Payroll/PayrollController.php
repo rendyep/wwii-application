@@ -21,9 +21,33 @@ class PayrollController extends \WWII\Controller\AbstractController
         $action->dispatch($_POST);
     }
 
-    public function detailJamKerjaKaryawanAction()
+    public function editJamKerjaKaryawanAction()
     {
-        $action = new DetailJamKerjaKaryawanAction($this->serviceManager, $this->entityManager);
+        $action = new editJamKerjaKaryawanAction($this->serviceManager, $this->entityManager);
+        $action->dispatch($_POST);
+    }
+
+    public function reportJamKerjaKaryawanAction()
+    {
+        $action = new ReportJamKerjaKaryawanAction($this->serviceManager, $this->entityManager);
+        $action->dispatch($_POST);
+    }
+
+    public function deleteMonthlyPayrollAction()
+    {
+        $action = new DeleteMonthlyPayrollAction($this->serviceManager, $this->entityManager);
+        $action->dispatch($_POST);
+    }
+
+    public function reportGajiKaryawanAction()
+    {
+        $action = new ReportGajiKaryawanAction($this->serviceManager, $this->entityManager);
+        $action->dispatch($_POST);
+    }
+
+    public function reportFormPajakAction()
+    {
+        $action = new ReportFormPajakAction($this->serviceManager, $this->entityManager);
         $action->dispatch($_POST);
     }
 }

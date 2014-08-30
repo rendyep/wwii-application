@@ -1,0 +1,253 @@
+<h3>Report Gaji Karyawan</h3>
+<?php
+    if (! empty($errorMessages)) {
+        echo '<div class="error-head">'
+            . 'Form yang anda kirim tidak valid.<br />Mohon dicek kembali.';
+
+        if (! empty($errorMessages['global'])) {
+            echo '<ul>';
+            foreach ($errorMessages['global'] as $globalError) {
+                echo '<li>' . $globalError . '</li>';
+            }
+            echo '</ul>';
+        }
+
+        echo '</div>';
+    }
+?>
+<hr />
+<form action="" method="post">
+    <table border="0" width="100%">
+        <tbody>
+            <tr>
+                <td>Bulan</td>
+                <td>
+                    <select name="month">
+                        <?php
+                            $monthList = array(
+                                '[ pilih satu ]',
+                                'Januari',
+                                'Februari',
+                                'Maret',
+                                'April',
+                                'Mei',
+                                'Juni',
+                                'Juli',
+                                'Agustus',
+                                'September',
+                                'Oktober',
+                                'November',
+                                'Desember'
+                            );
+
+                            foreach ($monthList as $key => $value) {
+                                if ($key == 0) {
+                                    $key = '';
+                                } elseif ($key > 0 && $key <= 9) {
+                                    $key = '0' . $key;
+                                }
+
+                                echo '<option value="' . $key . '"' . ($params['month'] == $key ? ' selected' : '') . '>' . $value . '</option>';
+                            }
+                        ?>
+                    </select>
+                    <div class="error-container">
+                        <?php echo isset($errorMessages['month']) ? $errorMessages['month'] : '' ?>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Tahun</td>
+                <td>
+                    <select name="year">
+                        <?php
+                            $now = new \DateTime();
+                            $currentYear = $now->format('Y');
+
+                            echo '<option value="">[ pilih satu ]</option>';
+                            for ($i = 10; $i > 0; $i--) {
+                                echo '<option value="' . $currentYear . '"' . ($params['year'] == $currentYear ? ' selected' : '') . '>' . $currentYear . '</option>';
+                                $currentYear--;
+                            }
+                        ?>
+                    </select>
+                    <div class="error-container">
+                        <?php echo isset($errorMessages['year']) ? $errorMessages['year'] : '' ?>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Company</td>
+                <td>
+                    <select name="company">
+                        <option value="" <?php echo (empty($params['company'])) ? ' selected' : '' ?>>[ semua ]</option>
+                        <option value="wwii" <?php echo (strtoupper($params['company'])) == 'WWII' ? ' selected' : '' ?>>WWII</option>
+                        <option value="smk" <?php echo (strtoupper($params['company'])) == 'SMK' ? ' selected' : '' ?>>SMK</option>
+                        <option value="ics" <?php echo (strtoupper($params['company'])) == 'ICS' ? ' selected' : '' ?>>ICS</option>
+                        <option value="skcm" <?php echo (strtoupper($params['company'])) == 'SKCM' ? ' selected' : '' ?>>SKCM</option>
+                        <option value="ppc" <?php echo (strtoupper($params['company'])) == 'PPC' ? ' selected' : '' ?>>PPC</option>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <input type="submit" value="Proses" name="btx" />
+    <input type="submit" value="Reset" name="btx" />
+</form>
+<table class="content">
+    <tr>
+        <th>NIK</th>
+        <th>Nama</th>
+        <th>Status</th>
+        <th>Departemen</th>
+        <th>Gender</th>
+        <th>Marital</th>
+        <th>Periode Awal</th>
+        <th>Periode Akhir</th>
+        <th>Basic Wage</th>
+        <th>Tunjangan Tetap</th>
+        <th>Tunjangan Skill</th>
+        <th>Tunjangan Insentif</th>
+        <th>Total</th>
+        <th>Tunjangan Pajak</th>
+        <th>OT Options</th>
+        <th>OT Rate</th>
+        <th>OT Meal Rate</th>
+        <th>Incentive Rate</th>
+        <th>Bonus Incentive</th>
+        <th>Fix Deduction</th>
+        <th>Union Retribution</th>
+        <th>NPWP</th>
+        <th>Jamsostek</th>
+        <th>Tanggal Peserta</th>
+        <th>JS Basic</th>
+        <th>Bank Account Name</th>
+        <th>Bank Account No</th>
+        <th>PAY</th>
+        <th>Tanggal Keluar</th>
+        <th>Remarks</th>
+        <th>Hari Kerja</th>
+        <th>Total Work Hour</th>
+        <th>Total Normal Hour</th>
+        <th>Jam Lembur</th>
+        <th>Upah Kerja</th>
+        <th>Upah Tunjangan Tetap</th>
+        <th>Upah Tunjangan Skill</th>
+        <th>Upah Tunjangan Insentif</th>
+        <th>Upah Lembur</th>
+        <th>Subsidi Makan</th>
+        <th>Koreksi</th>
+        <th>Tunjangan Pajak</th>
+        <th>Jumlah Tunjangan</th>
+        <th>Total All Tunjangan</th>
+        <th>Gaji Kotor</th>
+        <th>Iuran JKK (0,89%)</th>
+        <th>Iuran JKM (0,30%)</th>
+        <th>Iuran JHT Perusahaan (3,70%)</th>
+        <th>Total Perusahaan (4,89%)</th>
+        <th>Iuran JHT Karyawan (2,00%)</th>
+        <th>Total Iuran (6,89%)</th>
+        <th>Penghasilan Bruto</th>
+        <th>Biaya Jabatan</th>
+        <th>Penghasilan Netto</th>
+        <th>Faktor X</th>
+        <th>Penghasilan Setahun</th>
+        <th>PTKP</th>
+        <th>PKP</th>
+        <th>Total Pajak</th>
+        <th>Potongan PPH 21</th>
+        <th>Deduction</th>
+        <th>Total Potongan</th>
+        <th>Total Dibayar</th>
+        <th>Action</th>
+    </tr>
+    <?php
+        if (! empty($data)) :
+            foreach ($data as $report) :
+    ?>
+    <tr>
+        <td><?php echo $report['fCode'] ?></td>
+        <td class="nowrap"><?php echo $report['fName'] ?></td>
+        <td style="text-align:center;"><?php echo $report['fStatus'] ?></td>
+        <td class="nowrap"><?php echo $report['fDeptName'] ?></td>
+        <td style="text-align:center;"><?php echo $report['fGender'] ?></td>
+        <td style="text-align:left;"><?php echo $report['fPTKPCode'] ?></td>
+        <td style="text-align:center;"><?php echo $report['fTanggalPeriodeAwal']->format('d-M-Y') ?></td>
+        <td style="text-align:center;"><?php echo $report['fTanggalPeriodeAkhir']->format('d-M-Y') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fBasicWage']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fTunjanganTetap']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fTunjanganSkill']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fTunjanganInsentif']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fTotal']), 2, ',', '.') ?></td>
+        <td style="text-align:center;"><?php echo ($report['fIsTunjanganPajak'] == 1 ? 'v' : '-') ?></td>
+        <td style="text-align:right;"><?php ?></td>
+        <td style="text-align:right;"><?php ?></td>
+        <td style="text-align:right;"><?php ?></td>
+        <td style="text-align:right;"><?php ?></td>
+        <td style="text-align:right;"><?php ?></td>
+        <td style="text-align:right;"><?php ?></td>
+        <td style="text-align:right;"><?php ?></td>
+        <td class="nowrap" style="text-align:left;"><?php echo $report['fNPWP'] ?></td>
+        <td style="text-align:left;"><?php echo $report['fJamsostek'] ?></td>
+        <td style="text-align:left;"><?php echo (! empty($report['fInDate']) ? $report['fInDate']->format('d-M-Y') : '') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fJSBasic']), 2, ',', '.') ?></td>
+        <td style="text-align:left;"><?php ?></td>
+        <td style="text-align:left;"><?php echo $report['fBankAccountNo'] ?></td>
+        <td style="text-align:center;"><?php ?></td>
+        <td style="text-align:left;"><?php echo (! empty($report['fOutDate']) ? $report['fOutDate']->format('d-M-Y') : '-') ?></td>
+        <td style="text-align:left;"><?php echo $report['fNote'] ?></td>
+        <td style="text-align:right;"><?php echo ($report['fJumlahHariKerja'] - $report['fJumlahIjin']) ?></td>
+        <td style="text-align:right;"><?php echo $report['fJamKerjaUser'] ?></td>
+        <td style="text-align:right;"><?php echo $report['fJamKerjaTerjadwal'] ?></td>
+        <td style="text-align:right;"><?php ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fUpahKerja']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fUpahTunjanganTetap']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fUpahTunjanganSkill']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fUpahTunjanganInsentif']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fUpahLembur']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fSubsidiMakan']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fKoreksi']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fTunjanganPajak']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fJumlahTunjangan']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fTotalAllTunjangan']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fGajiKotor']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fIuranJKK']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fIuranJKM']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fIuranJHTPerusahaan']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fTotalIuranPerusahaan']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fIuranJHTKaryawan']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fTotalIuran']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fPenghasilanBruto']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fBiayaJabatan']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fPenghasilanNetto']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo $report['fFaktorX'] ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fPenghasilanSetahun']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fPTKPValue']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format((floor(($report['fPKP'] / 1000)) * 1000), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fTotalPajak']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fPotonganPPH21']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fDeduction']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fTotalPotongan']), 2, ',', '.') ?></td>
+        <td style="text-align:right;"><?php echo number_format(round($report['fTotalDibayar']), 2, ',', '.') ?></td>
+        <td class="nowrap" style="text-align:center;">
+            <a href="<?php echo $this->routeManager->generateRoute(array(
+                'action' => 'report_jam_kerja_karyawan',
+                'key' => "fCode:{$report['fCode']};date:{$params['year']}-{$params['month']}-01"
+            )) ?>">detail jam kerja</a>
+        </td>
+    </tr>
+    <?php
+            endforeach;
+        else:
+    ?>
+    <tr>
+        <td colspan=0 style="text-align:center;">Data tidak ditemukan!</td>
+    </tr>
+    <?php endif; ?>
+</table>
+<style type="text/css">
+    .nowrap {
+        white-space:nowrap;
+    }
+</style>

@@ -40,7 +40,6 @@ class GenerateMonthlyPayrollAction
             case 'SIMPAN':
                 $result = $this->dispatchSimpan($params);
                 break;
-                break;
             case 'RESET':
             default:
                 $this->clearSessionData();
@@ -58,147 +57,14 @@ class GenerateMonthlyPayrollAction
             if (empty($errorMessages)) {
                 $selectedDate = new \DateTime("{$params['year']}-{$params['month']}-01");
 
-                $employeeDetail = $this->databaseManager->prepare("
-                    SELECT
-                        t_PALM_PersonnelFileMst.fCode,
-                        t_PALM_PersonnelFileMst.fName,
-                        t_BMSM_DeptMst.fDeptName,
-                        t_PALM_PersonnelFileMst.fIfContract,
-                        t_PALM_PersonnelFileMst.fCSDate,
-                        t_PALM_PersonnelFileMst.fCEDate,
-                        fStatus = CASE
-                            WHEN
-                                t_PALM_PersonnelFileMst.fIfContract = 1
-                            THEN
-                                'kontrak'
-                            ELSE
-                                'tetap'
-                        END,
-                        fJumlahHariKerja = SUM(CASE
-                            WHEN
-                                a_Personnel_CardRecord.fStatus = 'P'
-                            THEN
-                                1
-                            WHEN
-                                a_Personnel_CardRecord.fStatus = 'H'
-                            THEN
-                                1
-                            ELSE
-                                0
-                        END),
-                        fJumlahSakit = SUM(CASE
-                            WHEN
-                                a_Personnel_CardRecord.fStatus = 'S'
-                            THEN
-                                1
-                            ELSE
-                                0
-                        END),
-                        fJumlahAbsen = SUM(CASE
-                            WHEN
-                                a_Personnel_CardRecord.fStatus = 'A'
-                            THEN
-                                1
-                            ELSE
-                                0
-                        END),
-                        fJumlahCuti = SUM(CASE
-                            WHEN
-                                a_Personnel_CardRecord.fStatus = 'C'
-                            THEN
-                                1
-                            ELSE
-                                0
-                        END)
-                    FROM
-                        t_PALM_PersonnelFileMst
-                    LEFT JOIN
-                        a_Personnel_CardRecord ON a_Personnel_CardRecord.fCode = t_PALM_PersonnelFileMst.fCode
-                    LEFT JOIN
-                        t_BMSM_DeptMst ON T_BMSM_DeptMst.fDeptCode = t_PALM_PersonnelFileMst.fDeptCode
-                    WHERE
-                        t_PALM_PersonnelFileMst.fDFlag = 0
-                        AND a_Personnel_CardRecord.fDateTime >= '{$selectedDate->format('Y-m-d')}'
-                        AND a_Personnel_CardRecord.fDateTime <= '{$selectedDate->format('Y-m-t')}'
-                    GROUP BY
-                        t_PALM_PersonnelFileMst.fCode,
-                        t_PALM_PersonnelFileMst.fName,
-                        t_BMSM_DeptMst.fDeptName,
-                        t_PALM_PersonnelFileMst.fIfContract,
-                        t_PALM_PersonnelFileMst.fCSDate,
-                        t_PALM_PersonnelFileMst.fCEDate
-                    ORDER BY
-                        t_PALM_PersonnelFileMst.fCode ASC
-                ");
-                $employeeDetail->execute();
-
-                $data = array();
-                while ($item = $employeeDetail->fetch(\PDO::FETCH_ASSOC)) {
-                    $i = count($data);
-                    $data[$i] = $item;
-
-                    $tanggalPeriodeAwal = null;
-                    $tanggalPeriodeAkhir = null;
-
-                    //~if (! empty($item['fCSDate'])) {
-                        //~$tanggalPeriodeAwal = new \DateTime($item['fCSDate']);
-                    //~}
-//~
-                    //~if (! empty($item['fCEDate'])) {
-                        //~$tanggalPeriodeAkhir = new \DateTime($item['fCEDate']);
-                    //~}
-//~
-                    //~if ($tanggalPeriodeAkhir->format('d') < $selectedDate->format('t')) {
-                        //~$
-                    //~}
-
-                    $cardRecordList = $this->databaseManager->prepare("
-                        SELECT
-                            a_Personnel_CardRecord.*
-                        FROM
-                            a_Personnel_CardRecord
-                        WHERE
-                            a_Personnel_CardRecord.fCode = '{$item['fCode']}'
-                            AND a_Personnel_CardRecord.fDateTime >= '{$selectedDate->format('Y-m-d')}'
-                            AND a_Personnel_CardRecord.fDateTime <= '{$selectedDate->format('Y-m-t')}'
-                        ORDER BY
-                            a_Personnel_CardRecord.fDateTime ASC
-                    ");
-                    $cardRecordList->execute();
-
-                    $now = new \DateTime();
-                    $total = clone($now);
-                    while ($cardRecord = $cardRecordList->fetch(\PDO::FETCH_ASSOC)) {
-                        if ($cardRecord['fDateTimeUserIn'] !== null && $cardRecord['fDateTimeUserOut'] !== null) {
-                            $userIn = new \DateTime($cardRecord['fDateTimeUserIn']);
-                            $userOut = new \DateTime($cardRecord['fDateTimeUserOut']);
-                            $total->add($userOut->diff($userIn));
-                        }
-                    }
-                    $total = $total->diff($now);
-                    $total = array(
-                        'y' => $total->y,
-                        'm' => $total->m,
-                        'd' => $total->d,
-                        'h' => $total->h,
-                        'i' => $total->i,
-                        's' => $total->s
-                    );
-                    $total['m'] += $total['y'] * 12;
-                    $total['d'] += $total['m'] * 30;
-                    $total['h'] += $total['d'] * 24;
-
-                    $data[$i]['fTotalJamKerja'] = ($total['h'] < 10 ? '0' . $total['h'] : $total['h'])
-                        . ':' . ($total['i'] < 10 ? '0' . $total['i'] : $total['i'])
-                        . ':' . ($total['s'] < 10 ? '0' . $total['s'] : $total['s']);
-                }
+                $data = $this->getEmployeeDetail($params['company'], $selectedDate);
 
                 if ($data == null) {
-                    $this->flashMessenger->addMessage('Data pada tanggal ' . $selectedDate->format('d-m-Y') . ' kosong!');
+                    $this->flashMessenger->addMessage('Data pada tanggal ' . $selectedDate->format('d-m-Y')
+                        . ' kosong!');
                 }
 
-                $this->addSessionData('data', $data);
-                $this->addSessionData('date', $selectedDate);
+                $this->addSessionData('params', $params);
             }
         }
 
@@ -211,104 +77,137 @@ class GenerateMonthlyPayrollAction
 
     protected function dispatchSimpan($params)
     {
-        $data = $this->getSessionData('data');
-        $date = $this->getSessionData('date');
+        $params = $this->getSessionData('params');
+        $selectedDate = new \DateTime("{$params['year']}-{$params['month']}-01");
+        $data = $this->getEmployeeDetail($params['company'], $selectedDate);
 
         $query = $this->databaseManager->prepare("
-            INSERT INTO
-                a_Personnel_PayrollMst (
-                    fDateTime
-                ) OUTPUT INSERTED.fId
-            VALUES (
-                '{$date->format('Y-m-d')}'
-            )
+            SELECT
+                fId
+            FROM
+                a_Personnel_PayrollMst
+            WHERE
+                fDateTime = '{$selectedDate->format('Y-m-d')}'
         ");
         $query->execute();
-
         $result = $query->fetch(\PDO::FETCH_ASSOC);
-        $id = $result['fId'];
 
-        foreach ($data as $item) {
+        if (empty($result)) {
             $query = $this->databaseManager->prepare("
                 INSERT INTO
-                    a_Personnel_PayrollItem (
-                        fPayrollMstId,
-                        fCode,
-                        fNPWP,
-                        fJamsostek,
-                        fBankAccountName,
-                        fBankAccountNo,
-                        fTanggalPeriodeAwal,
-                        fTanggalPeriodeAkhir,
-                        fStatus,
-                        fMarital,
-                        fPay,
-                        fBasicWage,
-                        fTunjanganTetap,
-                        fTunjanganSkill,
-                        fTunjanganInsentif,
-                        fTunjanganPajak,
-                        fOverTimeOption,
-                        fOverTimeRate,
-                        fOverTimeMealRate,
-                        fIncentiveRate,
-                        fBonusIncentive,
-                        fFixDeduct,
-                        fUnionRetribution,
-                        fTotalJamKerja,
-                        fJamKerja,
-                        fJamLembur,
-                        fJumlahKehadiran,
-                        fJumlahIjin,
-                        fJumlahCuti,
-                        fJumlahSakit,
-                        fJamKerjaNormal,
-                        fJamKerjaLembur,
-                        fKoreksi,
-                        fRemarks,
-                        fDeduction
-                    )
+                    a_Personnel_PayrollMst (
+                        fDateTime
+                    ) OUTPUT INSERTED.fId
                 VALUES (
-                    {$id},
-                    '{$item['fCode']}',
-                    '-',
-                    '-',
-                    '-',
-                    '-',
-                    '{$date->format('Y-m-01')}',
-                    '{$date->format('Y-m-t')}',
-                    'C',
-                    '-',
-                    '-',
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    '00:00:00',
-                    '{$item['fTotalJamKerja']}',
-                    '00:00:00',
-                    {$item['fJumlahHariKerja']},
-                    {$item['fJumlahAbsen']},
-                    {$item['fJumlahCuti']},
-                    {$item['fJumlahSakit']},
-                    0,
-                    0,
-                    0,
-                    '-',
-                    0
+                    '{$selectedDate->format('Y-m-d')}'
                 )
             ");
             $query->execute();
+            $result = $query->fetch(\PDO::FETCH_ASSOC);
         }
 
+        $id = $result['fId'];
+        foreach ($data as $item) {
+            $item['fPeriodeAwal'] = new \DateTime($item['fPeriodeAwal']);
+            $item['fPeriodeAwal'] = $item['fPeriodeAwal']->format('Y-m-d');
+
+            $item['fPeriodeAkhir'] = new \DateTime($item['fPeriodeAkhir']);
+            $item['fPeriodeAkhir'] = $item['fPeriodeAkhir']->format('Y-m-d');
+
+            $query = $this->databaseManager->prepare("
+                SELECT
+                    fId
+                FROM
+                    a_Personnel_PayrollItem
+                WHERE
+                    fCode = '{$item['fCode']}'
+                    AND fStatus = '{$item['fStatus']}'
+                    AND fPayrollMstId = {$id}
+            ");
+            $query->execute();
+            $result = $query->fetch(\PDO::FETCH_ASSOC);
+
+            if (empty($result)) {
+                $query = $this->databaseManager->prepare("
+                    INSERT INTO
+                        a_Personnel_PayrollItem (
+                            fPayrollMstId,
+                            fCode,
+                            fDeptCode,
+                            fPTKPCode,
+                            fStatus,
+                            fTanggalPeriodeAwal,
+                            fTanggalPeriodeAkhir,
+                            fBasicWage,
+                            fTunjanganTetap,
+                            fTunjanganSkill,
+                            fTunjanganInsentif,
+                            fIsTunjanganPajak,
+                            fJamKerjaTerjadwal,
+                            fJamKerjaUser,
+                            fJumlahKehadiran,
+                            fJumlahIjin,
+                            fJumlahCuti,
+                            fJumlahSakit,
+                            fJumlahHariLibur,
+                            fJSBasic
+                        )
+                    VALUES (
+                        {$id},
+                        '{$item['fCode']}',
+                        '{$item['fDeptCode']}',
+                        '{$item['fPTKPCode']}',
+                        '{$item['fStatus']}',
+                        '{$item['fPeriodeAwal']}',
+                        '{$item['fPeriodeAkhir']}',
+                        '{$item['fBasicWage']}',
+                        '{$item['fTunjanganTetap']}',
+                        '{$item['fTunjanganSkill']}',
+                        '{$item['fTunjanganInsentif']}',
+                        '{$item['fIsTunjanganPajak']}',
+                        '{$item['fJumlahJamKerjaTerjadwal']}',
+                        '{$item['fJumlahJamKerjaUser']}',
+                        '{$item['fJumlahKehadiran']}',
+                        '{$item['fJumlahAbsen']}',
+                        '{$item['fJumlahCuti']}',
+                        '{$item['fJumlahSakit']}',
+                        '{$item['fJumlahHariLibur']}',
+                        '{$item['fJSBasic']}'
+                    )
+                ");
+                $query->execute();
+            } else {
+                $query = $this->databaseManager->prepare("
+                    UPDATE
+                        a_Personnel_PayrollItem
+                    SET
+                        fDeptCode = '{$item['fDeptCode']}',
+                        fPTKPCode = '{$item['fPTKPCode']}',
+                        fStatus = '{$item['fStatus']}',
+                        fTanggalPeriodeAwal = '{$item['fPeriodeAwal']}',
+                        fTanggalPeriodeAkhir = '{$item['fPeriodeAkhir']}',
+                        fBasicWage = '{$item['fBasicWage']}',
+                        fTunjanganTetap = '{$item['fTunjanganTetap']}',
+                        fTunjanganSkill = '{$item['fTunjanganSkill']}',
+                        fTunjanganInsentif = '{$item['fTunjanganInsentif']}',
+                        fIsTunjanganPajak = '{$item['fIsTunjanganPajak']}',
+                        fJamKerjaTerjadwal = '{$item['fJumlahJamKerjaTerjadwal']}',
+                        fJamKerjaUser = '{$item['fJumlahJamKerjaUser']}',
+                        fJumlahKehadiran = '{$item['fJumlahKehadiran']}',
+                        fJumlahIjin = '{$item['fJumlahAbsen']}',
+                        fJumlahCuti = '{$item['fJumlahCuti']}',
+                        fJumlahSakit = '{$item['fJumlahSakit']}',
+                        fJumlahHariLibur = '{$item['fJumlahHariLibur']}',
+                        fJSBasic = '{$item['fJSBasic']}'
+                    WHERE
+                        fCode = '{$item['fCode']}'
+                        AND fPayrollMstId = {$id}
+                ");
+                $query->execute();
+            }
+        }
+
+        $this->clearSessionData();
         $this->flashMessenger->addMessage('Data berhasil disimpan.');
         $this->routeManager->redirect(array('action' => 'report_monthly_payroll'));
 
@@ -317,6 +216,486 @@ class GenerateMonthlyPayrollAction
             'params' => $params,
             'data' => $data
         );
+    }
+
+    protected function getEmployeeDetail($company, \DateTime $selectedDate)
+    {
+        $optionalFilter = '';
+
+        switch (strtoupper($company)) {
+            case 'WWII':
+                $optionalFilter .= " AND SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 1) = '0' ";
+                break;
+            case 'SMK':
+                $optionalFilter .= " AND (SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 1) IN ('3', '8')"
+                    . " OR UPPER(SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 2)) = 'SM') ";
+                break;
+            case 'ICS':
+                $optionalFilter .= " AND (SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 1) IN ('4', '9')"
+                    . " OR UPPER(SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 2)) = 'IC') ";
+                break;
+            case 'SKCM':
+                $optionalFilter .= " AND (SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 1) IN ('5', '6')"
+                    . " OR UPPER(SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 2)) = 'SK') ";
+                break;
+            case 'PPC':
+                $optionalFilter .= " AND (SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 1) = '7'"
+                    . " OR UPPER(SUBSTRING(t_PALM_PersonnelFileMst.fCode, 1, 2)) = 'PP') ";
+                break;
+        }
+
+        $employeeDetail = $this->databaseManager->prepare("
+            SELECT
+                t_PALM_PersonnelFileMst.fCode,
+                t_PALM_PersonnelFileMst.fName,
+                t_BMSM_DeptMst.fDeptCode,
+                t_BMSM_DeptMst.fDeptName,
+                t_PALM_PersonnelFileMst.fPTKPCode,
+                t_PALM_PersonnelFileMst.fInDate,
+                t_PALM_PersonnelFileMst.fCEDate,
+                fStatus = CASE
+                    WHEN
+                        t_PALM_PersonnelFileMst.fIfContract = 1
+                    THEN
+                        CASE
+                            WHEN
+                                t_PALM_PersonnelFileMst.fCEDate > '{$selectedDate->format('Y-m-01')}'
+                                AND t_PALM_PersonnelFileMst.fCEDate <= '{$selectedDate->format('Y-m-t')}'
+                            THEN
+                                'renewal'
+                            ELSE
+                                'active'
+                        END
+                    ELSE
+                        'active'
+                END,
+                fBasicWage = CONVERT(INT, t_PLSD_BaseSalary.fBaseSalary),
+                fTunjanganTetap = CONVERT(INT, t_PLSD_BaseSalary.fPostSalary),
+                fTunjanganSkill = CONVERT(INT, t_PLSD_BaseSalary.fSkillSalary),
+                fTunjanganInsentif = CONVERT(INT, t_PLSD_BaseSalary.fWage2),
+                fIsTunjanganPajak = 0,
+                fJSBasic = 1700000
+            FROM
+                t_PALM_PersonnelFileMst
+            LEFT JOIN
+                a_Personnel_CardRecord ON a_Personnel_CardRecord.fCode = t_PALM_PersonnelFileMst.fCode
+            LEFT JOIN
+                t_BMSM_DeptMst ON T_BMSM_DeptMst.fDeptCode = t_PALM_PersonnelFileMst.fDeptCode
+            LEFT JOIN
+                t_PLSD_BaseSalary ON t_PLSD_BaseSalary.fCode = t_PALM_PersonnelFileMst.fCode
+            WHERE
+                t_PALM_PersonnelFileMst.fDFlag = 0
+                AND t_PALM_PersonnelFileMst.fInDate <= '{$selectedDate->format('Y-m-t')}'
+                AND a_Personnel_CardRecord.fDateTime >= '{$selectedDate->format('Y-m-01')}'
+                AND a_Personnel_CardRecord.fDateTime <= '{$selectedDate->format('Y-m-t')}'
+                {$optionalFilter}
+            GROUP BY
+                t_PALM_PersonnelFileMst.fCode,
+                t_PALM_PersonnelFileMst.fName,
+                t_BMSM_DeptMst.fDeptCode,
+                t_BMSM_DeptMst.fDeptName,
+                t_PALM_PersonnelFileMst.fPTKPCode,
+                t_PALM_PersonnelFileMst.fInDate,
+                t_PALM_PersonnelFileMst.fIfContract,
+                t_PALM_PersonnelFileMst.fCEDate,
+                t_PLSD_BaseSalary.fBaseSalary,
+                t_PLSD_BaseSalary.fPostSalary,
+                t_PLSD_BaseSalary.fSkillSalary,
+                t_PLSD_BaseSalary.fWage2
+            ORDER BY
+                t_PALM_PersonnelFileMst.fCode ASC
+        ");
+        $employeeDetail->execute();
+
+        $data = array();
+        while ($item = $employeeDetail->fetch(\PDO::FETCH_ASSOC)) {
+            if (strtoupper($item['fStatus']) == 'RENEWAL') {
+                $item2 = $item;
+                $i = count($data);
+
+                $tanggalPeriodeAwal = new \DateTime($selectedDate->format('Y-m-01'));
+                $tanggalPeriodeAkhir = new \DateTime($item['fCEDate']);
+                $tanggalPeriodeAkhir->sub(new \DateInterval('P1D'));
+
+                $item2['fStatus'] = 'active';
+                $item2['fPeriodeAwal'] = $tanggalPeriodeAwal->format('d-M-Y');
+                $item2['fPeriodeAkhir'] = $tanggalPeriodeAkhir->format('d-M-Y');
+
+                $detailJamKerja = $this->getDetailJamKerja(
+                    $item2['fCode'],
+                    $tanggalPeriodeAwal,
+                    $tanggalPeriodeAkhir
+                );
+
+                $item2['fGajiKotor'] = $detailJamKerja['fBasicWage'] + $itdetailJamKerjaem['fTunjanganTetap']
+                    + $detailJamKerja['fTunjanganSkill'] + $detailJamKerja['fTunjanganInsentif'];
+
+                $jumlahHariKerjaTerhitung = $detailJamKerja['fJumlahKehadiran'] + $detailJamKerja['fJumlahCuti']
+                    + $detailJamKerja['fJumlahSakit'] + $detailJamKerja['fJumlahHariLibur']
+                    + $detailJamKerja['fJumlahAbsen'];
+                if ($jumlahHariKerjaTerhitung >= $selectedDate->format('t')) {
+                    if ($selectedDate->format('n') == 2) {
+                        $jumlahHariKerjaTerhitung = $selectedDate->format('t');
+                    } else {
+                        $jumlahHariKerjaTerhitung = 30;
+                    }
+                } else {
+                    $item2['fGajiKotor'] = ($jumlahHariKerjaTerhitung / 30) * $item2['fGajiKotor'];
+                }
+                $item['fGajiBersih'] = $item2['fGajiKotor'] * (
+                    ($jumlahHariKerjaTerhitung - $item2['fJumlahAbsen']) / $jumlahHariKerjaTerhitung
+                );
+
+                $i = count($data);
+                $data[$i] = array_merge($item2, $detailJamKerja);
+            }
+
+            if (strtoupper($item['fStatus']) == 'RENEWAL') {
+                $tanggalPeriodeAwal = new \DateTime($item['fCEDate']);
+                $tanggalPeriodeAkhir = new \DateTime($tanggalPeriodeAwal->format('Y-m-t'));
+            } else {
+                $tanggalPeriodeAwal = new \DateTime($selectedDate->format('Y-m-01'));
+                $tanggalPeriodeAkhir = new \DateTime($tanggalPeriodeAwal->format('Y-m-t'));
+            }
+
+            $item['fPeriodeAwal'] = $tanggalPeriodeAwal->format('d-M-Y');
+            $item['fPeriodeAkhir'] = $tanggalPeriodeAkhir->format('d-M-Y');
+
+            $detailJamKerja = $this->getDetailJamKerja(
+                $item['fCode'],
+                $tanggalPeriodeAwal,
+                $tanggalPeriodeAkhir
+            );
+
+            $item['fGajiKotor'] = $detailJamKerja['fBasicWage'] + $itdetailJamKerjaem['fTunjanganTetap']
+                + $detailJamKerja['fTunjanganSkill'] + $detailJamKerja['fTunjanganInsentif'];
+
+            $jumlahHariKerjaTerhitung = $detailJamKerja['fJumlahKehadiran'] + $detailJamKerja['fJumlahCuti']
+                + $detailJamKerja['fJumlahSakit'] + $detailJamKerja['fJumlahHariLibur']
+                + $detailJamKerja['fJumlahAbsen'];
+            if ($jumlahHariKerjaTerhitung >= $selectedDate->format('t')) {
+                if ($selectedDate->format('n') == 2) {
+                    $jumlahHariKerjaTerhitung = $selectedDate->format('t');
+                } else {
+                    $jumlahHariKerjaTerhitung = 30;
+                }
+            } else {
+                $item2['fGajiKotor'] = ($jumlahHariKerjaTerhitung / 30) * $item['fGajiKotor'];
+            }
+            $item['fGajiBersih'] = $item['fGajiKotor'] * (
+                ($jumlahHariKerjaTerhitung - $item['fJumlahAbsen']) / $jumlahHariKerjaTerhitung
+            );
+
+            $i = count($data);
+            $data[$i] = array_merge($item, $detailJamKerja);
+        }
+
+        return $data;
+    }
+
+    protected function getDetailJamKerja($nik, \DateTime $tanggalPeriodeAwal, \DateTime $tanggalPeriodeAkhir)
+    {
+        $query = $this->databaseManager->prepare("
+            SELECT
+                fJumlahKehadiran = SUM(CASE
+                    WHEN
+                        a_Personnel_CardRecord.fStatus = 'P'
+                    THEN
+                        1
+                    ELSE
+                        0
+                END),
+                fJumlahSakit = SUM(CASE
+                    WHEN
+                        a_Personnel_CardRecord.fStatus = 'S'
+                    THEN
+                        1
+                    ELSE
+                        0
+                END),
+                fJumlahAbsen = SUM(CASE
+                    WHEN
+                        a_Personnel_CardRecord.fStatus = 'A'
+                    THEN
+                        1
+                    ELSE
+                        0
+                END),
+                fJumlahCuti = SUM(CASE
+                    WHEN
+                        a_Personnel_CardRecord.fStatus = 'C'
+                    THEN
+                        1
+                    ELSE
+                        0
+                END),
+                fJumlahHariLibur = SUM(CASE
+                    WHEN
+                        a_Personnel_CardRecord.fStatus = 'H'
+                    THEN
+                        1
+                    ELSE
+                        0
+                END),
+                fJumlahJamKerjaTerjadwal = CONVERT(
+                    VARCHAR(3),
+                    (
+                        DATEPART(
+                            DD,
+                            DATEADD(
+                                SS,
+                                SUM(DATEDIFF(
+                                    SS,
+                                    a_Personnel_CardRecord.fDateTimeScheduledIn,
+                                    a_Personnel_CardRecord.fDateTimeScheduledOut
+                                )),
+                                0
+                            )
+                        ) * 24
+                    ) + (
+                        DATEPART(
+                            HH,
+                            DATEADD(
+                                SS,
+                                SUM(DATEDIFF(
+                                    SS,
+                                    a_Personnel_CardRecord.fDateTimeScheduledIn,
+                                    a_Personnel_CardRecord.fDateTimeScheduledOut
+                                )),
+                                0
+                            )
+                        )
+                    )
+                ) + ':' + (CASE
+                    WHEN
+                        DATEPART(
+                            MI,
+                            DATEADD(
+                                SS,
+                                SUM(DATEDIFF(
+                                    SS,
+                                    a_Personnel_CardRecord.fDateTimeScheduledIn,
+                                    a_Personnel_CardRecord.fDateTimeScheduledOut
+                                )),
+                                0
+                            )
+                        ) > 9
+                    THEN
+                        CONVERT(
+                            VARCHAR(2),
+                            DATEPART(
+                                MI,
+                                DATEADD(
+                                    SS,
+                                    SUM(DATEDIFF(
+                                        SS,
+                                        a_Personnel_CardRecord.fDateTimeScheduledIn,
+                                        a_Personnel_CardRecord.fDateTimeScheduledOut
+                                    )),
+                                    0
+                                )
+                            )
+                        )
+                    ELSE
+                        '0' + CONVERT(
+                            VARCHAR(2),
+                            DATEPART(
+                                MI,
+                                DATEADD(
+                                    SS,
+                                    SUM(DATEDIFF(
+                                        SS,
+                                        a_Personnel_CardRecord.fDateTimeScheduledIn,
+                                        a_Personnel_CardRecord.fDateTimeScheduledOut
+                                    )),
+                                    0
+                                )
+                            )
+                        )
+                END) + ':' + (CASE
+                    WHEN
+                        DATEPART(
+                            SS,
+                            DATEADD(
+                                SS,
+                                SUM(DATEDIFF(
+                                    SS,
+                                    a_Personnel_CardRecord.fDateTimeScheduledIn,
+                                    a_Personnel_CardRecord.fDateTimeScheduledOut
+                                )),
+                                0
+                            )
+                        ) > 9
+                    THEN
+                        CONVERT(
+                            VARCHAR(2),
+                            DATEPART(
+                                SS,
+                                DATEADD(
+                                    SS,
+                                    SUM(DATEDIFF(
+                                        SS,
+                                        a_Personnel_CardRecord.fDateTimeScheduledIn,
+                                        a_Personnel_CardRecord.fDateTimeScheduledOut
+                                    )),
+                                    0
+                                )
+                            )
+                        )
+                    ELSE
+                        '0' + CONVERT(
+                            VARCHAR(2),
+                            DATEPART(
+                                SS,
+                                DATEADD(
+                                    SS,
+                                    SUM(DATEDIFF(
+                                        SS,
+                                        a_Personnel_CardRecord.fDateTimeScheduledIn,
+                                        a_Personnel_CardRecord.fDateTimeScheduledOut
+                                    )),
+                                    0
+                                )
+                            )
+                        )
+                END),
+                fJumlahJamKerjaUser = CONVERT(
+                    VARCHAR(3),
+                    (
+                        DATEPART(
+                            DD,
+                            DATEADD(
+                                SS,
+                                SUM(DATEDIFF(
+                                    SS,
+                                    a_Personnel_CardRecord.fDateTimeUserIn,
+                                    a_Personnel_CardRecord.fDateTimeUserOut
+                                )),
+                                0
+                            )
+                        ) * 24
+                    ) + (
+                        DATEPART(
+                            HH,
+                            DATEADD(
+                                SS,
+                                SUM(DATEDIFF(
+                                    SS,
+                                    a_Personnel_CardRecord.fDateTimeUserIn,
+                                    a_Personnel_CardRecord.fDateTimeUserOut
+                                )),
+                                0
+                            )
+                        )
+                    )
+                ) + ':' + (CASE
+                    WHEN
+                        DATEPART(
+                            MI,
+                            DATEADD(
+                                SS,
+                                SUM(DATEDIFF(
+                                    SS,
+                                    a_Personnel_CardRecord.fDateTimeUserIn,
+                                    a_Personnel_CardRecord.fDateTimeUserOut
+                                )),
+                                0
+                            )
+                        ) > 9
+                    THEN
+                        CONVERT(
+                            VARCHAR(2),
+                            DATEPART(
+                                MI,
+                                DATEADD(
+                                    SS,
+                                    SUM(DATEDIFF(
+                                        SS,
+                                        a_Personnel_CardRecord.fDateTimeUserIn,
+                                        a_Personnel_CardRecord.fDateTimeUserOut
+                                    )),
+                                    0
+                                )
+                            )
+                        )
+                    ELSE
+                        '0' + CONVERT(
+                            VARCHAR(2),
+                            DATEPART(
+                                MI,
+                                DATEADD(
+                                    SS,
+                                    SUM(DATEDIFF(
+                                        SS,
+                                        a_Personnel_CardRecord.fDateTimeUserIn,
+                                        a_Personnel_CardRecord.fDateTimeUserOut
+                                    )),
+                                    0
+                                )
+                            )
+                        )
+                END) + ':' + (CASE
+                    WHEN
+                        DATEPART(
+                            SS,
+                            DATEADD(
+                                SS,
+                                SUM(DATEDIFF(
+                                    SS,
+                                    a_Personnel_CardRecord.fDateTimeUserIn,
+                                    a_Personnel_CardRecord.fDateTimeUserOut
+                                )),
+                                0
+                            )
+                        ) > 9
+                    THEN
+                        CONVERT(
+                            VARCHAR(2),
+                            DATEPART(
+                                SS,
+                                DATEADD(
+                                    SS,
+                                    SUM(DATEDIFF(
+                                        SS,
+                                        a_Personnel_CardRecord.fDateTimeUserIn,
+                                        a_Personnel_CardRecord.fDateTimeUserOut
+                                    )),
+                                    0
+                                )
+                            )
+                        )
+                    ELSE
+                        '0' + CONVERT(
+                            VARCHAR(2),
+                            DATEPART(
+                                SS,
+                                DATEADD(
+                                    SS,
+                                    SUM(DATEDIFF(
+                                        SS,
+                                        a_Personnel_CardRecord.fDateTimeUserIn,
+                                        a_Personnel_CardRecord.fDateTimeUserOut
+                                    )),
+                                    0
+                                )
+                            )
+                        )
+                END)
+            FROM
+                a_Personnel_CardRecord
+            WHERE
+                a_Personnel_CardRecord.fCode = '{$nik}'
+                AND a_Personnel_CardRecord.fDateTime >= '{$tanggalPeriodeAwal->format('Y-m-d')}'
+                AND a_Personnel_CardRecord.fDateTime <= '{$tanggalPeriodeAkhir->format('Y-m-d')}'
+        ");
+        $query->execute();
+        $detailJamKerja = $query->fetch(\PDO::FETCH_ASSOC);
+
+        if (empty($detailJamKerja['fJumlahJamKerjaUser'])) {
+            $detailJamKerja['fJumlahJamKerjaUser'] = '00:00:00';
+        }
+
+        return $detailJamKerja;
     }
 
     protected function validateData($params)
@@ -337,22 +716,6 @@ class GenerateMonthlyPayrollAction
 
             if ($selectedDate > $maxDate) {
                 $errorMessages['global'][] = 'Tanggal yang dipilih melebihi batas akhir (bulan ini)';
-            } else {
-                $query = $this->databaseManager->prepare("
-                    SELECT
-                        COUNT(fId) as jumlah
-                    FROM
-                        a_Personnel_PayrollMst
-                    WHERE
-                        a_Personnel_PayrollMst.fDateTime >= '{$selectedDate->format('Y-m-01')}'
-                        AND a_Personnel_PayrollMst.fDateTime <= '{$selectedDate->format('Y-m-t')}'
-                ");
-                $query->execute();
-                $masterPayroll = $query->fetch(\PDO::FETCH_ASSOC);
-
-                if ($masterPayroll['jumlah'] > 0) {
-                    $errorMessages['global'][] = 'Data payroll pada tanggal ' . $selectedDate->format('d-m-Y') . ' sudah ada!';
-                }
             }
         }
 

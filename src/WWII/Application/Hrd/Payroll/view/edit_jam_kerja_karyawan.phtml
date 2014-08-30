@@ -1,4 +1,4 @@
-<h3>Detail Jam Kerja Karyawan</h3>
+<h3>Edit Jam Kerja Karyawan</h3>
 <?php
     if (!empty($errorMessages)) {
         echo '<div class="error-head">'
@@ -18,7 +18,6 @@
 <hr />
 <form action="" method="post">
     <fieldset>
-        <legend>Detail Jam Kerja Karyawan</legend>
         <div class="fieldset-kiri">NIK</div>
         <div class="fieldset-kanan"><?php echo $data['fCode'] ?></div>
         <div class="fieldset-kiri">Nama Lengkap</div>
@@ -74,11 +73,11 @@
                             </div>
                             <div class="fieldset-kiri required">Masuk</div>
                             <div class="fieldset-kanan">
-                                <input id="masuk" class="medium" type="text" name="masuk" value="" />
+                                <input id="masuk" class="medium" type="text" name="userMasuk" value="" />
                             </div>
                             <div class="fieldset-kiri required">Keluar</div>
                             <div class="fieldset-kanan">
-                                <input id="keluar" class="medium" type="text" name="keluar" value="" />
+                                <input id="keluar" class="medium" type="text" name="userKeluar" value="" />
                             </div>
                             <div class="fieldset-kiri required">Status</div>
                             <div class="fieldset-kanan">
@@ -123,40 +122,35 @@
     <tr>
         <td><?php
             if (! empty($detail['fDateTime'])) {
-                $fDateTime = new \DateTime($detail['fDateTime']);
-                echo $fDateTime->format('d-M-Y');
+                echo $detail['fDateTime']->format('d-M-Y');
             }  else {
                 echo '-';
             }
         ?></td>
         <td><?php
             if (! empty($detail['fDateTimeScheduledIn'])) {
-                $fDateTimeScheduledIn = new \DateTime($detail['fDateTimeScheduledIn']);
-                echo $fDateTimeScheduledIn->format('H:i:s');
+                echo $detail['fDateTimeScheduledIn']->format('H:i:s');
             } else {
                 echo '-';
             }
         ?></td>
         <td><?php
             if (! empty($detail['fDateTimeScheduledOut'])) {
-                $fDateTimeScheduledOut = new \DateTime($detail['fDateTimeScheduledOut']);
-                echo $fDateTimeScheduledOut->format('H:i:s');
+                echo $detail['fDateTimeScheduledOut']->format('H:i:s');
             } else {
                 echo '-';
             }
         ?></td>
         <td><?php
             if (! empty($detail['fDateTimeUserIn'])) {
-                $fDateTimeUserIn = new \DateTime($detail['fDateTimeUserIn']);
-                echo $fDateTimeUserIn->format('H:i:s');
+                echo $detail['fDateTimeUserIn']->format('H:i:s');
             } else {
                 echo '-';
             }
         ?></td>
         <td><?php
             if (! empty($detail['fDateTimeUserOut'])) {
-                $fDateTimeUserOut = new \DateTime($detail['fDateTimeUserOut']);
-                echo $fDateTimeUserOut->format('H:i:s');
+                echo $detail['fDateTimeUserOut']->format('H:i:s');
             } else {
                 echo '-';
             }
@@ -187,36 +181,31 @@
                 data-options='{"id":"<?php echo $detail['fId'] ?>",
                     "tanggal":"<?php
                         if (! empty($detail['fDateTime'])) {
-                            $fDateTime = new \DateTime($detail['fDateTime']);
-                            echo $fDateTime->format('d-M-Y');
+                            echo $detail['fDateTime']->format('d-M-Y');
                         } else {
                             echo '-';
                         } ?>",
                     "jadwalMasuk":"<?php
                         if (! empty($detail['fDateTimeScheduledIn'])) {
-                            $fDateTimeScheduledIn = new \DateTime($detail['fDateTimeScheduledIn']);
-                            echo $fDateTimeScheduledIn->format('H:i:s');
+                            echo $detail['fDateTimeScheduledIn']->format('H:i:s');
                         } else {
                             echo '-';
                         } ?>",
                     "jadwalKeluar":"<?php
                         if (! empty($detail['fDateTimeScheduledOut'])) {
-                            $fDateTimeScheduledOut = new \DateTime($detail['fDateTimeScheduledOut']);
-                            echo $fDateTimeScheduledOut->format('H:i:s');
+                            echo $detail['fDateTimeScheduledOut']->format('H:i:s');
                         } else {
                             echo '-';
                         } ?>",
                     "masuk":"<?php
                         if (! empty($detail['fDateTimeUserIn'])) {
-                            $fDateTimeUserIn = new \DateTime($detail['fDateTimeUserIn']);
-                            echo $fDateTimeUserIn->format('H:i:s');
+                            echo $detail['fDateTimeUserIn']->format('H:i:s');
                         } else {
                             echo '-';
                         } ?>",
                     "keluar":"<?php
                         if (! empty($detail['fDateTimeUserOut'])) {
-                            $fDateTimeUserOut = new \DateTime($detail['fDateTimeUserOut']);
-                            echo $fDateTimeUserOut->format('H:i:s');
+                            echo $detail['fDateTimeUserOut']->format('H:i:s');
                         } else {
                             echo '-';
                         } ?>",
@@ -229,6 +218,7 @@
     </tr>
     <?php endforeach; ?>
 </table>
+
 <style type="text/css">
     #modalWindow {
         display: none;
