@@ -1,0 +1,598 @@
+<h3>
+    Input General Inspection - Pembahanan Kayu
+</h3>
+<?php
+    if (! empty($errorMessages)) {
+        echo '<div class="error-head">Form yang anda kirim tidak valid.<br />Mohon dicek kembali.<br /></div>';
+        echo '<pre>';
+        var_dump($errorMessages);
+        echo '</pre>';
+    }
+
+    $proses = 'Proses';
+
+    if (isset($params['btx'])) {
+        if (strtoupper($params['btx']) == 'PROSES' && empty($errorMessages)) {
+            $proses = 'Add';
+        } elseif (strtoupper($params['btx']) == 'ADD') {
+            $proses = 'Add';
+        } elseif (strtoupper($params['btx'] == 'SIMPAN')) {
+            $proses = 'Simpan';
+        }
+    }
+?>
+<hr />
+<form id="generalInspectionForm" action="" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <legend>一 般 General</legend>
+        <div class="fieldset-kiri required">日 期 Tanggal</div>
+        <div class="fieldset-kanan">
+            <input type="date" required pattern="\d{1,2}/\d{1,2}/\d{4}" id="tanggalInspeksi" class="medium" name="tanggalInspeksi" value="<?php echo $params['tanggalInspeksi'] ?>" />
+            <div class="error-container">
+                <?php echo isset($errorMessages['tanggalInspeksi']) ? $errorMessages['tanggalInspeksi'] : '' ?>
+            </div>
+        </div>
+        <div class="fieldset-kiri required">定 位 點 Lokasi</div>
+        <div class="fieldset-kanan">
+            <select id="lokasi" name="lokasi" required>
+                <option value=""<?php echo $params['lokasi'] == '' ? ' selected' : (strtoupper($proses) !== 'PROSES' ? ' disabled' : '') ?>>[ 选一项 pilih satu ]</option>
+                <option value="Line 1"<?php echo $params['lokasi'] == 'Line 1' ? ' selected' : (strtoupper($proses) !== 'PROSES' ? ' disabled' : '') ?>>Line 1</option>
+                <option value="Line 2"<?php echo $params['lokasi'] == 'Line 2' ? ' selected' : (strtoupper($proses) !== 'PROSES' ? ' disabled' : '') ?>>Line 2</option>
+                <option value="Line 3"<?php echo $params['lokasi'] == 'Line 3' ? ' selected' : (strtoupper($proses) !== 'PROSES' ? ' disabled' : '') ?>>Line 3</option>
+                <option value="Line 4"<?php echo $params['lokasi'] == 'Line 4' ? ' selected' : (strtoupper($proses) !== 'PROSES' ? ' disabled' : '') ?>>Line 4</option>
+                <option value="Line 5"<?php echo $params['lokasi'] == 'Line 5' ? ' selected' : (strtoupper($proses) !== 'PROSES' ? ' disabled' : '') ?>>Line 5</option>
+                <option value="Line 6"<?php echo $params['lokasi'] == 'Line 6' ? ' selected' : (strtoupper($proses) !== 'PROSES' ? ' disabled' : '') ?>>Line 6</option>
+                <option value="Line 7"<?php echo $params['lokasi'] == 'Line 7' ? ' selected' : (strtoupper($proses) !== 'PROSES' ? ' disabled' : '') ?>>Line 7</option>
+                <option value="Line 8"<?php echo $params['lokasi'] == 'Line 8' ? ' selected' : (strtoupper($proses) !== 'PROSES' ? ' disabled' : '') ?>>Line 8</option>
+                <option value="Line 9"<?php echo $params['lokasi'] == 'Line 9' ? ' selected' : (strtoupper($proses) !== 'PROSES' ? ' disabled' : '') ?>>Line 9</option>
+            </select>
+            <div class="error-container">
+                <?php echo isset($errorMessages['lokasi']) ? $errorMessages['lokasi'] : '' ?>
+            </div>
+        </div>
+        <hr />
+        <div class="fieldset-kiri"></div>
+        <div class="fieldset-button">
+            <?php if (strtoupper($proses) == 'PROSES') : ?>
+            <input type="submit" name="btx" value="Proses" />
+            <?php else : ?>
+            <input type="submit" name="btx" value="Simpan" />
+            <input id="modalOpen" type="button" value="Add Item" />
+            <?php endif; ?>
+            <input type="button" name="btx" value="Batal" onclick="window.location.href='<?php echo $this->routeManager->generateRoute(array('action' => 'report_general_inspection_single_record')) ?>'" />
+        </div>
+    </fieldset>
+    <?php if (strtoupper($proses) !== 'PROSES') : ?>
+    <div id="modalWrapper">
+        <div id="modalWindow">
+            <div style="text-align: right;"><a id="modalClose" href="#"><b>X</b></a></div>
+            <fieldset>
+                <legend>产 品 Items</legend>
+                <div>
+                    <div class="grid">
+                        <div class="fieldset-kiri required">時 間 Waktu (HH:mm)</div>
+                        <div class="fieldset-kanan">
+                            <select name="waktu" class="medium">
+                                <option value="07:00:00">07:00:00</option>
+                                <option value="08:00:00">08:00:00</option>
+                                <option value="09:00:00">09:00:00</option>
+                                <option value="10:00:00">10:00:00</option>
+                                <option value="12:30:00">12:30:00</option>
+                                <option value="13:30:00">13:30:00</option>
+                                <option value="14:30:00">14:30:00</option>
+                                <option value="15:30:00">15:30:00</option>
+                            </select>
+                            <div class="error-container">
+                                <?php echo isset($errorMessages['waktu']) ? $errorMessages['waktu'] : '' ?>
+                            </div>
+                        </div>
+                        <div class="fieldset-kiri required">[X][X] Customer</div>
+                        <div class="fieldset-kanan">
+                            <input type="text" required class="medium" name="customer" />
+                            <div class="error-container">
+                                <?php echo isset($errorMessages['customer']) ? $errorMessages['customer'] : '' ?>
+                            </div>
+                        </div>
+                        <div class="fieldset-kiri required">PO</div>
+                        <div class="fieldset-kanan">
+                            <input type="text" required class="medium" name="PO" />
+                            <div class="error-container">
+                                <?php echo isset($errorMessages['PO']) ? $errorMessages['PO'] : '' ?>
+                            </div>
+                        </div>
+                        <div class="fieldset-kiri required">產 品 編 號 Kode Produk</div>
+                        <div class="fieldset-kanan">
+                            <input type="text" required class="medium" name="kodeProduk" />
+                            <div class="error-container">
+                                <?php echo isset($errorMessages['kodeProduk']) ? $errorMessages['kodeProduk'] : '' ?>
+                            </div>
+                        </div>
+                        <div class="fieldset-kiri required">產 品 名 稱 Nama Produk</div>
+                        <div class="fieldset-kanan">
+                            <input type="text" required class="medium" name="namaProduk" readonly />
+                            <div class="error-container">
+                                <?php echo isset($errorMessages['namaProduk']) ? $errorMessages['namaProduk'] : '' ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="fieldset-kiri medium required">检 查 级 别 Inspection Level</div>
+                        <div class="fieldset-kanan">
+                            <select id="level" required name="level">
+                                <option value="">[ 选 一 项 pilih satu ]</option>
+                                <?php foreach ($levelList as $level) : ?>
+                                <option value="<?php echo $level->getCode() ?>">
+                                    <?php echo $level->getCode() ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <div class="error-container">
+                                <?php echo isset($errorMessages['level']) ? $errorMessages['level'] : '' ?>
+                            </div>
+                        </div>
+                        <div class="fieldset-kiri required">验 收 指 数 Acceptance Index</div>
+                        <div class="fieldset-kanan">
+                            <select id="acceptanceIndex" required name="acceptanceIndex">
+                                <option value="">[ 选 一 项 pilih satu ]</option>
+                                <?php foreach ($acceptanceIndexList as $acceptanceIndex) : ?>
+                                <option value="<?php echo $acceptanceIndex->getCode() ?>">
+                                    <?php echo $acceptanceIndex->getCode() ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <div class="error-container">
+                                <?php echo isset($errorMessages['acceptanceIndex']) ? $errorMessages['acceptanceIndex'] : '' ?>
+                            </div>
+                        </div>
+                        <div class="fieldset-kiri required">批 数 量 Jumlah Lot</div>
+                        <div class="fieldset-kanan">
+                            <input id='jumlahLot' type="number" required min=2 pattern="\d*" class="small" name="jumlahLot" value="2" />
+                            <div class="error-container">
+                                <?php echo isset($errorMessages['jumlahLot']) ? $errorMessages['jumlahLot'] : '' ?>
+                            </div>
+                        </div>
+                        <div class="fieldset-kiri required">檢 驗 數 Jumlah Inspeksi</div>
+                        <div class="fieldset-kanan">
+                            <input id='jumlahInspeksi' type="number" readonly required min=2 pattern="\d*" class="small" name="jumlahInspeksi" value="2" />
+                            <div class="error-container">
+                                <?php echo isset($errorMessages['jumlahInspeksi']) ? $errorMessages['jumlahInspeksi'] : '' ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="detail" class="grid" style="width: 100%;">
+                        <fieldset>
+                            <legend>细 节 Detail</legend>
+                            <div class="grid">
+                                <div class="fieldset-kiri required">死 节 Mata kayu mati</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemMataKayuMati" value="<?php echo $params['jumlahItemMataKayuMati'] ? $params['jumlahItemMataKayuMati'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemMataKayuMati']) ? $errorMessages['jumlahItemMataKayuMati'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">树 心 Hati kayu</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemHatiKayu" value="<?php echo $params['jumlahItemHatiKayu'] ? $params['jumlahItemHatiKayu'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemHatiKayu']) ? $errorMessages['jumlahItemHatiKayu'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">虫 孔 Pin hole</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemPinHole" value="<?php echo $params['jumlahItemPinHole'] ? $params['jumlahItemPinHole'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemPinHole']) ? $errorMessages['jumlahItemPinHole'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">开 裂 Pecah</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemPecah" value="<?php echo $params['jumlahItemPecah'] ? $params['jumlahItemPecah'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemPecah']) ? $errorMessages['jumlahItemPecah'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">划 伤 Retak</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemRetak" value="<?php echo $params['jumlahItemRetak'] ? $params['jumlahItemRetak'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemRetak']) ? $errorMessages['jumlahItemRetak'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">尺 寸 偏 小 Ukuran kurang</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemUkuranKurang" value="<?php echo $params['jumlahItemUkuranKurang'] ? $params['jumlahItemUkuranKurang'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemUkuranKurang']) ? $errorMessages['jumlahItemUkuranKurang'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">尺 寸 偏 大 Ukuran lebih</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemUkuranLebih" value="<?php echo $params['jumlahItemUkuranLebih'] ? $params['jumlahItemUkuranLebih'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemUkuranLebih']) ? $errorMessages['jumlahItemUkuranLebih'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">烂 ／ 发 霉 Busuk/berjamur</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemBusukBerjamur" value="<?php echo $params['jumlahItemBusukBerjamur'] ? $params['jumlahItemBusukBerjamur'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemBusukBerjamur']) ? $errorMessages['jumlahItemBusukBerjamur'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">蓝 斑 Bluestain</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemBlueStain" value="<?php echo $params['jumlahItemBlueStain'] ? $params['jumlahItemBlueStain'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemBlueStain']) ? $errorMessages['jumlahItemBlueStain'] : '' ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid">
+                                <div class="fieldset-kiri required">压 印 Bekas roda</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemBekasRoda" value="<?php echo $params['jumlahItemBekasRoda'] ? $params['jumlahItemBekasRoda'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemBekasRoda']) ? $errorMessages['jumlahItemBekasRoda'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">跳 刀 ／ 刀 印 Bekas pisau</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemBekasPisau" value="<?php echo $params['jumlahItemBekasPisau'] ? $params['jumlahItemBekasPisau'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemBekasPisau']) ? $errorMessages['jumlahItemBekasPisau'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">色 差 Beda warna</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemBedaWarna" value="<?php echo $params['jumlahItemBedaWarna'] ? $params['jumlahItemBedaWarna'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemBedaWarna']) ? $errorMessages['jumlahItemBedaWarna'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">弯 翘 Bengkok</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemBengkok" value="<?php echo $params['jumlahItemBengkok'] ? $params['jumlahItemBengkok'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemBengkok']) ? $errorMessages['jumlahItemBengkok'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">拼 缝 Garis lem</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemGarisLem" value="<?php echo $params['jumlahItemGarisLem'] ? $params['jumlahItemGarisLem'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemGarisLem']) ? $errorMessages['jumlahItemGarisLem'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">凹 陷 Gelombang</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemGelombang" value="<?php echo $params['jumlahItemGelombang'] ? $params['jumlahItemGelombang'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemGelombang']) ? $errorMessages['jumlahItemGelombang'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required"> 刀型不对 Salah pisau</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemSalahPisau" value="<?php echo $params['jumlahItemSalahPisau'] ? $params['jumlahItemSalahPisau'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemSalahPisau']) ? $errorMessages['jumlahItemSalahPisau'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">胶 水 比 率 不 对 Lem tidak standard</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemLemTidakStandard" value="<?php echo $params['jumlahItemLemTidakStandard'] ? $params['jumlahItemLemTidakStandard'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemLemTidakStandard']) ? $errorMessages['jumlahItemLemTidakStandard'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">濕 度 太 高 Suhu terlalu tinggi</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemSuhuTerlaluTinggi" value="<?php echo $params['jumlahItemSuhuTerlaluTinggi'] ? $params['jumlahItemSuhuTerlaluTinggi'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemSuhuTerlaluTinggi']) ? $errorMessages['jumlahItemSuhuTerlaluTinggi'] : '' ?>
+                                    </div>
+                                </div>
+                                <div class="fieldset-kiri required">其 它 Lainnya</div>
+                                <div class="fieldset-kanan">
+                                    <input class="jumlahItemBuruk" type="number" required min=0 pattern="\d*" name="jumlahItemBurukLainnya" value="<?php echo $params['jumlahItemBurukLainnya'] ? $params['jumlahItemBurukLainnya'] : 0 ?>" />
+                                    <div class="error-container">
+                                        <?php echo isset($errorMessages['jumlahItemBurukLainnya']) ? $errorMessages['jumlahItemBurukLainnya'] : '' ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div style="clear:both;">
+                    <hr />
+                    <div class="fieldset-kiri"></div>
+                    <div class="fieldset-button">
+                        <input id="addButton" type="submit" name="btx" value="Add" />
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <?php endif; ?>
+</form>
+<?php
+    if ($data !== null) :
+        $pembahananKayuInspectionTime = $data->getPembahananKayuInspectionTime();
+?>
+<table class="content">
+    <thead>
+        <tr>
+            <th rowspan=0 style="width: 40px;">時 間<br />Waktu</th>
+            <th rowspan=0>產 品<br />編 號<br />Kode Produk</th>
+            <th rowspan=0>產 品<br />名 稱<br />Nama Produk</th>
+            <th rowspan=0 style="width:40px;">批<br />数<br />量<br />Jumlah Lot</th>
+            <th rowspan=0 style="width:40px;">檢<br />驗<br />數<br />Jumlah Inspeksi</th>
+            <th colspan=38>不 良 內 容<br />Konten Kondisi Buruk</th>
+            <th colspan=3>生 產 狀 況<br />Kondisi Produksi</th>
+        </tr>
+        <tr>
+            <th><div>死<br />节</div></th>
+            <th class="rotate"><div>Mata Pisau</div></th>
+            <th><div>树<br />心</div></th>
+            <th class="rotate"><div>Hati Kayu</div></th>
+            <th><div>虫<br />孔</div></th>
+            <th class="rotate"><div>Pin Hole</div></th>
+            <th><div>开<br />裂</div></th>
+            <th class="rotate"><div>Pecah</div></th>
+            <th><div>划<br />伤</div></th>
+            <th class="rotate"><div>Retak</div></th>
+            <th><div>尺<br />寸<br />偏<br />小</div></th>
+            <th class="rotate"><div>Ukuran Kurang</div></th>
+            <th><div>尺<br />寸<br />偏<br />大</div></th>
+            <th class="rotate"><div>Ukuran Lebih</div></th>
+            <th><div>烂<br />／<br />发<br />霉</div></th>
+            <th class="rotate"><div>Busuk/Berjamur</div></th>
+            <th><div>蓝<br />斑</div></th>
+            <th class="rotate"><div>Bluestain</div></th>
+            <th><div>压<br />印</div></th>
+            <th class="rotate"><div>Bekas Roda</div></th>
+            <th><div>跳<br />刀<br />／<br />刀<br />印</div></th>
+            <th class="rotate"><div>Bekas Pisau</div></th>
+            <th><div>色<br />差</div></th>
+            <th class="rotate"><div>Beda Warna</div></th>
+            <th><div>弯<br />翘</div></th>
+            <th class="rotate"><div>Bengkok</div></th>
+            <th><div>拼<br />缝</div></th>
+            <th class="rotate"><div>Garis Lem</div></th>
+            <th><div>凹<br />陷</div></th>
+            <th class="rotate"><div>Gelombang</div></th>
+            <th><div>刀<br />型<br />不<br />对</div></th>
+            <th class="rotate"><div>Salah Pisau</div></th>
+            <th><div>胶<br />水<br />比<br />率<br />不<br />对</div></th>
+            <th class="rotate"><div>Lem Tidak Standard</div></th>
+            <th><div>濕<br />度<br />太<br />高</div></th>
+            <th class="rotate"><div>Suhu Terlalu Tinggi</div></th>
+            <th><div>其<br />它</div></th>
+            <th class="rotate"><div>Lainnya</div></th>
+            <th>不<br />良<br />數<br />Jumlah Kualitas Buruk</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+            if (count($pembahananKayuInspectionTime) > 0) :
+                foreach ($pembahananKayuInspectionTime as $pembahananKayuTimeGroup) :
+                    $pembahananKayuTimeGroupRowSpan = count($pembahananKayuTimeGroup->getPembahananKayuInspectionItem()) + 1;
+        ?>
+        <tr>
+            <td rowspan=<?php echo $pembahananKayuTimeGroupRowSpan; ?>><?php echo $pembahananKayuTimeGroup->getWaktuInspeksi()->format('H:i:s'); ?></td>
+        </tr>
+        <?php
+            foreach ($pembahananKayuTimeGroup->getPembahananKayuInspectionItem() as $pembahananKayuItem) :
+        ?>
+        <tr>
+            <td><?php echo $pembahananKayuItem->getKodeProduk() ?></td>
+            <td><?php echo $pembahananKayuItem->getNamaProduk() ?></td>
+            <td style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahLot() ?></td>
+            <td style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahInspeksi() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemMataKayuMati() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemHatiKayu() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemPinHole() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemPecah() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemRetak() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemUkuranKurang() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemUkuranLebih() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemBusukBerjamur() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemBlueStain() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemBekasRoda() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemBekasPisau() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemBedaWarna() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemBengkok() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemGarisLem() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemGelombang() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemSalahPisau() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemLemTidakStandard() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemSuhuTerlaluTinggi() ?></td>
+            <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemBurukLainnya() ?></td>
+            <td style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahTotalItemBuruk() ?></td>
+        </tr>
+        <?php
+                    endforeach;
+                endforeach;
+            else :
+        ?>
+        <tr>
+            <td colspan=0 style="text-align: center;">Data kosong!</td>
+        </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
+<?php endif; ?>
+
+<style type="text/css">
+    table.content thead tr:first-child {
+        height: 30px;
+    }
+
+    table.content thead tr:last-child {
+        height: 120px;
+    }
+
+    table.content thead tr th {
+        font-weight: normal;
+    }
+
+    table.content thead tr th.rotate {
+        font-weight: bold;
+        padding: 0;
+        white-space: nowrap;
+    }
+
+    table.content thead tr th.rotate > div {
+        transform:
+            translate(0, 40px)
+            rotate(270deg);
+        width: 30px;
+    }
+
+    table.content tbody tr td {
+        vertical-align: top;
+    }
+</style>
+<script type="text/javascript">
+    <?php if (strtoupper($proses) != 'PROSES') : ?>
+    // Original JavaScript code by Chirp Internet: www.chirp.com.au
+    // Please acknowledge use of this code by including this header.
+    if(document.addEventListener) {
+        document.addEventListener("DOMContentLoaded", modalInit, false);
+    } else {
+        window.attachEvent("onload", modalInit);
+    }
+
+    function modalInit() {
+        var modalWrapper = document.getElementById("modalWrapper");
+        var modalWindow = document.getElementById("modalWindow");
+        var openModal = function(e) {
+            $("#detail").show();
+            $("#addButton").show();
+            modalWrapper.className = "overlay";
+            modalWindow.style.marginTop = (-modalWindow.offsetHeight)/2 + "px";
+            modalWindow.style.marginLeft = (-modalWindow.offsetWidth)/2 + "px";
+            e.preventDefault ? e.preventDefault() : e.returnValue = false;
+            processDetail();
+        };
+        var closeModal = function(e) {
+            modalWrapper.className = "";
+            e.preventDefault ? e.preventDefault() : e.returnValue = false;
+        };
+        var keyHandler = function(e) {
+            if (e.keyCode == 27) closeModal(e);
+        };
+        if (document.addEventListener) {
+            document.getElementById("modalOpen").addEventListener("click", openModal, false);
+            document.getElementById("modalClose").addEventListener("click", closeModal, false);
+            document.addEventListener("keydown", keyHandler, false);
+        } else {
+            document.getElementById("modalOpen").attachEvent("onclick", openModal);
+            document.getElementById("modalClose").attachEvent("onclick", closeModal);
+            document.attachEvent("onkeydown", keyHandler);
+        }
+    }
+
+    <?php endif; ?>
+
+    $(document).ready(function(){
+        <?php if (strtoupper($proses) === 'PROSES') : ?>
+        $("#tanggalInspeksi").datepicker({
+            dateFormat: 'dd/mm/yy',
+            yearRange: '-55:-0'
+        });
+        <?php else : ?>
+        $("#tanggalInspeksi").attr('readonly', 'readonly');
+        <?php endif; ?>
+
+        $("input[name=kodeProduk]").autocomplete({
+            minLength: 1,
+            source: function(request, response) {
+                $.getJSON(
+                    "<?php echo $this->routeManager->generateRoute(array('action' => 'autocomplete_produk', 'bypass' => 'true')) ?>",
+                    { key: request.term },
+                    response
+                );
+            },
+            select: function(event, ui) {
+                $("input[name=kodeProduk]").val(ui.item.fFgCode);
+                $("input[name=namaProduk]").val(ui.item.fFgEName);
+
+                return false;
+            },
+            change: function(event, ui) {
+                if (! ui.item) {
+                    $("input[name=kodeProduk]").val('');
+                    $("input[name=namaProduk]").val('');
+                }
+
+                return false
+            }
+        }).data("ui-autocomplete")._renderItem = function( ul, item ) {
+            return $( "<li>" )
+                .append( "<a><strong>[" + item.fFgCode + "]</strong> " + item.fFgName + "</a>" )
+                .appendTo( ul );
+        };
+
+        $(".jumlahItemBuruk").change(function(){
+            if (! $("#level").val()) {
+                $(this).val(0);
+                alert("Inspection Level belum dipilih");
+            } else if (! $("#acceptanceIndex").val()) {
+                $(this).val(0);
+                alert("Acceptance Index belum dipilih");
+            } else {
+                validateData($(this));
+            }
+        });
+
+        $("#level, #acceptanceIndex, #jumlahLot").change(function(){
+            processDetail();
+        });
+
+        $("#jumlahLot").change(function(){
+            validateData($(this));
+        });
+
+        $("input[value=Simpan]").click(function(e){
+            $("#generalInspectionForm").attr("novalidate", "novalidate");
+        });
+    });
+
+    function processDetail()
+    {
+        if ($("#level").val() == '' || $("#acceptanceIndex").val() == '' || parseInt($("#jumlahLot").val()) == 0) {
+            $("#detail").hide();
+            $("#addButton").hide();
+            $("#jumlahInspeksi").val("0");
+        } else {
+            $("#detail").show();
+            $("#addButton").show();
+
+            $.ajax("<?php echo $this->routeManager->generateRoute(array(
+                'action' => 'request_sample_size',
+                'bypass' => true
+            )) ?>"
+            + "&inspectionLevel=" + $("#level").val()
+            + "&acceptanceIndex=" + $("#acceptanceIndex").val()
+            + "&jumlahLot=" + $("#jumlahLot").val()
+            ).done(function(result){
+                    $("#jumlahInspeksi").val(result);
+                });
+        }
+    }
+
+    function validateData(target)
+    {
+        var jumlahInspeksi  = parseInt($("#jumlahInspeksi").val());
+        var jumlahItemBuruk = 0;
+
+        $.each($(".jumlahItemBuruk"), function(index, element){
+            jumlahItemBuruk += parseInt($(element).val());
+        });
+
+        if (jumlahInspeksi < jumlahItemBuruk) {
+            alert('Jumlah Item Buruk melebihi Jumlah Inspeksi.');
+            target.val(0);
+        }
+    }
+</script>

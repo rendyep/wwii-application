@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+        <style type="text/css">
+            @media print {
+                button {
+                    display: none !important;
+                }
+            }
+
+            body {
+                width: 26cm;
+                text-align: center;
+                font-family: "segoe ui";
+                font-size: 10px;
+                margin: 0 auto;
+            }
+
+            #footer {
+                margin-top: 20px;
+            }
+
+            #content-head {
+                margin-bottom: 5px;
+            }
+
+            #content-head span {
+                margin-right: 40px;
+            }
+
+            #content-head span:last-child {
+                margin-right: 0px;
+            }
+
+            table.full-border {
+                width: 100%;
+                margin: 0 auto;
+                border-collapse: collapse;
+                border: 1px solid #000000;
+            }
+
+            table.full-border th,
+            table.full-border td {
+                font-weight: normal;
+                border: 1px solid #000000;
+            }
+
+            table.full-border td {
+                text-align: left;
+            }
+
+            fieldset {
+                border: 1px solid;
+            }
+
+            table.full-border thead tr:first-child {
+                height: 30px;
+            }
+
+            table.full-border thead tr:last-child {
+                height: 100px;
+            }
+
+            table.full-border thead tr th.rotate {
+                padding: 0;
+                white-space: nowrap;
+            }
+
+            table.full-border thead tr th.rotate > div {
+                transform:
+                    translate(0, 37px)
+                    rotate(270deg);
+                width: 17px;
+            }
+
+            table.full-border thead tr th.rotate > div.double {
+                transform:
+                    translate(0, 28px)
+                    rotate(270deg);
+                width: 34px;
+            }
+
+            table.full-border tbody td {
+                vertical-align: top;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="head">
+            <h3>
+                板料制 程 抽 樣 抽 驗 日 報 表
+                <br />
+                Laporan Harian Proses Sampling Dan Testing Pembahanan Kayu
+            </h3>
+        </div>
+        <div id="content" style="overflow:auto;">
+            <?php if ($data !== null) : ?>
+            <div id="content-head">
+                <div style="float:left;">
+                    <span>組別 Group : Pembahanan Kayu</span>
+                    <span>定位點 Lokasi : <?php echo $data->getLokasi(); ?></span>
+                    <span>品管員 Staff  QC : <?php echo $data->getStaffQc(); ?></span>
+                </div>
+                <div style="float:right;">
+                    <span><?php echo $data->getTanggalInspeksi()->format('Y'); ?> 年Thn</span>
+                    <span><?php echo $data->getTanggalInspeksi()->format('m'); ?> 月Bln</span>
+                    <span><?php echo $data->getTanggalInspeksi()->format('d'); ?> 日Tgl</span>
+                </div>
+            </div>
+            <table class="full-border">
+                <?php
+                    $pembahananKayuInspectionTime = $data->getPembahananKayuInspectionTime();
+                ?>
+                <thead>
+                    <tr>
+                        <th rowspan=0 style="width: 40px;">時 間<br />Waktu</th>
+                        <th rowspan=0 style="width:40px;">客 戶<br />Customer</th>
+                        <th rowspan=0 style="width:40px;">PO</th>
+                        <th rowspan=0>產 品<br />編 號<br />Kode Produk</th>
+                        <th rowspan=0>產 品<br />名 稱<br />Nama Produk</th>
+                        <th rowspan=0 style="width:40px;">批<br />数<br />量<br />Jumlah Lot</th>
+                        <th rowspan=0 style="width:40px;">檢<br />驗<br />數<br />Jumlah Inspeksi</th>
+                        <th colspan=38>不 良 內 容<br />Konten Kondisi Buruk</th>
+                        <th colspan=0>生 產 狀 況<br />Kondisi Produksi</th>
+                        <th rowspan=0 style="width:40px;">狀<br />態<br />Status</th>
+                    </tr>
+                    <tr>
+                        <th><div>死<br />节</div></th>
+                        <th class="rotate"><div>Mata Pisau</div></th>
+                        <th><div>树<br />心</div></th>
+                        <th class="rotate"><div>Hati Kayu</div></th>
+                        <th><div>虫<br />孔</div></th>
+                        <th class="rotate"><div>Pin Hole</div></th>
+                        <th><div>开<br />裂</div></th>
+                        <th class="rotate"><div>Pecah</div></th>
+                        <th><div>划<br />伤</div></th>
+                        <th class="rotate"><div>Retak</div></th>
+                        <th><div>尺<br />寸<br />偏<br />小</div></th>
+                        <th class="rotate"><div>Ukuran Kurang</div></th>
+                        <th><div>尺<br />寸<br />偏<br />大</div></th>
+                        <th class="rotate"><div>Ukuran Lebih</div></th>
+                        <th><div>烂<br />／<br />发<br />霉</div></th>
+                        <th class="rotate"><div>Busuk/Berjamur</div></th>
+                        <th><div>蓝<br />斑</div></th>
+                        <th class="rotate"><div>Bluestain</div></th>
+                        <th><div>压<br />印</div></th>
+                        <th class="rotate"><div>Bekas Roda</div></th>
+                        <th><div>跳<br />刀<br />／<br />刀<br />印</div></th>
+                        <th class="rotate"><div>Bekas Pisau</div></th>
+                        <th><div>色<br />差</div></th>
+                        <th class="rotate"><div>Beda Warna</div></th>
+                        <th><div>弯<br />翘</div></th>
+                        <th class="rotate"><div>Bengkok</div></th>
+                        <th><div>拼<br />缝</div></th>
+                        <th class="rotate"><div>Garis Lem</div></th>
+                        <th><div>凹<br />陷</div></th>
+                        <th class="rotate"><div>Gelombang</div></th>
+                        <th><div>刀<br />型<br />不<br />对</div></th>
+                        <th class="rotate"><div>Salah Pisau</div></th>
+                        <th><div>胶<br />水<br />比<br />率<br />不<br />对</div></th>
+                        <th class="rotate"><div>Lem Tidak Standard</div></th>
+                        <th><div>濕<br />度<br />太<br />高</div></th>
+                        <th class="rotate"><div>Suhu Terlalu Tinggi</div></th>
+                        <th><div>其<br />它</div></th>
+                        <th class="rotate"><div>Lainnya</div></th>
+                        <th>不<br />良<br />數<br />Jumlah Kualitas Buruk</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        foreach ($pembahananKayuInspectionTime as $pembahananKayuTimeGroup) :
+                            $pembahananKayuTimeGroupRowSpan = count($pembahananKayuTimeGroup->getPembahananKayuInspectionItem()) + 1;
+                    ?>
+                    <tr>
+                        <td rowspan=<?php echo $pembahananKayuTimeGroupRowSpan; ?>><?php echo $pembahananKayuTimeGroup->getWaktuInspeksi()->format('H:i:s'); ?></td>
+                    </tr>
+                    <?php
+                        foreach ($pembahananKayuTimeGroup->getPembahananKayuInspectionItem() as $pembahananKayuItem) :
+                            $status = $this->inspectionStatusHelper->getInspectionStatus($pembahananKayuItem);
+                    ?>
+                    <tr>
+                        <td><?php echo $pembahananKayuItem->getCustomer() ?></td>
+                        <td><?php echo $pembahananKayuItem->getPO() ?></td>
+                        <td><?php echo $pembahananKayuItem->getKodeProduk() ?></td>
+                        <td><?php echo $pembahananKayuItem->getNamaProduk() ?></td>
+                        <td style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahLot() ?></td>
+                        <td style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahInspeksi() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemMataKayuMati() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemHatiKayu() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemPinHole() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemPecah() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemRetak() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemUkuranKurang() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemUkuranLebih() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemBusukBerjamur() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemBlueStain() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemBekasRoda() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemBekasPisau() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemBedaWarna() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemBengkok() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemGarisLem() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemGelombang() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemSalahPisau() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemLemTidakStandard() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemSuhuTerlaluTinggi() ?></td>
+                        <td colspan=2 style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahItemBurukLainnya() ?></td>
+                        <td style="text-align:right;"><?php echo $pembahananKayuItem->getJumlahTotalItemBuruk() ?></td>
+                        <td style="text-align:center; color:<?php echo $status ? 'green' : 'red' ?>"><?php echo $status ? 'pass' : 'fail' ?></td>
+                    </tr>
+                    <?php
+                            endforeach;
+                        endforeach;
+                     ?>
+                </tbody>
+            </table>
+            <?php else: ?>
+            <div style="text-align:center;"><h3>Data tidak ditemukan!</h3></div>
+            <?php endif; ?>
+        </div>
+        <div id="footer">
+            <button onclick="javascript: window.print()">Print</button>
+            <button onclick="javascript: window.location.href = '<?php echo $this->routeManager->generateRoute(array('action' => 'report_general_inspection_pembahanan_kayu')) ?>'">Kembali</button>
+        </div>
+    </body>
+</html>
